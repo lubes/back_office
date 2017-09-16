@@ -1,5 +1,5 @@
-// var site_url = 'http://localhost:8888/a_quartz/';
-var site_url = 'http://qa.esw.me/';
+var site_url = 'http://localhost:8888/a_quartz/';
+// var site_url = 'http://qa.esw.me/';
 
 $(document).ready(function () {
  
@@ -30,6 +30,30 @@ $(document).ready(function () {
                 "visible": false
             }
         ],
+        buttons: [
+            {
+                extend: 'csv',
+                title: 'All Attendees',
+                text: 'Export All'
+            },
+            {
+                extend: 'csv',
+                title: 'Attendees',
+                text: 'Export Selected',
+                exportOptions: {
+                    modifier: {
+                        selected: true
+                    }
+                }
+            } 
+        ],
+        select: true
+    }); 
+    
+    
+    var all_attendees = $('#all_attendees_admin').DataTable({
+        pageLength: 100,
+        dom: 'Bfrtip',
         buttons: [
             {
                 extend: 'csv',

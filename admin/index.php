@@ -17,14 +17,6 @@ include('../layout/header.php');?>
             <?php all_quartz_events();?>
         </div>
     </div>
-    <div class="widget-wrap">
-        <div class="widget-title">
-            <h3>Attendees Pending Approval</h3>
-        </div>
-        <div class="widget-content">
-            <?php approve_attendees();?>
-        </div>
-    </div>
     <div class="row">
         <div class="col-12 col-sm-12 col-md-6">
             <div class="widget-wrap">

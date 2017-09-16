@@ -1086,7 +1086,10 @@ function edit_exhibitor() {
         $sales_phone_5 = $_POST['sales_phone_5'];
         $sales_email_5 = $_POST['sales_email_5'];
         $sales_title_5 = $_POST['sales_title_5'];
-
+        
+        $username = $_POST['username'];
+        $password = $_POST['password'];   
+        
         $result = mysqli_query($mysqli, "UPDATE exhibitors SET
         name='$name',
         email='$email',
@@ -1130,6 +1133,9 @@ function edit_exhibitor() {
         sales_email_5='$sales_email_5',
         sales_title_5='$sales_title_5'
         
+        username='$username',
+        password='$password'
+        
         WHERE id='$exhibitor'"); 
         echo "<meta http-equiv='refresh' content='0'>";
         
@@ -1137,7 +1143,22 @@ function edit_exhibitor() {
     while($res = mysqli_fetch_array($result)) { ?>
 
         <form  method="post" action="">
-
+            <h4 class="sec-title">Login Credentials</h4>
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input class="form-control" name="username" value="<?php echo $res['username'];?>">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input class="form-control" name="password" value="<?php echo $res['password'];?>">
+                    </div>
+                </div>
+            </div>            
+            <h4 class="sec-title">Exhibitor Information</h4>
             <div class="row">
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
@@ -1288,7 +1309,7 @@ function edit_exhibitor() {
                 <input class="form-control" name="rank_amount" value="<?php echo $res['rank_amount'];?>">
             </div>
             <?php endif;?>
-            <h3>Sales Contacts</h3>
+            <h4 class="sec-title">Sales Contacts</h4>
             
             <p>Sales Contact 1</p>
             <div class="row">
@@ -1591,41 +1612,6 @@ function all_attendees() {
     <?php }
 }
 
-/*
-// Attendee Name
-function attendee_name() {
-    global $mysqli; 
-    $attendee = $_GET['attendee'];
-    $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'");
-    while($res = mysqli_fetch_array($result)) { ?>
-        <?php echo $res['name'];?>
-    <?php }
-}
-
-
-// Attendee Profile
-function attendee_profile() {
-    global $mysqli; 
-    $attendee = $_GET['attendee'];
-    $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'");
-    while($res = mysqli_fetch_array($result)) { ?>
-        <?php echo $res['name'];?>
-        <?php
-            // Check Attendee Approval
-            if($res['approved'] == 0) {
-                echo 'Pending';
-            } else if($res['approved'] == 1) {
-                echo 'Approved';
-            } else if($res['approved'] == 2) {
-                echo "Denied";
-            } else {
-                echo 'Cancelled';
-            }
-        ?>
-    <?php }
-}
-*/
-
 // Attendee Approval Status
 function attendee_approval_status() {
     global $mysqli; 
@@ -1651,10 +1637,8 @@ function attendee_approval_status() {
 function edit_attendee() {
     global $mysqli; 
     $attendee = $_GET['id'];
-    
     $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'");
     if(isset($_POST['edit_attendee'])) {
-
         $approved = $_POST['approved'];
         $name = $_POST['name'];
         $email = $_POST['email'];
@@ -1671,6 +1655,39 @@ function edit_attendee() {
         $fax  = $_POST['fax'];
         $website  = $_POST['website'];
         $track  = $_POST['track'];
+        
+        $revenue  = $_POST['revenue'];
+        $company_size  = $_POST['company_size'];
+        $industry  = $_POST['industry'];
+        $scheduling  = $_POST['scheduling'];
+        $erp  = $_POST['erp'];
+        $geo  = $_POST['geo'];
+        $warehouse  = $_POST['warehouse'];
+        $number_facilities  = $_POST['number_facilities'];
+        $facility_responsibilities  = $_POST['facility_responsibilities'];
+        $facilities_size  = $_POST['facilities_size'];
+        $facilities_equipment_interest  = $_POST['facilities_equipment_interest'];
+        $facilities_software_interest  = $_POST['facilities_software_interest'];
+        $facilities_projects  = $_POST['facilities_projects'];
+        $transportation_responsibility  = $_POST['transportation_responsibility'];
+        $ftl  = $_POST['ftl'];
+        $ltl  = $_POST['ltl'];
+        $intermodel  = $_POST['intermodel'];
+        $parcel  = $_POST['parcel'];
+        $modes_transporation  = $_POST['modes_transporation'];
+        $tansportation_interest  = $_POST['tansportation_interest'];
+        $transportation_projects  = $_POST['transportation_projects'];
+        $threepls  = $_POST['threepls'];
+        $footprint  = $_POST['footprint'];
+        $threepl_interest  = $_POST['threepl_interest'];
+        $threepl_projects  = $_POST['threepl_projects'];
+        $supply_responsibility  = $_POST['supply_responsibility'];
+        $supply_services  = $_POST['supply_services'];
+        $supply_projects  = $_POST['supply_projects'];
+        $procurement  = $_POST['procurement'];
+        $procurement_projects  = $_POST['procurement_projects'];
+        $procurement_interest  = $_POST['procurement_interest'];        
+        
         $result = mysqli_query($mysqli, "UPDATE attendees SET
         name='$name',
         approved='$approved',
@@ -1687,16 +1704,74 @@ function edit_attendee() {
         cell_phone = '$cell_phone',
         fax = '$fax',
         website = '$website',
-        track = '$track'
+        track = '$track',
+        revenue='$revenue',
+        company_size='$company_size',
+        industry='$industry',
+        scheduling='$scheduling',
+        erp = '$erp',
+        geo='$geo',
+        warehouse='$warehouse',
+        number_facilities='$number_facilities',
+        facility_responsibilities='$facility_responsibilities',
+        facilities_size='$facilities_size',
+        facilities_equipment_interest='$facilities_equipment_interest',
+        facilities_software_interest='$facilities_software_interest',
+        facilities_projects='$facilities_projects',
+        transportation_responsibility='$transportation_responsibility',
+        ftl='$ftl',
+        ltl='$ltl',
+        intermodel='$intermodel',
+        parcel='$parcel',
+        modes_transporation='$modes_transporation',
+        tansportation_interest='$tansportation_interest',
+        transportation_projects='$transportation_projects',
+        threepls='$threepls',
+        footprint='$footprint',
+        threepl_interest='$threepl_interest',
+        threepl_projects='$threepl_projects',
+        supply_responsibility='$supply_responsibility',
+        supply_services='$supply_services',
+        supply_projects='$supply_projects',
+        procurement='$procurement',
+        procurement_projects='$procurement_projects',
+        procurement_interest='$procurement_interest'    
         WHERE id='$attendee'");
         echo "<meta http-equiv='refresh' content='0'>";
     } 
     while($res = mysqli_fetch_array($result)) { ?>
-   
- 
         <form  method="post" action="">
+            <?php if($_SESSION['permission']==1):?>
+            <div class="form-group">
+                <label>Attendee Status: 
+                   <?php
+                       // Check Attendee Approval
+                       if($res['approved'] == 0) {
+                           echo 'Pending';
+                       } else if($res['approved'] == 1) {
+                           echo 'Approved';
+                       } else if($res['approved'] == 2) {
+                           echo "Denied";
+                       } else {
+                           echo 'Cancelled';
+                       }
+                   ?>  
+                </label>
+                <div class="btn-group" data-toggle="buttons">
+                   <label class="btn btn-secondary <?php if($res['approved'] == 1) { echo 'active'; }?>">
+                       <input type="radio" name="approved" value="1" id="option1" autocomplete="off" <?php if($res['approved'] == 1) { echo 'checked'; }?>> Approve
+                   </label>
+                   <label class="btn btn-secondary <?php if($res['approved'] == 2) { echo 'active'; }?>">
+                       <input type="radio" name="approved" value="2" id="option2" autocomplete="off" <?php if($res['approved'] == 2) { echo 'checked'; }?>> Deny
+                   </label>
+                   <label class="btn btn-secondary <?php if($res['approved'] == 3) { echo 'active'; }?>">
+                       <input type="radio" name="approved" value="3" id="option3" autocomplete="off" <?php if($res['approved'] == 3) { echo 'checked'; }?>> Cancel
+                   </label>
+                </div>            
+            </div>
+            <?php endif;?>
+            <hr>
             <h4 class="sec-title">Contact Information</h4>
-            
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="form-group">
@@ -1789,79 +1864,51 @@ function edit_attendee() {
                     </div> 
                 </div>
             </div>
+            <hr>
+            <h4 class="sec-title">Other Information</h4>
+            
+                <?php standard_form_field_attendee_edit($slug='industry');?>
+                <?php standard_form_field_attendee_edit($slug='revenue');?>
+                <?php standard_form_field_attendee_edit($slug='company_size');?>
+                <?php standard_form_field_attendee_edit($slug='products_services');?>   
+                <?php standard_form_field_attendee_edit($slug='erp');?>   
+                <?php standard_form_field_attendee_edit($slug='geo');?>
 
-            <h4 class="sec-title">Contact Information</h4>
-            
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Annual Revenue</label>
-                        <input class="form-control" name="revenue" value="<?php echo $res['revenue'];?>">
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Company Size</label>
-                        <input class="form-control" name="revenue" value="<?php echo $res['company_size'];?>">
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Industry</label>
-                        <input class="form-control" name="revenue" value="<?php echo $res['industry'];?>">
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Key Products</label>
-                        <input class="form-control" name="revenue" value="<?php echo $res['key_products'];?>">
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>ERP</label>
-                        <input class="form-control" name="revenue" value="<?php echo $res['erp'];?>">
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>GEO Area of Responsibility</label>
-                        <input class="form-control" name="revenue" value="<?php echo $res['geo'];?>">
-                    </div>
-                </div>
+                <h4 class="sec-title">Warehouse</h4>
+                <?php standard_form_field_attendee_edit($slug='warehouse');?>
+                <?php standard_form_field_attendee_edit($slug='number_facilities');?>
+                <?php standard_form_field_attendee_edit($slug='facility_responsibilities');?>
+                <?php standard_form_field_attendee_edit($slug='facilities_size');?>
+                <?php standard_form_field_attendee_edit($slug='facilities_equipment_interest');?>
+                <?php standard_form_field_attendee_edit($slug='facilities_software_interest');?>
+                <?php standard_form_field_attendee_edit($slug='facilities_projects');?>
 
-            </div>
+                <h4 class="sec-title">Transportation</h4>
+                <?php standard_form_field($slug='transportation_responsibility');?>
+                <?php standard_form_field_attendee_edit($slug='ftl');?>
+                <?php standard_form_field_attendee_edit($slug='ltl');?>
+                <?php standard_form_field_attendee_edit($slug='intermodel');?>
+                <?php standard_form_field_attendee_edit($slug='parcel');?>
+                <?php standard_form_field_attendee_edit($slug='modes_transporation');?>
+                <?php standard_form_field_attendee_edit($slug='tansportation_interest');?>
+                <?php standard_form_field_attendee_edit($slug='transportation_projects');?>
+
+                <h4 class="sec-title">3PL</h4>
+                <?php standard_form_field_attendee_edit($slug='threepls');?>
+                <?php standard_form_field_attendee_edit($slug='footprint');?>
+                <?php standard_form_field_attendee_edit($slug='threepl_interest');?>
+                <?php standard_form_field_attendee_edit($slug='threepl_projects');?>
+
+                <h4 class="sec-title">Supply Chain</h4> 
+                <?php standard_form_field_attendee_edit($slug='supply_responsibility');?>
+                <?php standard_form_field_attendee_edit($slug='supply_services');?>
+                <?php standard_form_field_attendee_edit($slug='supply_projects');?>
+
+                <h4 class="sec-title">Procurement</h4>
+                <?php standard_form_field_attendee_edit($slug='procurement');?>
+                <?php standard_form_field_attendee_edit($slug='procurement_projects');?>
+                <?php standard_form_field_attendee_edit($slug='procurement_interest');?>
             
-            
-            <?php if($_SESSION['permission']==1):?>
-            <div class="form-group">
-                <label>Attendee Status: 
-                   <?php
-                       // Check Attendee Approval
-                       if($res['approved'] == 0) {
-                           echo 'Pending';
-                       } else if($res['approved'] == 1) {
-                           echo 'Approved';
-                       } else if($res['approved'] == 2) {
-                           echo "Denied";
-                       } else {
-                           echo 'Cancelled';
-                       }
-                   ?>  
-                </label>
-                <div class="btn-group" data-toggle="buttons">
-                   <label class="btn btn-secondary <?php if($res['approved'] == 1) { echo 'active'; }?>">
-                       <input type="radio" name="approved" value="1" id="option1" autocomplete="off" <?php if($res['approved'] == 1) { echo 'checked'; }?>> Approve
-                   </label>
-                   <label class="btn btn-secondary <?php if($res['approved'] == 2) { echo 'active'; }?>">
-                       <input type="radio" name="approved" value="2" id="option2" autocomplete="off" <?php if($res['approved'] == 2) { echo 'checked'; }?>> Deny
-                   </label>
-                   <label class="btn btn-secondary <?php if($res['approved'] == 3) { echo 'active'; }?>">
-                       <input type="radio" name="approved" value="3" id="option3" autocomplete="off" <?php if($res['approved'] == 3) { echo 'checked'; }?>> Cancel
-                   </label>
-                </div>            
-            </div>
-            <?php endif;?>
             <div class="form-group">
                 <input type="submit" class="btn btn-success" name="edit_attendee" value="Save">
             </div>
@@ -1869,20 +1916,54 @@ function edit_attendee() {
     <?php }
 }
 
+function update_password($user) {
+    global $mysqli; 
+    $attendee = $_GET['id'];
+    $password = $_POST['password'];
+    if(isset($_POST['update_password'])) {
+        // $password = md5($_POST['password']);
+        $password = $_POST['password'];
+        $result = mysqli_query($mysqli, "UPDATE $user SET
+        password='$password'
+        WHERE id='$attendee'");
+        echo "<meta http-equiv='refresh' content='0'>";
+    } ?>
+    <form  method="post" action="">
+        <h4 class="sec-title">Update Password</h4>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="form-group">
+                    <label>Update <?php echo $user;?> password:</label>
+                    <input class="form-control" name="password" value="">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" name="update_password" value="Update Password">
+        </div>
+    </form>
+    <?php    
+}
+
 // Approve / Deny Attendees
 function approve_attendees() {
     global $mysqli; 
     global $uri;
-    $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE approved=0");
+    $event = $_GET['event'];
+    $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE approved=0 AND attendees.event = $event");
     if(isset($_POST['approve_attendee'])) {
         $id = $_POST['id'];
         $result = mysqli_query($mysqli, "UPDATE attendees SET approved=1 WHERE id='$id'");
-        
-        // echo "<meta http-equiv='refresh' content='0'>";
     } 
     if(isset($_POST['deny_attendee'])) {
         $id = $_POST['id'];
         $result = mysqli_query($mysqli, "UPDATE attendees SET approved=2 WHERE id='$id'");
+        echo $result;
+        echo "<meta http-equiv='refresh' content='0'>";
+    } 
+    if(isset($_POST['cancel_attendee'])) {
+        $id = $_POST['id'];
+        $result = mysqli_query($mysqli, "UPDATE attendees SET approved=3 WHERE id='$id'");
         echo $result;
         echo "<meta http-equiv='refresh' content='0'>";
     } 
@@ -1901,9 +1982,10 @@ function approve_attendees() {
                        <td><?php echo $res['email'];?></td>
                        <td>
                        <div class="btn-group float-right">
-                       <a href="" data-toggle="modal" class="btn btn-info btn-sm view-info" data-target="#attendeeInfo" data-attendee="<?php echo $res['id'];?>">Details</a>
-                       <input type="submit" class="btn btn-success btn-sm" name="approve_attendee" value="Approve">
-                       <input type="submit" class="btn btn-danger btn-sm" name="deny_attendee" value="Deny">
+                       <a href="" data-toggle="modal" class="btn btn-secondary btn-sm view-info" data-target="#attendeeInfo" data-attendee="<?php echo $res['id'];?>">Details</a>
+                       <input type="submit" class="btn btn-secondary btn-sm" name="approve_attendee" value="Approve">
+                       <input type="submit" class="btn btn-secondary btn-sm" name="deny_attendee" value="Deny">
+                       <input type="submit" class="btn btn-secondary btn-sm" name="cancel_attendee" value="Cancel">
                        </div>
                        </td>
                    </form>
@@ -1913,6 +1995,68 @@ function approve_attendees() {
         </table>
     <?php }
 }
+
+// LIz's Dumb Function 
+function basic_event_attendees() {
+    global $mysqli; 
+    global $uri;
+    $event = $_GET['event'];
+    $result = mysqli_query($mysqli, "
+    SELECT attendees.name, attendees.company, attendees.job_title, attendees.registration_date, attendees.invitation_number, attendees.email, attendees.password, attendees.approved, attendees.id AS att_id, attendees.event FROM attendees WHERE attendees.event = $event
+
+    ");
+    while($res = mysqli_fetch_array($result)) { ?>
+        <table class="table table-responsive filter-table" id="all_attendees_admin">
+            <thead>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Job Title</th>
+                <th>Reg. Date</th>
+                <th>Invitation No.</th>
+                <th>Email</th>
+                <th>Password</th> 
+                <th>Status</th>
+                <th></th>
+            </thead>
+            <tbody>
+            <?php while($res = mysqli_fetch_array($result)) { ?>
+                <tr>
+                <td><?php echo $res['name'];?></td>
+                <td><?php echo $res['company'];?></td>
+                <td><?php echo $res['job_title'];?></td>
+                <td><?php echo $res['registration_date'];?></td> 
+                <td><?php echo $res['invitation_number'];?></td>
+                <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></td>
+                <td><?php echo $res['password'];?></td>
+                <td>
+                   <?php
+                       // Check Attendee Approval
+                       if($res['approved'] == 0) {
+                           echo '<div class="approval pending">Pending</div>';
+                       } else if($res['approved'] == 1) {
+                           echo '<div class="approval approved">Approved</div>';
+                       } else if($res['approved'] == 2) {
+                           echo '<div class="approval denied">Denied</div>';
+                       } else {
+                           echo '<div class="approval cancelled">Cancelled</div>';
+                       }
+                   ?>
+                </td>
+                <td>
+                   <div class="btn-group">
+                   <a href="" data-toggle="modal" class="btn btn-info btn-sm view-info" data-target="#attendeeInfo" data-attendee="<?php echo $res['att_id'];?>">Details</a>
+                   <a href="<?php echo $uri;?>/attendee/edit/?id=<?php echo $res['att_id'];?>" class="btn btn-warning btn-sm">Edit</a>
+                   <a href="<?php echo $uri;?>/attendee/delete.php?id=<?php echo $res['att_id'];?>" onClick="return confirm('Are you sure you want to delete?')" class="btn btn-sm btn-danger">Delete</a>   
+                   </div>
+                </td>
+                </tr>
+            <?php } ?>    
+            </tbody>
+        </table>
+    <?php }
+}
+
+
 
 // Attendees for Event
 function attendees_by_event() {
@@ -2000,7 +2144,7 @@ function attendees_by_event() {
                 </td>
             <td>
                 <div class="btn-group">
-                    <a href="" data-toggle="modal" data-target="#attendeeInfo" class="btn btn-info btn-sm view-info" data-attendee="<?php echo $att_res['att_id'];?>">Details</a>
+                    <a href="" data-toggle="modal" data-target="#attendeeInfo" class="btn btn-secondary btn-sm view-info" data-attendee="<?php echo $att_res['att_id'];?>">Details</a>
                 </div> 
             </td>
 
@@ -2347,12 +2491,6 @@ function form_fields() {
     <?php }
 }
 
-
-
-
-
-
-
 function email_messages() {
     global $mysqli; 
     $event = $_GET['event'];
@@ -2405,6 +2543,48 @@ function email_messages() {
         </form>
 
     <?php } 
+}
+
+// Edit Event Color
+function event_color() {
+    global $mysqli; 
+    $event = $_GET['event'];
+    $result = mysqli_query($mysqli, "SELECT * FROM quartz_event WHERE id='$event'");
+    // Update Field
+    if(isset($_POST['update_color'])) {
+        $color = $_POST['color'];
+        $result = mysqli_query($mysqli, "UPDATE quartz_event SET
+        color='$color'
+        WHERE id='$event'");
+        echo "<meta http-equiv='refresh' content='0'>";
+    } 
+    while($res = mysqli_fetch_array($result)) { ?>
+        <form method="post" action="">
+            <div class="row">
+                <div class="col-12 col-sm-4">
+                    <div class="form-group">
+                        <label>HEX Color (exclude hash symbol)</label>
+                        <input type="text" class="form-control" name="color" placeholder="000000" value="<?php echo $res['color'];?>" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Update Color" name="update_color" class="btn btn-success" />
+                    </div>      
+                </div>
+            </div>
+        </form>
+        <hr>
+    <?php } 
+}
+
+
+// Get Event Color
+function get_event_color() {
+    global $mysqli; 
+    $event = $_GET['event'];
+    $result = mysqli_query($mysqli, "SELECT * FROM quartz_event WHERE id='$event'");
+    while($res = mysqli_fetch_array($result)) {
+         echo '#'. $res['color'];
+    } 
 }
 
 // View Created Custom Fields
@@ -2701,6 +2881,84 @@ while($res = mysqli_fetch_array($result)) { ?>
         </div>
     <?php endif;?>             
 <?php } 
+}
+
+// Attendee Edit Form Fields
+function standard_form_field_attendee_edit($slug) {
+global $mysqli; 
+$brand = $_GET['brand'];
+$event = $_GET['event'];
+$attendee = $_GET['id'];
+$result_1 = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'");
+    while($res_1 = mysqli_fetch_array($result_1)) { 
+        $this_event  = $res_1['event'];     
+        $result = mysqli_query($mysqli, "SELECT * FROM fields WHERE event='$this_event' AND slug='$slug'");
+        while($res = mysqli_fetch_array($result)) { ?>    
+            <?php if($res['active'] == 1):?>
+                <div class="form-group <?php if($res['required']==1) { echo 'required'; } ?>">
+                    <label class="title"><?php echo $res['title'];?> <?php if($res['required']==1) { echo '*'; } ?> <span><?php echo $res['description'];?></span></label>
+                    
+                    <p class="att_answer"><?php echo $res_1[$slug];?></p>
+                    
+                    <!-- Checkbox -->
+                    <?php if($res['type'] == 1): ?>
+                        <div class="form-check">
+                        <?php
+                        $text = trim($res['options']); 
+                        $textAr = explode("\n", $text);
+                        $textAr = array_filter($textAr, 'trim'); 
+                        foreach ($textAr as $line) { ?>
+                           <label class="form-check-label">
+                               <input class="form-check-input has-other-field" type="checkbox" name="<?php echo $slug;?>" value="<?php echo $line;?>" data-id="<?php echo $res['slug'];?>"> <?php echo $line;?>
+                           </label>
+                        <?php } ?> 
+                            <input class="form-control other-input hidden_input" id="<?php echo $res['slug'];?>" type="text" placeholder="Other" />
+                        </div>
+                    <?php endif;?>
+
+                    <!-- Select -->
+                    <?php if($res['type'] == 2): ?>
+                        <div class="select-wrap">
+                       <select class="form-control has-other has-other-field" id="field_<?php echo $res['slug'];?>" name="<?php echo $res['slug'];?>" data-id="<?php echo $res['slug'];?>">
+                           <option value="-">-</option>
+                           <?php 
+                           $text = trim($res['options']); 
+                           $textAr = explode("\n", $text);
+                           $textAr = array_filter($textAr, 'trim'); 
+                           foreach ($textAr as $line) { ?>
+                               <option value="<?php echo $line;?>"><?php echo $line;?></option>
+                           <?php } 
+                           ?> 
+                       </select>
+                        </div>
+                        <input class="form-control other-input hidden_input" id="<?php echo $res['slug'];?>" type="text" placeholder="Other" value="<?php echo $res_1[$slug];?>" />
+                    <?php endif;?>
+
+                    <!-- Input -->
+                    <?php if($res['type'] == 3): ?>
+                        <input type="text" class="form-control" name="<?php echo $res['slug'];?>" value="<?php echo $res_1[$slug];?>">
+                    <?php endif;?>
+
+                    <!-- Textarea -->
+                    <?php if($res['type'] == 4): ?>
+                    <?php echo $res_1[$slug];?>
+                        <textarea class="form-control"  name="<?php echo $res['slug'];?>"><?php echo $res_1[$slug];?></textarea>
+                    <?php endif;?>
+
+                    <!-- Textarea -->
+                    <?php if($res['type'] == 5): ?>
+                        <div class="form-check">
+                           <label class="form-check-label <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
+                           <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="yes"> Yes</label>
+                           <label class="form-check-label  <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
+                           <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="No"> No</label>
+                        </div> 
+                    <?php endif;?>            
+
+                </div>
+            <?php endif;?>             
+        <?php } 
+    }
 }
 
 // Form Messages
@@ -3547,7 +3805,7 @@ function attendee_logo_use() {
     $brand_result = mysqli_query($mysqli, "SELECT logo_user FROM attendees WHERE id='$attendee'");?>
     
     <?php while($res = mysqli_fetch_array($brand_result)) {?>
-        <p class="logo-use">Allow Logo Use: <span><?php echo $res['logo_user'];?></span></p>
+        <p class="logo-use">Allow Logo Use: <span><?php if($res['logo_user'] === '0') { echo 'No'; } else { echo 'Yes'; } ?></span></p>
     <?php } ?>
   
 <?php }

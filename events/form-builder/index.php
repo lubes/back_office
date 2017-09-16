@@ -12,6 +12,8 @@ include('../nav.php');?>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-10">
                     <div class="form-tab active" id="tab_1">
+                        <h3>Event Color</h3>
+                        <?php event_color();?>
                         <h3>Form Messaging</h3>
                         <?php form_messages();?>
                     </div>

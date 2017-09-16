@@ -6,7 +6,7 @@
                 <div class="events-header"><?php brand_logo($slug='event', $slug_2 = 'id');?></div>
                 <h4><?php season_name();?></h4>
                 <div class="event-meta">
-                    <a class="btn btn-warning btn-sm btn-instructions" href="" data-toggle="modal" data-target="#instructions">View Instructions on Ranking</a>
+                    <a class="btn btn-secondary btn-sm btn-instructions" href="" data-toggle="modal" data-target="#instructions">View Instructions on Ranking</a>
                     <?php if($_SESION['permission']==2){  count_ranks();} ?>
                 </div>
             </div>
@@ -42,7 +42,10 @@
         <div class="registration-links btn-group">
             <?php if($body_class !=='form-builder'):?>
             <a class="btn btn-secondary <?php if($body_class=='event-exhibitors'){ echo 'active'; }?>" href="<?php echo $uri;?>/events/?event=<?php echo $event;?>">Exhibitors</a>
-            <a class="btn btn-secondary <?php if($body_class=='event-attendees'){ echo 'active'; }?>" href="<?php echo $uri;?>/events/attendees/attendees-admin.php?event=<?php echo $event;?>">Attendees</a>    
+            <a class="btn btn-secondary <?php if($body_class=='event-attendees'){ echo 'active'; }?>" href="<?php echo $uri;?>/events/attendees/attendees-admin.php?event=<?php echo $event;?>">Attendees</a>   
+            <a class="btn btn-secondary" href="<?php echo $uri;?>/events/attendees/attendees-admin.php?event=<?php echo $event;?>#approvals">Approvals</a> 
+            
+            
             <?php endif;?>
             
         </div>

@@ -1,7 +1,6 @@
 <?php session_start();
 include_once("connection.php");
 ?>
-
 <!doctype html>
 <html> 
 <head>
@@ -15,6 +14,19 @@ include_once("connection.php");
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="<?php echo $uri;?>/dist/css/all.min.css" rel="stylesheet" type="text/css">
+    
+<style>
+    .banner, .modal .close,
+    .navbar-inverse .navbar-nav .dropdown-menu .nav-link:hover,
+    .progress_bar li.active span{
+        background: <?php get_event_color();?>;
+    } 
+    .btn.btn-primary, .btn.btn-primary:hover, .btn.btn-primary:focus {
+        background: <?php get_event_color();?>;
+        border-color:  <?php get_event_color();?>;
+    }
+</style>
+
 </head>
 <body class="<?php echo $body_class;?>">
 <?php if($body_class !== 'invite-form'):?>
@@ -116,8 +128,6 @@ include_once("connection.php");
     </header>
     <?php endif;?>
 <?php endif;?>
-    
-    
     
 <!-- New Event Modal -->
 <div class="modal fade" id="newEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

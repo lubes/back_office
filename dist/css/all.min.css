@@ -902,6 +902,13 @@ textarea {
   .modal .close:hover {
     background: #1A237E; }
 
+.att_answer {
+  color: #60727b;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700; }
+  .att_answer span {
+    padding-right: 10px; }
+
 .content-info {
   position: absolute;
   bottom: 0;

@@ -4,15 +4,15 @@ include_once("../../connection.php");
 include('../../layout/header.php');
 include('../nav.php');?>
 
-
-
-<div class="container"> 
+<div class="container">  
     <div class="widget-wrap">
         <div class="widget-title">
             <h3><?php echo event_name();?> Attendees</h3>
         </div>
         <div class="widget-content">
             <a id="btn-csv" class="btn btn-secondary float-right btn-export" href="">Export as CSV</a>
+            <?php basic_event_attendees();?>
+            <!--
             <table class="table table-responsive filter-table" id="attendees_ranking_table">
                 <thead>
                     <th>Name</th>
@@ -23,11 +23,20 @@ include('../nav.php');?>
                     <th></th>            
                 </thead>
                 <tbody>
-                    <?php admin_attendees_by_event();?>
+                    <?php // admin_attendees_by_event();?>
                 </tbody>
             </table>
+            -->
         </div>
     </div>
+    <div class="widget-wrap" id="approvals">
+        <div class="widget-title">
+            <h3>Attendees Pending Approval</h3>
+        </div>
+        <div class="widget-content">
+            <?php approve_attendees();?>
+        </div>
+    </div>   
 </div>
 
 <!-- Attendee Info Modal -->

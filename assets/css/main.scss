@@ -256,7 +256,7 @@ a {
 .approval {
     display: inline-block;
     color: #fff;
-    padding: 2px 6px;
+    padding: 2px 6px; 
     font-size: 14px;
     &.approved {
         background: $success;    
@@ -1269,6 +1269,16 @@ textarea {
         &:hover {
             background: $primary_hover;
         }
+    }
+}
+
+// Edit Attendee 
+
+.att_answer {
+    color: $dark;
+    @include bold(); 
+    span {
+        padding-right: 10px;
     }
 }
 

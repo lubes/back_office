@@ -8,7 +8,7 @@
             <div class="col-xs-12 col-sm-2">
                 <div class="text-right">
                     <a href="#" class="filter-toggle btn btn-secondary btn-sm">Show Filters</a>  
-                    <a href="#" class="reset btn btn-warning btn-sm">Reset</a>  
+                    <a href="#" class="reset btn btn-secondary btn-sm">Reset</a>  
                 </div>
             </div>
         </div>
