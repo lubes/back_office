@@ -1,10 +1,7 @@
 <?php
-// Filter Fields
 $geo   = $_GET['geo'];
 $warehouse   = $_GET['warehouse'];
-
 $body_class='event-attendees';
-
 global $mysqli; 
 $event = $_GET['event'];
 $result = mysqli_query($mysqli, "
@@ -12,15 +9,11 @@ SELECT ranking FROM quartz_event WHERE id='$event'");
 while($res = mysqli_fetch_array($result)) { ?>
     <?php if($res['ranking']=='1') { $ranking = 'open'; } else { $ranking = 'closed'; } ?>
 <?php } 
-
 if($ranking == 'open'):
 include('../layout/filter.php');
 endif;?>
-
 <div class="container"> 
-    
     <?php if($ranking == 'open') { ?>
-
     <div class="widget-wrap">
         <div class="widget-title">
             <h3><?php echo event_name();?> Attendees</h3>
@@ -42,39 +35,29 @@ endif;?>
                     <th>Industry</th>
                     <th>Revenue</th>
                     <th>Company Size</th>
-                    
                     <?php if(isset($geo)) { ?>
                         <th>Geo Location</th>          
                     <?php } ?>
-
                     <?php if(isset($warehouse)) { ?>
                         <th>Warehouse Equipment Interest</th>  
                         <th>Warehouse Software Interest</th>  
                     <?php } ?>
-                    
                     <th>Stars</th>
                     <th>Rating</th>
                     <th>Details</th>
-    
                 <?php } ?>                
                 </thead>
                 <tbody>
-                
-                    <?php attendees_by_event(); ?>
-                    
+                    <?php attendees_by_event(); ?>  
                 </tbody>
             </table>
         </div>
     </div>
-    
     <?php } else { ?>
-    
-        <div class="alert alert-info" role="alert">
-            <strong>Sorry</strong> Rating for this event is closed right now.
-        </div>
-    
+    <div class="alert alert-info" role="alert">
+        <strong>Sorry</strong> Rating for this event is closed right now.
+    </div>
     <?php } ?>
-    
 </div>
 
 <!-- Attendee Info Modal -->

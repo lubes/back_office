@@ -985,7 +985,8 @@ textarea {
   margin: 0 auto;
   padding: 60px; }
   .invite-wrap .invite-header {
-    margin: 0 auto 20px; }
+    margin: 0 auto 20px;
+    text-align: center; }
     .invite-wrap .invite-header .brand-logo {
       margin: 0 auto; }
   .invite-wrap .form-sec-title {

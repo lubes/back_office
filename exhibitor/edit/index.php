@@ -1,7 +1,6 @@
 <?php 
 include_once("../../connection.php");
 include('../../layout/header.php');?>
-
 <div class="page-header">
     <div class="container">
         <div class="row">
@@ -12,7 +11,6 @@ include('../../layout/header.php');?>
         </div>
     </div>
 </div>
-
 <div class="container">
     <div class="widget-wrap">
         <div class="widget-title">
@@ -24,6 +22,5 @@ include('../../layout/header.php');?>
         </div>
     </div>
 </div>
-
 <?php include('../../layout/footer.php');?>
 

@@ -26,7 +26,6 @@
     <?php endif;?>
     <?php endif;?>
 </div>
-
 <?php if($_SESSION['permission']==1):?>
 <div class="container">
     <div class="nav-wrap">
@@ -37,20 +36,18 @@
             <li class="nav-item">
                 <a class="nav-link <?php if($body_class=='form-builder'){ echo 'active'; }?>" href="<?php echo $uri;?>/events/form-builder/?event=<?php echo $event;?>"><i class="material-icons">mode_edit</i> Form Builder</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link <?php if($body_class=='event-info'){ echo 'active'; }?>" href="<?php echo $uri;?>/events/event-info/?event=<?php echo $event;?>"><i class="material-icons">record_voice_over</i> Event Info</a>
+            </li>
         </ul>
-   
         <div class="registration-links btn-group">
-            <?php if($body_class !=='form-builder'):?>
+            <?php if($body_class =='event-exhibitors'  || $body_class =='event-attendees'):?>
             <a class="btn btn-secondary <?php if($body_class=='event-exhibitors'){ echo 'active'; }?>" href="<?php echo $uri;?>/events/?event=<?php echo $event;?>">Exhibitors</a>
             <a class="btn btn-secondary <?php if($body_class=='event-attendees'){ echo 'active'; }?>" href="<?php echo $uri;?>/events/attendees/attendees-admin.php?event=<?php echo $event;?>">Attendees</a>   
             <a class="btn btn-secondary" href="<?php echo $uri;?>/events/attendees/attendees-admin.php?event=<?php echo $event;?>#approvals">Approvals</a> 
-            
-            
             <?php endif;?>
-            
         </div>
     </div>
 </div>
 <?php endif;?>
-
 <?php instructions_pdf();?>

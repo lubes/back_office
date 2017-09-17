@@ -9,6 +9,7 @@ $event = $_GET['event'];
 
 <script>/*<![CDATA[*/(function(w,a,b,d,s){w[a]=w[a]||{};w[a][b]=w[a][b]||{q:[],track:function(r,e,t){this.q.push({r:r,e:e,t:t||+new Date});}};var e=d.createElement(s);var f=d.getElementsByTagName(s)[0];e.async=1;e.src='//marketing.quartzb2b.com/cdnr/94/acton/bn/tracker/17258';f.parentNode.insertBefore(e,f);})(window,'ActOn','Beacon',document,'script');ActOn.Beacon.track();/*]]>*/</script>
 
+
 <div class="container">
     <div class="invite-wrap">
        <div class="invite-header">
@@ -27,279 +28,131 @@ $event = $_GET['event'];
                 <li class="progress_li sec_8"><span>8</span></li>
             </ul> 
         </div>
+    <!--<form class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">-->
+    <form class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">
+    <!--<form action="" method="post" enctype="multipart/form-data" class="">-->
+        <!-- Step 1 -->
+        <div class="form-section" id="sec_1">
+            <?php form_message($slug='intro');?>        
+            <h2 class="form-sec-title">Contact Information</h2>  
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <label>Invitation Code <a href="#" data-toggle="modal" class="btn-help view-exhibitor-info" data-target="#invitationCode"><i class="material-icons">info</i></a></label>
+                        <input type="text" class="form-control" name="invitation_code" />
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Company *</label>
+                        <input type="text" class="form-control" required=""  name="company" />
+                    </div>                
+                </div>
         
-<form class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">
-    <!-- Step 1 -->
-    <div class="form-section" id="sec_1">
-        <?php form_message($slug='intro');?>        
-        <h2 class="form-sec-title">Contact Information</h2>  
-        <div class="row">
-            <div class="col-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <label>Invitation Code <a href="#" data-toggle="modal" class="btn-help view-exhibitor-info" data-target="#invitationCode"><i class="material-icons">info</i></a></label>
-                    <input type="text" class="form-control" name="invitation_code" />
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Name *</label>
+                        <input type="text" class="form-control required required-input" required=""  name="name" />
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Company *</label>
-                    <input type="text" class="form-control" required=""  name="company" />
-                </div>                
-            </div>
-       
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Name *</label>
-                    <input type="text" class="form-control required required-input" required=""  name="name" />
-                </div>
-            </div>
-        
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Job Title *</label>
-                    <input type="text" class="form-control required required-input" required="" name="job_title" />
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Business Email *</label>
-                    <input type="email" class="form-control email_input" required="" required="" name="email" id="email_1" />
-                </div> 
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Confirm Email *</label>
-                    <input type="text" class="form-control email_input" required="" name="" id="email_2"  />
-                    <p class="error-text"></p>
-                </div> 
-            </div>
-                
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Alternate Email</label>
-                    <input type="text" class="form-control" name="alt_email" />
-                </div> 
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Direct Phone*</label>
-                    <input type="text" class="form-control" required=""  name="direct_phone" />
-                </div> 
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Cell Phone</label>
-                    <input type="text" class="form-control" name="cell_phone" />
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Website</label>
-                    <input type="text" class="form-control"  name="website" />
-                </div> 
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Mailing Street*</label>
-                    <input type="text" class="form-control" required="" name="address" />
-                </div> 
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>City*</label>
-                    <input type="text" class="form-control" required=""  name="city" />
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>State*</label>
-                    <input type="text" class="form-control" required=""  name="state" />
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Zip*</label> 
-                    <input type="text" class="form-control" required="" name="zip" />
-                </div> 
-            </div>
           
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="form-group">
-                    <label>Country</label>
-                    <?php include('../../layout/countries.php');?>
-                </div> 
-            </div>
-        </div>
-      
-        <div class="form-group">
-            <label>Rules of Engagement</label>
-            <div class="form-msg">
-                <?php form_message($slug='rules');?> 
-            </div>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="radio" required="" name="exampleRadios" id="exampleRadios1" value="option1"> Agree to Rules of Engagment *
-              </label>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Step 2 -->
-    <div class="form-section" id="sec_2">
-        <h2 class="form-sec-title">Additional Information</h2>  
-        <div class="form-group">
-            <label>Meetings Scheduling</label>
-            <div class="form-msg">
-                <?php form_message($slug='meetings');?> 
-            </div>
-        </div>
-        <hr>
-        <div class="form-group">
-        <label>Educational Track <span>The <?php event_name();?> Educational Program is organized by key themes and tracks. You can pick up to 3 mix and match between tracks to create your unique experience.</span></label>
-            
-        <div class="custom-controls-stacked">
-            <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input track-select" name="track" value="Supply Chain Strategies and Leadership" />
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">Supply Chain Strategies and Leadership</span>
-            </label>
-            <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input track-select" name="track" value="DC Management and Warehouse Optimization" />
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">DC Management and Warehouse Optimization</span>
-            </label>
-            <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input track-select" name="track" value="Transportation and 3PL" />
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">Transportation and 3PL</span>
-            </label>
-            <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input track-select" name="track" value="Supply Chain Agility" />
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">Supply Chain Agility</span>
-            </label>
-            <label class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input track-select" name="track" value="Procurement and Strategic Sourcing  " />
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-description">Procurement and Strategic Sourcing  </span>
-            </label>
-        </div>
-        </div>
-        <?php standard_form_field($slug='industry');?>
-        <?php standard_form_field($slug='revenue');?>
-        <?php standard_form_field($slug='company_size');?>
-        <?php standard_form_field($slug='products_services');?>   
-        <?php standard_form_field($slug='erp');?>   
-        <?php standard_form_field($slug='geo');?>
-        <?php // standard_form_field($slug='scheduling');?>
-    </div>
-    
-    <!-- Step 3 -->
-    <div class="form-section" id="sec_3">
-        <h2 class="form-sec-title">DC/Warehouse</h2>  
-        <?php standard_form_field($slug='warehouse');?>
-        <div class="other-input additional-fields" id="warehouse">
-            <?php standard_form_field($slug='number_facilities');?>
-            <?php standard_form_field($slug='facility_responsibilities');?>
-            <?php standard_form_field($slug='facilities_size');?>
-            <?php standard_form_field($slug='facilities_equipment_interest');?>
-            <?php standard_form_field($slug='facilities_software_interest');?>
-            <?php standard_form_field($slug='facilities_projects');?>
-        </div>
-    </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Job Title *</label>
+                        <input type="text" class="form-control required required-input" required="" name="job_title" />
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Business Email *</label>
+                        <input type="email" class="form-control email_input" required="" required="" name="email" id="email_1" />
+                    </div> 
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Confirm Email *</label>
+                        <input type="text" class="form-control email_input" required="" name="" id="email_2"  />
+                        <p class="error-text"></p>
+                    </div> 
+                </div>
 
-    <!-- Step 4 -->
-    <div class="form-section" id="sec_4">
-        <h2 class="form-sec-title">Transportation</h2>  
-        <?php standard_form_field($slug='transportation_responsibility');?>
-        <div class="other-input additional-fields" id="transportation_responsibility">
-            <?php standard_form_field($slug='ftl');?>
-            <?php standard_form_field($slug='ltl');?>
-            <?php standard_form_field($slug='intermodel');?>
-            <?php standard_form_field($slug='parcel');?>
-            <?php standard_form_field($slug='modes_transporation');?>
-            <?php standard_form_field($slug='tansportation_interest');?>
-            <?php standard_form_field($slug='transportation_projects');?>
-        </div>
-    </div>
-    
-    <!-- Step 5 -->
-    <div class="form-section" id="sec_5">
-        <h2 class="form-sec-title">3PL</h2>  
-        <?php standard_form_field($slug='threepls');?>
-        <div class="other-input additional-fields" id="threepls">
-        <?php standard_form_field($slug='footprint');?>
-        <?php standard_form_field($slug='threepl_interest');?>
-        <?php standard_form_field($slug='threepl_projects');?>
-        </div>
-    </div>
-    
-    <!-- Step 6 -->
-    <div class="form-section" id="sec_6">
-        <h2 class="form-sec-title">Supply Chain</h2>  
-        <?php standard_form_field($slug='supply_responsibility');?>
-        <div class="other-input additional-fields" id="supply_responsibility">
-            <?php standard_form_field($slug='supply_services');?>
-            <?php standard_form_field($slug='supply_projects');?>
-        </div>
-    </div>
-    
-    <!-- Step 7 -->
-    <div class="form-section" id="sec_7">
-        <h2 class="form-sec-title">Procurement</h2>  
-        <?php standard_form_field($slug='procurement');?>
-        <div class="other-input additional-fields" id="procurement">
-            <?php standard_form_field($slug='procurement_projects');?>
-            <?php standard_form_field($slug='procurement_interest');?>
-        </div>
-    </div>
-    
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Alternate Email</label>
+                        <input type="text" class="form-control" name="alt_email" />
+                    </div> 
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Direct Phone*</label>
+                        <input type="text" class="form-control" required=""  name="direct_phone" />
+                    </div> 
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Cell Phone</label>
+                        <input type="text" class="form-control" name="cell_phone" />
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Website</label>
+                        <input type="text" class="form-control"  name="website" />
+                    </div> 
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Mailing Street*</label>
+                        <input type="text" class="form-control" required="" name="address" />
+                    </div> 
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>City*</label>
+                        <input type="text" class="form-control" required=""  name="city" />
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>State*</label>
+                        <input type="text" class="form-control" required=""  name="state" />
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Zip*</label> 
+                        <input type="text" class="form-control" required="" name="zip" />
+                    </div> 
+                </div>
+        
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label>Country</label>
+                        <?php include('../../layout/countries.php');?>
+                    </div> 
+                </div>
+               
+            </div>
 
-    <!-- Step 8 -->
-    <div class="form-section" id="sec_8">
-        <h2 class="form-sec-title">Submit Your Application</h2>  
-        <div class="form-group">
-            <label>Exhibitor Selection <span>Below you will find a list of solutions and services partners. If you would like to meet with a specific supplier please select their corresponding box. We will arrange an appointment within the meeting windows specified.</span></label>
-            <?php exhibitors_invite_form();?>
-        </div>
-        <div class="form-group">
-            <label>Logo Permission <span>Can <?php event_name();?> use your company logo to show your participation at the conference?</span></label>
-            <div class="form-check">
-              <label class="form-check-label has-other" data-id="transportation">
-                <input class="form-check-input" type="radio" name="logo_user" id="exampleRadios1" value="1">
-                Yes
-              </label>
-              <label class="form-check-label has-other" data-id="transportation">
-                <input class="form-check-input" type="radio" name="logo_user" id="exampleRadios1" value="0">
-                No
-              </label>
-            </div>      
-        </div>
-        <!--
-        <div class="form-group">
-            <label>Terms &amp; Conditions<span>Please confirm that you have read and agreed to our terms and conditions.</span></label>
-            <div class="form-msg">
-                <?php form_message($slug='t_c');?> 
-            </div>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" id="t_c" type="checkbox" value="1"> Agree to Terms and Services
-              </label>
+            <div class="form-group">
+                <label>Rules of Engagement</label>
+                <div class="form-msg">
+                    <?php form_message($slug='rules');?> 
+                </div>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" required="" name="exampleRadios" id="exampleRadios1" value="option1"> Agree to Rules of Engagment *
+                  </label>
+                </div>
             </div>
         </div>
-        -->
-    </div>
-    
-    <div class="form-navigation">
-        <button type="button" class="previous btn btn-black btn-lg float-left"><i class="material-icons">arrow_back</i> Previous</button>
-        <button type="button" class="next btn btn-black btn-lg float-right">Continue <i class="material-icons">arrow_forward</i></button>
-        <div class="clearfix"></div>
-        <input type="submit" value="Submit" name="submit_form" class="submit-form btn btn-success float-right btn-lg">
-    </div>
+        <input type="submit" class="btn btn-black btn-lg float-right" name="submit_form" value="Continue" />
+    </form>
+ 
     <?php register_attendee();?> 
-</form>
-
-
+        
+<!--
 <script type="text/javascript">
 var aoProtocol = location.protocol;
 if ( aoProtocol.indexOf('http') < 0 ) aoProtocol = 'http:';
@@ -315,6 +168,7 @@ document.write( '<script type="text/javascript" src="'+aoCAP.protocol+'//'+aoCAP
 
 </script>
 
+-->
 </div>
 </div>
 
@@ -358,6 +212,7 @@ document.write( '<script type="text/javascript" src="'+aoCAP.protocol+'//'+aoCAP
 https://marketing.quartzb2b.com/acton/form/17258/038f:d-0001/0/-/-/-/-/index.htm
 -->
 
+<!--
 <script type="text/javascript">
   var aoProtocol = location.protocol;
 	if ( aoProtocol.indexOf('http') < 0 ) {
@@ -374,7 +229,6 @@ https://marketing.quartzb2b.com/acton/form/17258/038f:d-0001/0/-/-/-/-/index.htm
 	var aoArr = aoArr || []; 
 	aoArr.push(aoCAP); 
 </script>
-
 
 <script type="text/javascript">
 	function AoProcessForm(formelement) {
@@ -503,7 +357,6 @@ https://marketing.quartzb2b.com/acton/form/17258/038f:d-0001/0/-/-/-/-/index.htm
 </script>
 
 <script>
-/*
 var PostData = '';
 $.ajax({
   async: false,
@@ -515,5 +368,6 @@ $.ajax({
         setTimeout(AoProcessForm($('#registeruserform')[0]), 0);
   }
 });
-*/
 </script>
+
+-->

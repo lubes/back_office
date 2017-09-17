@@ -448,6 +448,7 @@ function edit_brand() {
     <?php }
 }
 
+        
 /******* Events **********/
 
 // New Event
@@ -1030,13 +1031,8 @@ function exhibitor_profile_sm() {
                 <h3>Testimonials</h3>
                 <p><?php echo $res['testimonials'];?></p>
             </div>
-        </div>
-        
-
-
-        
+        </div>    
     <?php }
-
 }
 
 // Edit Exhibitor Profile
@@ -1045,6 +1041,9 @@ function edit_exhibitor() {
     $exhibitor = $_GET['id'];
     $result = mysqli_query($mysqli, "SELECT * FROM exhibitors WHERE id='$exhibitor'");
     if(isset($_POST['edit_exhibitor'])) {
+        
+        $event = $_POST['event'];
+        
         $name = $_POST['name'];
         $email = $_POST['email']; 
         $phone = $_POST['phone'];
@@ -1059,13 +1058,11 @@ function edit_exhibitor() {
         $industries_served = $_POST['industries_served'];
         $customers= $_POST['customers'];
         $testimonials = $_POST['testimonials'];
-        
         $address = $_POST['address'];
         $city = $_POST['city'];
         $state = $_POST['state'];
         $zip = $_POST['zip'];
         $country = $_POST['country'];
-        
         $sales_name_1 = $_POST['sales_name_1'];
         $sales_phone_1 = $_POST['sales_phone_1'];
         $sales_email_1 = $_POST['sales_email_1'];
@@ -1086,7 +1083,6 @@ function edit_exhibitor() {
         $sales_phone_5 = $_POST['sales_phone_5'];
         $sales_email_5 = $_POST['sales_email_5'];
         $sales_title_5 = $_POST['sales_title_5'];
-        
         $username = $_POST['username'];
         $password = $_POST['password'];   
         
@@ -1105,13 +1101,11 @@ function edit_exhibitor() {
         industries_served='$industries_served',
         customers='$customers',
         testimonials='$testimonials',
-        
         address='$address',
         city='$city',
         state='$state',
         zip='$zip',
         country='$country',
-        
         sales_name_1='$sales_name_1',
         sales_phone_1='$sales_phone_1',
         sales_email_1='$sales_email_1',
@@ -1132,17 +1126,32 @@ function edit_exhibitor() {
         sales_phone_5='$sales_phone_5',
         sales_email_5='$sales_email_5',
         sales_title_5='$sales_title_5'
-        
         username='$username',
         password='$password'
-        
         WHERE id='$exhibitor'"); 
-        echo "<meta http-equiv='refresh' content='0'>";
         
+        // Get Exhibitor -> Admin Message
+        $result_email = mysqli_query($mysqli, "SELECT * FROM quartz_event WHERE id='$event'");
+        while($res_email = mysqli_fetch_array($result_email)) { 
+
+            $admin_notice = $res_email['exhibitor_update_notice'];
+            $to_email = $res_email['admin_email'];
+            $from_email = $res_email['admin_email'];
+            $to = $email;
+            $subject = "Exhibitor  updated their profile";
+            $notice = $admin_notice.": ".$name;
+            $txt = $notice; 
+            $headers = "From: ".$from_email . "\r\n" .
+            "CC: ".$from_email;
+            mail($to,$subject,$txt,$headers);
+        }        
+        
+        echo "<meta http-equiv='refresh' content='0'>";
     } 
     while($res = mysqli_fetch_array($result)) { ?>
 
         <form  method="post" action="">
+            <input type="hidden" name="event" value="<?php echo $res['event'];?>">
             <h4 class="sec-title">Login Credentials</h4>
             <div class="row">
                 <div class="col-12 col-sm-6">
@@ -1576,26 +1585,25 @@ function all_attendees() {
             <tbody>
             <?php while($res = mysqli_fetch_array($result)) { ?>
                 <tr>
-               <td><?php echo $res['name'];?></td>
-                <td><?php echo $res['company'];?></td>
-               <td><?php echo $res['job_title'];?></td>
-               <td><?php echo $res['registration_date'];?></td>
-               <td><?php echo $res['invitation_number'];?></td>
-               <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></td>
-               <td>
-                   
-                   <?php
-                       // Check Attendee Approval
-                       if($res['approved'] == 0) {
-                           echo '<div class="approval pending">Pending</div>';
-                       } else if($res['approved'] == 1) {
-                           echo '<div class="approval approved">Approved</div>';
-                       } else if($res['approved'] == 2) {
-                           echo '<div class="approval denied">Denied</div>';
-                       } else {
-                           echo '<div class="approval cancelled">Cancelled</div>';
-                       }
-                   ?>
+                    <td><?php echo $res['name'];?></td>
+                    <td><?php echo $res['company'];?></td>
+                    <td><?php echo $res['job_title'];?></td>
+                    <td><?php echo $res['registration_date'];?></td>
+                    <td><?php echo $res['invitation_number'];?></td>
+                    <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></td>
+                    <td>
+                       <?php
+                           // Check Attendee Approval
+                           if($res['approved'] == 0) {
+                               echo '<div class="approval pending">Pending</div>';
+                           } else if($res['approved'] == 1) {
+                               echo '<div class="approval approved">Approved</div>';
+                           } else if($res['approved'] == 2) {
+                               echo '<div class="approval denied">Denied</div>';
+                           } else {
+                               echo '<div class="approval cancelled">Cancelled</div>';
+                           }
+                       ?>
                 </td>
                <td>
                    <div class="btn-group">
@@ -1950,11 +1958,7 @@ function approve_attendees() {
     global $mysqli; 
     global $uri;
     $event = $_GET['event'];
-    $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE approved=0 AND attendees.event = $event");
-    if(isset($_POST['approve_attendee'])) {
-        $id = $_POST['id'];
-        $result = mysqli_query($mysqli, "UPDATE attendees SET approved=1 WHERE id='$id'");
-    } 
+    $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE approved=0 AND attendees.event = $event");  
     if(isset($_POST['deny_attendee'])) {
         $id = $_POST['id'];
         $result = mysqli_query($mysqli, "UPDATE attendees SET approved=2 WHERE id='$id'");
@@ -1983,7 +1987,8 @@ function approve_attendees() {
                        <td>
                        <div class="btn-group float-right">
                        <a href="" data-toggle="modal" class="btn btn-secondary btn-sm view-info" data-target="#attendeeInfo" data-attendee="<?php echo $res['id'];?>">Details</a>
-                       <input type="submit" class="btn btn-secondary btn-sm" name="approve_attendee" value="Approve">
+                       <!--<input type="submit" class="btn btn-secondary btn-sm" name="approve_attendee" value="Approve">-->
+                       <a href="" data-toggle="modal" class="btn btn-secondary btn-sm approve-attendee" data-target="#attendeeApproval" data-attendee="<?php echo $res['id'];?>">Approve</a>
                        <input type="submit" class="btn btn-secondary btn-sm" name="deny_attendee" value="Deny">
                        <input type="submit" class="btn btn-secondary btn-sm" name="cancel_attendee" value="Cancel">
                        </div>
@@ -1996,14 +2001,51 @@ function approve_attendees() {
     <?php }
 }
 
+function approve_attendee() {
+    global $mysqli; 
+    global $uri;
+    $event = $_GET['event'];
+    $att_id = $_GET['id'];
+    if(isset($_POST['approve_attendee'])) {
+        $id = $_POST['id'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $event = $_POST['event'];
+
+        // Get Event Approval Message
+        $result_email = mysqli_query($mysqli, "SELECT * FROM quartz_event WHERE id='$event'");
+        while($res_email = mysqli_fetch_array($result_email)) { 
+            // Send Email Confirmation with Login Credenatials
+            $approval_notice = $res_email['approval_notice'];
+            $from_email = $res_email['admin_email'];
+            
+            $to = $email;
+            $subject = "You've been approved!";
+            $notice = $approval_notice;
+            $login_creds = 
+            "\r\n Login Email: ".$email.
+            "\r\n Password: ".$password;
+                
+            $txt = $notice. "\r\n \r\n" .$login_creds; 
+            
+            $headers = "From: ".$from_email . "\r\n" .
+            "CC: ".$from_email;
+
+            mail($to,$subject,$txt,$headers);
+        }
+        // Update DB as Approved
+        $result = mysqli_query($mysqli, "UPDATE attendees SET approved=1, password='$password' WHERE id='$id'");
+        echo "<meta http-equiv='refresh' content='0'>";
+    }   
+}
+
 // LIz's Dumb Function 
 function basic_event_attendees() {
     global $mysqli; 
     global $uri;
     $event = $_GET['event'];
     $result = mysqli_query($mysqli, "
-    SELECT attendees.name, attendees.company, attendees.job_title, attendees.registration_date, attendees.invitation_number, attendees.email, attendees.password, attendees.approved, attendees.id AS att_id, attendees.event FROM attendees WHERE attendees.event = $event
-
+    SELECT attendees.id, attendees.name, attendees.company, attendees.job_title, attendees.registration_date, attendees.invitation_number, attendees.email, attendees.password, attendees.approved, attendees.id AS att_id, attendees.event FROM attendees WHERE attendees.event = $event
     ");
     while($res = mysqli_fetch_array($result)) { ?>
         <table class="table table-responsive filter-table" id="all_attendees_admin">
@@ -2545,16 +2587,22 @@ function email_messages() {
     <?php } 
 }
 
-// Edit Event Color
-function event_color() {
+// Edit Event Info
+function event_info_form() {
     global $mysqli; 
     $event = $_GET['event'];
     $result = mysqli_query($mysqli, "SELECT * FROM quartz_event WHERE id='$event'");
     // Update Field
-    if(isset($_POST['update_color'])) {
+    if(isset($_POST['update_info'])) {
         $color = $_POST['color'];
+        $approval_notice = $_POST['approval_notice'];
+        $admin_email = $_POST['admin_email'];
+        $exhibitor_update_notice=$_POST['exhibitor_update_notice'];
         $result = mysqli_query($mysqli, "UPDATE quartz_event SET
-        color='$color'
+        color='$color',
+        approval_notice='$approval_notice',
+        admin_email = '$admin_email',
+        exhibitor_update_notice='$exhibitor_update_notice'
         WHERE id='$event'");
         echo "<meta http-equiv='refresh' content='0'>";
     } 
@@ -2563,19 +2611,32 @@ function event_color() {
             <div class="row">
                 <div class="col-12 col-sm-4">
                     <div class="form-group">
+                        <h3>Event Color</h3>
                         <label>HEX Color (exclude hash symbol)</label>
                         <input type="text" class="form-control" name="color" placeholder="000000" value="<?php echo $res['color'];?>" />
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Update Color" name="update_color" class="btn btn-success" />
-                    </div>      
+                    </div>     
                 </div>
             </div>
+            <div class="form-group">
+                <h3>Message to Attendee upon approval</h3>
+                <label>Attendee will receive this notice along with login credentials upon approval status</label>
+                <textarea class="form-control" name="approval_notice"><?php echo $res['approval_notice'];?></textarea>
+            </div> 
+            <div class="form-group">
+                <label>From Email (Admin Email)</label>
+                <input type="email" class="form-control" name="admin_email" placeholder="" value="<?php echo $res['admin_email'];?>" />
+            </div> 
+            <div class="form-group">
+                <h3>Notification Message to Admin</h3>
+                <label>Message sent to Admin (Email Above) when exhibitor updates profile.</label>
+                <input type="text" class="form-control" name="exhibitor_update_notice" placeholder="" value="<?php echo $res['exhibitor_update_notice'];?>" />
+            </div> 
+            <div class="form-group">
+                <input type="submit" value="Update Event Info" name="update_info" class="btn btn-success" />
+            </div> 
         </form>
-        <hr>
     <?php } 
 }
-
 
 // Get Event Color
 function get_event_color() {
@@ -3047,7 +3108,73 @@ function update_rank_status() {
 /*********** ATTENDEE REGISTRATION ***************/
 
 // Attendee Registration
+
 function register_attendee() {
+    global $mysqli; 
+    global $uri; 
+    $event_id = $_GET['event'];
+
+    if(isset($_POST['submit_form'])) {
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $company= $_POST['company'];
+        $job_title= $_POST['job_title'];
+        $address= $_POST['address'];
+        $city= $_POST['city'];
+        $state= $_POST['state'];
+        $zip= $_POST['zip'];
+        $country= $_POST['country'];
+        $alt_email  = $_POST['alt_email'];
+        $direct_phone  = $_POST['direct_phone'];
+        $cell_phone  = $_POST['cell_phone'];
+        $fax  = $_POST['fax'];
+        $website  = $_POST['website'];
+        $result = $mysqli->query("INSERT INTO attendees(
+            permission,
+            event,
+            name,   
+            email,
+            company,
+            job_title,
+            address,
+            city,
+            state,
+            zip,
+            country,
+            alt_email,
+            direct_phone,
+            cell_phone,
+            fax,
+            website,
+            finished
+        )VALUES(
+            '3',
+            '$event_id',
+            '$name',   
+            '$email',
+            '$company',
+            '$job_title',
+            '$address',
+            '$city',
+            '$state',
+            '$zip',
+            '$country',
+            '$alt_email',
+            '$direct_phone',
+            '$cell_phone',
+            '$fax',
+            '$website',
+            '1'
+        )");?>
+        <script>
+            // window.location = "./thanks";
+            window.location = "../thanks/?id=<?php echo $last_id;?>&event=<?php echo $event_id;?>";
+        </script>    
+        <?php
+    } 
+}
+
+function register_attendee_HOLD() {
     global $mysqli; 
     global $uri; 
     $event_id = $_GET['event'];
@@ -3553,7 +3680,7 @@ function thank_you() {
                                                
             $headers = "From: " .$from. "\r\n" .
             "CC: lyuba.nova@eatsleepwork.com";
-
+                                               
             // mail($to,$subject,$txt,$headers);                                       
                                  
     } 
