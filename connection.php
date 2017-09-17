@@ -89,11 +89,10 @@ function login_attendee() {
     global $uri;
     $user = mysqli_real_escape_string($mysqli, $_POST['email']);
     $pass = mysqli_real_escape_string($mysqli, $_POST['password']);
-
     if($user == "" || $pass == "") {
         echo "Either username or password field is empty.";
     } else {
-        $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE email='$user' AND password=md5('$pass')")
+        $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE email='$user' AND password='$pass'")
    or die("Could not execute the select query.");
         $row = mysqli_fetch_assoc($result);
         if(is_array($row) && !empty($row)) {
@@ -1561,7 +1560,7 @@ function all_attendees() {
     global $uri;
     // $result = mysqli_query($mysqli, "SELECT * FROM attendees");
     $result = mysqli_query($mysqli, "
-    SELECT attendees.id AS att_id, attendees.name AS name, attendees.job_title AS job_title, attendees.company AS company, attendees.registration_date AS registration_date, attendees.invitation_number AS invitation_number, attendees.email AS email, attendees.approved AS approved, attendees.event,
+    SELECT attendees.id AS att_id, attendees.name AS name, attendees.job_title AS job_title, attendees.password AS password, attendees.company AS company, attendees.registration_date AS registration_date, attendees.invitation_number AS invitation_number, attendees.email AS email, attendees.approved AS approved, attendees.event,
     quartz_event.id AS e_id, quartz_event.Event, quartz_event.brand, 
     events.id, events.name AS event_name, brands.id, brands.name AS brand_name FROM attendees
     LEFT JOIN quartz_event ON attendees.event = quartz_event.id
@@ -1578,6 +1577,7 @@ function all_attendees() {
                 <th>Reg. Date</th>
                 <th>Invitation No.</th>
                 <th>Email</th>
+                <th>Password</th>
                 <th>Status</th>
                 <th></th>
                 <th></th>
@@ -1591,6 +1591,7 @@ function all_attendees() {
                     <td><?php echo $res['registration_date'];?></td>
                     <td><?php echo $res['invitation_number'];?></td>
                     <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></td>
+                    <td><?php echo $res['password'];?></td>
                     <td>
                        <?php
                            // Check Attendee Approval
@@ -1745,6 +1746,20 @@ function edit_attendee() {
         procurement_projects='$procurement_projects',
         procurement_interest='$procurement_interest'    
         WHERE id='$attendee'");
+        
+        
+        // Send Admin Email that Attendee has updated their profile
+        $from_email = "lyuba.nova@eatsleepwork.com";
+        $to = "lyuba.nova@eatsleepwork.com";
+        $subject = "Attendee has updated their profile!";
+ 
+        $txt = $name. " has updated their profile."; 
+
+        $headers = "From: ".$from_email . "\r\n" .
+        "CC: ".$from_email; 
+
+        mail($to,$subject,$txt,$headers);
+        
         echo "<meta http-equiv='refresh' content='0'>";
     } 
     while($res = mysqli_fetch_array($result)) { ?>
