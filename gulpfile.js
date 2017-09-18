@@ -12,9 +12,7 @@ var fontmin = require('gulp-fontmin');
 
 // Lint Task
 gulp.task('lint', function() {
-    return gulp.src('assets/js/*.js')
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'));
+
 });
 
 gulp.task('fontmin', function () {

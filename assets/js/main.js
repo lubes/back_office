@@ -378,9 +378,6 @@ function update_output() {
         }
     });
     
-    
-    
-    
 
 
     $('.form-toggle').click(function(e) {
@@ -405,7 +402,6 @@ function update_output() {
 
     // View Attendee Info in Modal
     $('.view-info').on('click', function() { 
-        
         
         var this_attendee = $(this).data('attendee');
         var attendee_info = $('#attendee_info');
@@ -564,7 +560,7 @@ if($('#sec_7').hasClass('current')) {
 } 
 if($('#sec_8').hasClass('current')) {
     $('.progress_bar .sec_8').addClass('active');
-} 
+}  
 
       
       

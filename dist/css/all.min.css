@@ -1,3 +1,4 @@
+
 @charset "UTF-8";
 /*
 $primary:           #3F51B5;
@@ -1245,7 +1246,6 @@ https://github.com/silviomoreto/bootstrap-select/issues/1135
   overflow: hidden;
   text-overflow: ellipsis; }
 
-/* Make filled out selects be the same size as empty selects */
 .bootstrap-select.btn-group .dropdown-toggle .filter-option {
   display: inline !important; }
 

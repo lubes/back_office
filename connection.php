@@ -3412,7 +3412,7 @@ function update_rank_status() {
 
 // Attendee Registration
 
-function register_attendee() {
+function register_attendee_HOLD() {
     global $mysqli; 
     global $uri; 
     $event_id = $_GET['event'];
@@ -3477,7 +3477,7 @@ function register_attendee() {
     } 
 }
 
-function register_attendee_HOLD() {
+function register_attendee() {
     global $mysqli; 
     global $uri; 
     $event_id = $_GET['event'];
@@ -4337,7 +4337,7 @@ function exhibitors_invite_form() {
 
 function fields_for_page($page_no) {  ?>
     <ul id="page_<?php echo $page_no;?>" class="list-unstyled">
-        <?php show_custom_fields($page='2'); ?>        
+        <?php show_custom_fields($page=$page_no); ?>        
         <?php standard_form_field($slug='track', $page=$page_no);?>
         <?php standard_form_field($slug='industry',$page=$page_no);?>
         <?php standard_form_field($slug='revenue',$page=$page_no);?>

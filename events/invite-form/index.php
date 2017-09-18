@@ -27,217 +27,204 @@ $event = $_GET['event'];
                 <li class="progress_li sec_8"><span>8</span></li>
             </ul> 
         </div>
+        
     <!--<form class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">-->
-    <form class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">
-    <!--<form action="" method="post" enctype="multipart/form-data" class="">-->
         
-        
-        
-        
-        <!-- Step 1
+    <form action="" method="post" enctype="multipart/form-data" class="registration-form">
+
+        <!-- Step 1 -->
         <div class="form-section" id="sec_1">
-            <?php form_message($slug='intro');?>        
-            <h2 class="form-sec-title">Contact Information</h2>  
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <label>Invitation Code <a href="#" data-toggle="modal" class="btn-help view-exhibitor-info" data-target="#invitationCode"><i class="material-icons">info</i></a></label>
-                        <input type="text" class="form-control" name="invitation_code" />
+            <?php form_message($slug='intro');?>
+            <ul id="page_1" class="list-unstyled">
+            <?php show_custom_fields($page='1'); ?>
+            <li id="1">
+                <h2 class="form-sec-title">Contact Information</h2>  
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label>Invitation Code <a href="#" data-toggle="modal" class="btn-help view-exhibitor-info" data-target="#invitationCode"><i class="material-icons">info</i></a></label>
+                            <input type="text" class="form-control" name="invitation_code" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Company *</label>
+                            <input type="text" class="form-control" required=""  name="company" />
+                        </div>                
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Name *</label>
+                            <input type="text" class="form-control required required-input" required=""  name="name" />
+                        </div>
+                    </div>
+              
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Job Title *</label>
+                            <input type="text" class="form-control required required-input" required="" name="job_title" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Business Email *</label>
+                            <input type="email" class="form-control email_input" required="" required="" name="email" id="email_1" />
+                        </div> 
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Confirm Email *</label>
+                            <input type="text" class="form-control email_input" required="" name="" id="email_2"  />
+                            <p class="error-text"></p>
+                        </div> 
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Alternate Email</label>
+                            <input type="text" class="form-control" name="alt_email" />
+                        </div> 
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Direct Phone*</label>
+                            <input type="text" class="form-control" required=""  name="direct_phone" />
+                        </div> 
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Cell Phone</label>
+                            <input type="text" class="form-control" name="cell_phone" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Website</label>
+                            <input type="text" class="form-control"  name="website" />
+                        </div> 
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Mailing Street*</label>
+                            <input type="text" class="form-control" required="" name="address" />
+                        </div> 
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>City*</label>
+                            <input type="text" class="form-control" required=""  name="city" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>State*</label>
+                            <input type="text" class="form-control" required=""  name="state" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Zip*</label> 
+                            <input type="text" class="form-control" required="" name="zip" />
+                        </div> 
+                    </div>
+             
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Country</label>
+                            <?php include('../../layout/countries.php');?>
+                        </div> 
                     </div>
                 </div>
-
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Company *</label>
-                        <input type="text" class="form-control" required=""  name="company" />
-                    </div>                
+                <div class="form-group">
+                    <label>Rules of Engagement</label>
+                    <div class="form-msg">
+                        <?php form_message($slug='rules');?> 
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="radio" required="" name="exampleRadios" id="exampleRadios1" value="option1"> Agree to Rules of Engagment *
+                      </label>
+                    </div>
                 </div>
+                </li>
+            </ul>
+        </div>
         
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Name *</label>
-                        <input type="text" class="form-control required required-input" required=""  name="name" />
-                    </div>
-                </div>
-          
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Job Title *</label>
-                        <input type="text" class="form-control required required-input" required="" name="job_title" />
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Business Email *</label>
-                        <input type="email" class="form-control email_input" required="" required="" name="email" id="email_1" />
-                    </div> 
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Confirm Email *</label>
-                        <input type="text" class="form-control email_input" required="" name="" id="email_2"  />
-                        <p class="error-text"></p>
-                    </div> 
-                </div>
+        <!--<input type="submit" class="btn btn-black btn-lg float-right" name="submit_form" value="Continue" />-->
 
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Alternate Email</label>
-                        <input type="text" class="form-control" name="alt_email" />
-                    </div> 
+        <!-- Step 2 -->
+        <div class="form-section" id="sec_2">
+            <h2 class="form-sec-title">Additional Information</h2>  
+            <div class="form-group">
+                <label>Meetings Scheduling</label>
+                <div class="form-msg">
+                    <?php form_message($slug='meetings');?> 
                 </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Direct Phone*</label>
-                        <input type="text" class="form-control" required=""  name="direct_phone" />
-                    </div> 
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Cell Phone</label>
-                        <input type="text" class="form-control" name="cell_phone" />
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Website</label>
-                        <input type="text" class="form-control"  name="website" />
-                    </div> 
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Mailing Street*</label>
-                        <input type="text" class="form-control" required="" name="address" />
-                    </div> 
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>City*</label>
-                        <input type="text" class="form-control" required=""  name="city" />
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>State*</label>
-                        <input type="text" class="form-control" required=""  name="state" />
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Zip*</label> 
-                        <input type="text" class="form-control" required="" name="zip" />
-                    </div> 
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label>Country</label>
-                        <?php include('../../layout/countries.php');?>
-                    </div> 
-                </div>
+            </div>
+            <?php fields_for_page($page_no='2');?>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="form-section" id="sec_3">
+            <h2 class="form-sec-title">DC/Warehouse</h2>  
+            <?php fields_for_page($page_no='3');?>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="form-section" id="sec_4">
+            <h2 class="form-sec-title">Transportation</h2>  
+            <?php fields_for_page($page_no='4');?>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="form-section" id="sec_5">
+            <h2 class="form-sec-title">3PL</h2>  
+            <?php fields_for_page($page_no='5');?>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="form-section" id="sec_6">
+            <h2 class="form-sec-title">Supply Chain</h2>  
+            <?php fields_for_page($page_no='6');?>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="form-section" id="sec_7">
+            <h2 class="form-sec-title">Procurement</h2>  
+            <?php fields_for_page($page_no='7');?>
+        </div>
+
+        <!-- Step 8 -->
+        <div class="form-section" id="sec_8">
+            <h2 class="form-sec-title">Submit Your Application</h2>  
+            <div class="form-group">
+                <label>Exhibitor Selection <span>Below you will find a list of solutions and services partners. If you would like to meet with a specific supplier please select their corresponding box. We will arrange an appointment within the meeting windows specified.</span></label>
+                <?php exhibitors_invite_form();?>
             </div>
             <div class="form-group">
-                <label>Rules of Engagement</label>
-                <div class="form-msg">
-                    <?php form_message($slug='rules');?> 
-                </div>
+                <label>Logo Permission <span>Can <?php event_name();?> use your company logo to show your participation at the conference?</span></label>
                 <div class="form-check">
-                  <label class="form-check-label">
-                    <input class="form-check-input" type="radio" required="" name="exampleRadios" id="exampleRadios1" value="option1"> Agree to Rules of Engagment *
-                  </label>
+                    <label class="form-check-label has-other" data-id="transportation">
+                        <input class="form-check-input" type="radio" name="logo_user" id="exampleRadios1" value="1"> Yes
+                    </label>
+                    <label class="form-check-label has-other" data-id="transportation">
+                        <input class="form-check-input" type="radio" name="logo_user" id="exampleRadios1" value="0"> No
+                    </label>
                 </div>
             </div>
         </div>
-        <input type="submit" class="btn btn-black btn-lg float-right" name="submit_form" value="Continue" />
-
- -->
-
-
         
+        <div class="form-navigation">
+            <button type="button" class="previous btn btn-black btn-lg float-left"><i class="material-icons">arrow_back</i> Previous</button>
+            <button type="button" class="next btn btn-black btn-lg float-right">Continue <i class="material-icons">arrow_forward</i></button>
+            <div class="clearfix"></div>
+            <input type="submit" value="Submit" name="submit_form" class="submit-form btn btn-success float-right btn-lg">
+        </div>        
         
-    <!-- Step 2 -->
-    <div class="form-section" id="sec_2">
-        <h2 class="form-sec-title">Additional Information</h2>  
-        <div class="form-group">
-            <label>Meetings Scheduling</label>
-            <div class="form-msg">
-                <?php form_message($slug='meetings');?> 
-            </div>
-        </div>
-        <?php fields_for_page($page_no='2');?>
-    </div>
-    
-        
-        
-        
-        
-    <!-- Step 3 -->
-    <div class="form-section" id="sec_3">
-        <h2 class="form-sec-title">DC/Warehouse</h2>  
-        <?php fields_for_page($page_no='3');?>
-    </div>
-
-    <!-- Step 4 -->
-    <div class="form-section" id="sec_4">
-        <h2 class="form-sec-title">Transportation</h2>  
-        <?php fields_for_page($page_no='4');?>
-    </div>
-    
-    <!-- Step 5 -->
-    <div class="form-section" id="sec_5">
-        <h2 class="form-sec-title">3PL</h2>  
-        <?php fields_for_page($page_no='5');?>
-    </div>
-    
-    <!-- Step 6 -->
-    <div class="form-section" id="sec_6">
-        <h2 class="form-sec-title">Supply Chain</h2>  
-        <?php fields_for_page($page_no='6');?>
-    </div>
-    
-    <!-- Step 7 -->
-    <div class="form-section" id="sec_7">
-        <h2 class="form-sec-title">Procurement</h2>  
-        <?php fields_for_page($page_no='7');?>
-    </div>
-    
-
-    <!-- Step 8 -->
-    <div class="form-section" id="sec_8">
-        <h2 class="form-sec-title">Submit Your Application</h2>  
-        <div class="form-group">
-            <label>Exhibitor Selection <span>Below you will find a list of solutions and services partners. If you would like to meet with a specific supplier please select their corresponding box. We will arrange an appointment within the meeting windows specified.</span></label>
-            <?php exhibitors_invite_form();?>
-        </div>
-        <div class="form-group">
-            <label>Logo Permission <span>Can <?php event_name();?> use your company logo to show your participation at the conference?</span></label>
-            <div class="form-check">
-              <label class="form-check-label has-other" data-id="transportation">
-                <input class="form-check-input" type="radio" name="logo_user" id="exampleRadios1" value="1">
-                Yes
-              </label>
-              <label class="form-check-label has-other" data-id="transportation">
-                <input class="form-check-input" type="radio" name="logo_user" id="exampleRadios1" value="0">
-                No
-              </label>
-            </div>      
-        </div>
-    </div>
-        
-        
-        
-        
-        
-        
-        
+        <?php register_attendee();?> 
         
     </form>
  
-    <?php register_attendee();?> 
-        
-        
-
-
-        
 <!--
 <script type="text/javascript">
 var aoProtocol = location.protocol;
@@ -298,7 +285,7 @@ document.write( '<script type="text/javascript" src="'+aoCAP.protocol+'//'+aoCAP
 https://marketing.quartzb2b.com/acton/form/17258/038f:d-0001/0/-/-/-/-/index.htm
 -->
 
-<!--
+
 <script type="text/javascript">
   var aoProtocol = location.protocol;
 	if ( aoProtocol.indexOf('http') < 0 ) {
@@ -456,12 +443,25 @@ $.ajax({
 });
 </script>
 
--->
 
 
 
+
+
+
+
+<!-- ORDER ALL THE FIELDS -->
 
 <script>
+    
+$("#page_1 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_1");
+});    
+    
 $("#page_2 li").sort(function(a, b) {
   return parseInt(a.id) - parseInt(b.id);
 }).each(function() {
@@ -469,4 +469,53 @@ $("#page_2 li").sort(function(a, b) {
   elem.remove();
   $(elem).appendTo("#page_2");
 });
+    
+$("#page_3 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_3");
+});
+    
+$("#page_4 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_4");
+});    
+    
+$("#page_5 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_5");
+});    
+    
+$("#page_6 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_6");
+});    
+    
+$("#page_7 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_7");
+});
+    
+$("#page_8 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_8");
+});
+    
 </script>

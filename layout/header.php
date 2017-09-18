@@ -29,7 +29,7 @@ include_once("connection.php");
 
 </head>
 <body class="<?php echo $body_class;?>">
-<?php if($body_class !== 'invite-form'):?>
+<?php if($body_class !== 'invite-form' && $body_class !== 'thanks'):?>
     <?php if(isset($_SESSION['valid'])):?>
     <header class="banner">
         <div class="container"> 
@@ -38,9 +38,7 @@ include_once("connection.php");
             </div>
             <nav class="navbar navbar-toggleable-sm navbar-inverse"> 
                 <a class="navbar-brand" href="<?php echo $uri;?>">Quartz</a>
-               
                 <div class="collapse navbar-collapse navigation" id="navbarSupportedContent">
-                    
                     <div class="mobile-header hidden-md-up">
                         <?php if($_SESSION['permission']==2):?>
                             <?php user_welcome();?>

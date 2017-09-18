@@ -3,7 +3,6 @@ include_once("../../connection.php");
 $body_class = 'thanks';
 include_once("../../layout/header.php");
 ?>
-
 <div class="container">
     <div class="thank-you">
         <div class="row">
@@ -17,8 +16,6 @@ include_once("../../layout/header.php");
         </div>
     </div>
 </div>
-
 <?php send_email();?>
-
 <?php include('../../layout/footer.php');?>
  
