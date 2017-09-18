@@ -9,7 +9,6 @@ $event = $_GET['event'];
 
 <script>/*<![CDATA[*/(function(w,a,b,d,s){w[a]=w[a]||{};w[a][b]=w[a][b]||{q:[],track:function(r,e,t){this.q.push({r:r,e:e,t:t||+new Date});}};var e=d.createElement(s);var f=d.getElementsByTagName(s)[0];e.async=1;e.src='//marketing.quartzb2b.com/cdnr/94/acton/bn/tracker/17258';f.parentNode.insertBefore(e,f);})(window,'ActOn','Beacon',document,'script');ActOn.Beacon.track();/*]]>*/</script>
 
-
 <div class="container">
     <div class="invite-wrap">
        <div class="invite-header">
@@ -31,7 +30,11 @@ $event = $_GET['event'];
     <!--<form class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">-->
     <form class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">
     <!--<form action="" method="post" enctype="multipart/form-data" class="">-->
-        <!-- Step 1 -->
+        
+        
+        
+        
+        <!-- Step 1
         <div class="form-section" id="sec_1">
             <?php form_message($slug='intro');?>        
             <h2 class="form-sec-title">Contact Information</h2>  
@@ -125,16 +128,13 @@ $event = $_GET['event'];
                         <input type="text" class="form-control" required="" name="zip" />
                     </div> 
                 </div>
-        
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="form-group">
                         <label>Country</label>
                         <?php include('../../layout/countries.php');?>
                     </div> 
                 </div>
-               
             </div>
-
             <div class="form-group">
                 <label>Rules of Engagement</label>
                 <div class="form-msg">
@@ -148,9 +148,95 @@ $event = $_GET['event'];
             </div>
         </div>
         <input type="submit" class="btn btn-black btn-lg float-right" name="submit_form" value="Continue" />
+
+ -->
+
+
+        
+        
+    <!-- Step 2 -->
+    <div class="form-section" id="sec_2">
+        <h2 class="form-sec-title">Additional Information</h2>  
+        <div class="form-group">
+            <label>Meetings Scheduling</label>
+            <div class="form-msg">
+                <?php form_message($slug='meetings');?> 
+            </div>
+        </div>
+        <?php fields_for_page($page_no='2');?>
+    </div>
+    
+        
+        
+        
+        
+    <!-- Step 3 -->
+    <div class="form-section" id="sec_3">
+        <h2 class="form-sec-title">DC/Warehouse</h2>  
+        <?php fields_for_page($page_no='3');?>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="form-section" id="sec_4">
+        <h2 class="form-sec-title">Transportation</h2>  
+        <?php fields_for_page($page_no='4');?>
+    </div>
+    
+    <!-- Step 5 -->
+    <div class="form-section" id="sec_5">
+        <h2 class="form-sec-title">3PL</h2>  
+        <?php fields_for_page($page_no='5');?>
+    </div>
+    
+    <!-- Step 6 -->
+    <div class="form-section" id="sec_6">
+        <h2 class="form-sec-title">Supply Chain</h2>  
+        <?php fields_for_page($page_no='6');?>
+    </div>
+    
+    <!-- Step 7 -->
+    <div class="form-section" id="sec_7">
+        <h2 class="form-sec-title">Procurement</h2>  
+        <?php fields_for_page($page_no='7');?>
+    </div>
+    
+
+    <!-- Step 8 -->
+    <div class="form-section" id="sec_8">
+        <h2 class="form-sec-title">Submit Your Application</h2>  
+        <div class="form-group">
+            <label>Exhibitor Selection <span>Below you will find a list of solutions and services partners. If you would like to meet with a specific supplier please select their corresponding box. We will arrange an appointment within the meeting windows specified.</span></label>
+            <?php exhibitors_invite_form();?>
+        </div>
+        <div class="form-group">
+            <label>Logo Permission <span>Can <?php event_name();?> use your company logo to show your participation at the conference?</span></label>
+            <div class="form-check">
+              <label class="form-check-label has-other" data-id="transportation">
+                <input class="form-check-input" type="radio" name="logo_user" id="exampleRadios1" value="1">
+                Yes
+              </label>
+              <label class="form-check-label has-other" data-id="transportation">
+                <input class="form-check-input" type="radio" name="logo_user" id="exampleRadios1" value="0">
+                No
+              </label>
+            </div>      
+        </div>
+    </div>
+        
+        
+        
+        
+        
+        
+        
+        
     </form>
  
     <?php register_attendee();?> 
+        
+        
+
+
         
 <!--
 <script type="text/javascript">
@@ -371,3 +457,16 @@ $.ajax({
 </script>
 
 -->
+
+
+
+
+<script>
+$("#page_2 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_2");
+});
+</script>

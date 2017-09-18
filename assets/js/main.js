@@ -665,3 +665,4 @@ $('.view-exhibitor-info').on('click', function() {
         });
 });
 
+

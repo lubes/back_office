@@ -1700,8 +1700,12 @@ function attendee_approval_status() {
 function edit_attendee() {
     global $mysqli; 
     $attendee = $_GET['id'];
+
     $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'");
     if(isset($_POST['edit_attendee'])) {
+        
+        $event = $_POST['event'];
+        
         $approved = $_POST['approved'];
         $name = $_POST['name'];
         $email = $_POST['email'];
@@ -1769,7 +1773,7 @@ function edit_attendee() {
         website = '$website',
         track = '$track',
         revenue='$revenue',
-        company_size='$company_size',
+        company_size='$company_size', 
         industry='$industry',
         scheduling='$scheduling',
         erp = '$erp',
@@ -1801,7 +1805,24 @@ function edit_attendee() {
         procurement_interest='$procurement_interest'    
         WHERE id='$attendee'");
         
-        
+        // Get Attendee -> Admin Message
+        $result_email = mysqli_query($mysqli, "SELECT * FROM quartz_event WHERE id='$event'");
+        while($res_email = mysqli_fetch_array($result_email)) { 
+
+            $admin_notice = $res_email['attendee_update_notice'];
+            $to_email = $res_email['admin_email'];
+            $from_email = $res_email['admin_email'];
+            $to = $email;
+            $subject = "Attendee  updated their profile";
+            $notice = $admin_notice.": ".$name;
+            $txt = $notice; 
+            $headers = "From: ".$from_email . "\r\n" .
+            "CC: ".$from_email;
+            mail($to,$subject,$txt,$headers);
+            
+        }    
+
+        /*
         // Send Admin Email that Attendee has updated their profile
         $from_email = "lyuba.nova@eatsleepwork.com";
         $to = "lyuba.nova@eatsleepwork.com";
@@ -1814,10 +1835,13 @@ function edit_attendee() {
 
         mail($to,$subject,$txt,$headers);
         
+        */
+
         echo "<meta http-equiv='refresh' content='0'>";
     } 
     while($res = mysqli_fetch_array($result)) { ?>
         <form  method="post" action="">
+            <input type="hidden" name="event" value="<?php echo $res['event'];?>">
             <?php if($_SESSION['permission']==1):?>
             <div class="form-group">
                 <label>Attendee Status: 
@@ -2460,7 +2484,9 @@ function form_fields() {
     $brand = $_GET['brand'];    
     // Get All Fields
     $result = mysqli_query($mysqli, "SELECT * FROM fields WHERE event='$event' ORDER BY order_no ASC");
-    // Update Field
+
+
+    // Update Standard Field
     if(isset($_POST['update_field'])) {
         $id = $_POST['id'];
         $active = $_POST['active'];
@@ -2472,6 +2498,7 @@ function form_fields() {
         $required = $_POST['required'];
         $has_options = $_POST['has_options'];
         $conditional_child = $_POST['conditional_child'];
+        $page=$_POST['page'];
         $result = mysqli_query($mysqli, "UPDATE fields SET
         id='$id',
         active='$active',
@@ -2482,11 +2509,149 @@ function form_fields() {
         options='$options',
         required='$required',
         has_options='$has_options',
-        conditional_child='$conditional_child'
+        conditional_child='$conditional_child',
+        page='$page'
         WHERE id='$id'");
         echo "<meta http-equiv='refresh' content='0'>";
     } 
+
+    
+    // Update Custom Field
+    if(isset($_POST['update_custom_field'])) {
+        $id = $_POST['id'];
+        $order_no = $_POST['order_no'];
+        $title = $_POST['title'];
+        $type = $_POST['form_type'];
+        $options = $_POST['field_options'];
+        $required = $_POST['required'];
+        $description = $_POST['description'];
+        $page=$_POST['page'];
+        $result = mysqli_query($mysqli, "UPDATE custom_fields SET
+        id='$id',
+        order_no='$order_no',
+        title='$title',
+        form_type='$type',
+        field_options='$options',
+        required='$required',
+        description='$description',
+        page='$page'
+        WHERE id='$id'");
+        echo "<meta http-equiv='refresh' content='0'>";
+    }     
+    
+    $result_2 = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event='$event'");
+    while($res = mysqli_fetch_array($result_2)) {?>
+                <li id="<?php echo $res['order_no'];?>">
+                    <form method="post" action="">
+                        <input type="hidden" name="id" value="<?php echo $res['id'];?>" />
+                        <div class="card">
+                            <div class="card-header" role="tab" id="field_<?php echo $i;?>">
+                               <div class="row">
+                                   <div class="col-4 col-sm-1 col-md-1">
+                                       <span class="active-state active"><i class="material-icons">check</i></span>
+                                   </div>
+                                   <div class="col-8 col-sm-2 col-md-2">
+                                       <span class="page">Page <?php echo $res['page'];?></span>
+                                   </div>
+                                   <div class="col-8 col-sm-2 col-md-1">
+                                       <span class="order-no"><?php echo $res['order_no'];?></span>
+                                   </div>
+                                   <div class="col-12 col-sm-8 col-md-5">
+                                       <p><?php echo $res['title'];?> - Custom Field - <?php if($res['form_type']==6) { echo '(Message)'; } ?></p>
+                                   </div>
+                                   <div class="col-12 col-sm-2 col-md-3">
+                                       <div class="btn-group float-right">
+                                           <a class="btn btn-info btn-sm" data-toggle="collapse" data-parent="#accordion" href="#collapse_<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">Edit</a>
+                                           <input type="submit" class="btn btn-success btn-sm" name="update_custom_field" value="Save">
+                                       </div>
+                                   </div>
+                               </div>
+                            </div>
+                            <div id="collapse_<?php echo $i;?>" class="collapse" role="tabpanel" aria-labelledby="field_<?php echo $i;?>">
+                                <div class="card-block">
+                                    <div class="row">
+                                        <div class="col-2 col-sm-2">
+                                            <div class="form-group">
+                                               <label>Page</label>
+                                               <input type="text" class="form-control" name="page" value="<?php echo $res['page'];?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2">
+                                            <div class="form-group">
+                                                <label>Order</label>
+                                                <input type="text" class="form-control" name="order_no" value="<?php echo $res['order_no'];?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-6">
+                                            <div class="form-group">
+                                                <label>Field Label</label>
+                                                <input type="text" class="form-control" name="title" value="<?php echo $res['title'];?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2">
+                                           <div class="form-group">
+                                              <label>Required?</label>
+                                              <label class="custom-control custom-checkbox">
+                                              <input type="checkbox" class="custom-control-input" value="1" name="required" <?php if($res['required']==1) { echo 'checked'; }?>>
+                                              <span class="custom-control-indicator"></span>
+                                              <span class="custom-control-description">Yes</span>
+                                              </label>
+                                           </div>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>Field Description</label>
+                                                <input type="text" class="form-control" name="description" value="<?php echo $res['description'];?>">   
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-5">
+                                            <div class="form-group">            
+                                                <label>Field Type</label>
+                                                <div class="field-btns" data-toggle="buttons">
+                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==1) { echo 'active'; } ?>">
+                                                          <input type="radio" name="form_type" <?php if($res['form_type']==1) { echo 'checked'; } ?> id="option1" value="1" autocomplete="off">
+                                                          <i class="material-icons">check</i>Checkbox - Multiple
+                                                    </label>
+                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==2) { echo 'active'; } ?>">
+                                                          <input type="radio" name="form_type" <?php if($res['form_type']==2) { echo 'checked'; } ?> id="option1" value="2" autocomplete="off">
+                                                          <i class="material-icons">arrow_drop_down</i>Select - Single Select
+                                                    </label>
+                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==3) { echo 'active'; } ?>">
+                                                          <input type="radio" name="form_type" <?php if($res['form_type']==3) { echo 'checked'; } ?> id="option1" value="3" autocomplete="off">
+                                                          <i class="material-icons">text_format</i>Text Input - Small Text Field
+                                                    </label>
+                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==4) { echo 'active'; } ?>">
+                                                          <input type="radio" name="form_type" <?php if($res['form_type']==4) { echo 'checked'; } ?> id="option1" value="4" autocomplete="off">
+                                                          <i class="material-icons">short_text</i>Textarea - Large Text Area
+                                                    </label>
+                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==5) { echo 'active'; } ?>">
+                                                          <input type="radio" name="form_type" <?php if($res['form_type']==5) { echo 'checked'; } ?> id="option1" value="5" autocomplete="off">
+                                                          <i class="material-icons">radio_button_checked</i>Yes / No
+                                                    </label>
+                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==6) { echo 'active'; } ?>">
+                                                          <input type="radio" name="form_type" <?php if($res['form_type']==6) { echo 'checked'; } ?> id="option1" value="6" autocomplete="off">
+                                                          <i class="material-icons">chat</i>Message
+                                                    </label>
+                                                </div> 
+                                            </div> 
+                                        </div>
+                                        <div class="col-xs-2 col-sm-7">
+                                            <div class="form-group">
+                                                <label>Options available (for types Single and Multi) -  One per line</label>
+                                                <textarea name="field_options" class="form-control"><?php echo $res['field_options'];?></textarea>  
+                                            </div>
+                                       </div>
+                                   </div>
+                               </div>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+    <?php }     
+
     $i=0; while($res = mysqli_fetch_array($result)) { $i++; ?>
+
+    <li id="<?php echo $res['order_no'];?>">
         <form method="post" action="">
             <input type="hidden" name="id" value="<?php echo $res['id'];?>" />
             <div class="card <?php if($res['conditional_child']==1) { echo 'conditional'; }?>">
@@ -2495,10 +2660,13 @@ function form_fields() {
                        <div class="col-4 col-sm-1 col-md-1">
                            <span class="active-state <?php if($res['active']==1) { echo 'active'; }?>"><i class="material-icons">check</i></span>
                        </div>
+                       <div class="col-8 col-sm-2 col-md-2">
+                           <span class="page">Page <?php echo $res['page'];?></span>
+                       </div>
                        <div class="col-8 col-sm-2 col-md-1">
                            <span class="order-no"><?php echo $res['order_no'];?></span>
                        </div>
-                       <div class="col-12 col-sm-8 col-md-7">
+                       <div class="col-12 col-sm-8 col-md-5">
                            <p><?php echo $res['title'];?> <?php if($res['has_options']==1) { echo '(Conditional)'; }?></p>
                        </div>
                        <div class="col-12 col-sm-2 col-md-3">
@@ -2510,95 +2678,102 @@ function form_fields() {
                    </div>
                 </div>
                 <div id="collapse_<?php echo $i;?>" class="collapse" role="tabpanel" aria-labelledby="field_<?php echo $i;?>">
-   <div class="card-block">
-       <div class="row">
-           <div class="col-xs-2 col-sm-2">
-               <div class="form-group">            
-  <label>Active?</label>
-  <div class="btn-group" data-toggle="buttons">
-    <label class="btn btn-secondary <?php if($res['active']==1) { echo 'active'; } ?>">
-      <input type="radio" name="active" <?php if($res['active']==1) { echo 'checked'; } ?> id="option1" value="1" autocomplete="off">Yes
-    </label>
-    <label class="btn btn-secondary <?php if($res['active']==0) { echo 'active'; } ?>">
-      <input type="radio" name="active" <?php if($res['active']==0) { echo 'checked'; } ?> id="option1" value="0" autocomplete="off">No
-    </label>
-  </div> 
-               </div>  
-           </div>
-           <div class="col-xs-2 col-sm-2">
-               <div class="form-group">
-  <label>Order</label> 
-  <input type="text" class="form-control" name="order_no" value="<?php echo $res['order_no'];?>">
-               </div>
-           </div>
-           <div class="col-xs-2 col-sm-6">
-               <div class="form-group">
-  <label>Field Label</label>
-  <input type="text" class="form-control" name="title" value="<?php echo $res['title'];?>"> 
-               </div>
-           </div>
-           <div class="col-xs-2 col-sm-2">
-               <div class="form-group">
-                  <label>Required?</label>
-                  <label class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input" value="1" name="required" <?php if($res['required']==1) { echo 'checked'; }?>>
-                  <span class="custom-control-indicator"></span>
-                  <span class="custom-control-description">Yes</span>
-                  </label>
-               </div>
-           </div>
-           <div class="col-12 col-sm-12 col-md-12">
-               <div class="form-group">
-  <label>Field Description</label>
-  <input type="text" class="form-control" name="description" value="<?php echo $res['description'];?>">   
-               </div>
-           </div>
-           <div class="col-xs-2 col-sm-5">
-                <div class="form-group">            
-  <label>Field Type</label>
-  <div class="field-btns" data-toggle="buttons">
-    <label class="btn btn-secondary btn-block <?php if($res['type']==1) { echo 'active'; } ?>">
-          <input type="radio" name="type" <?php if($res['type']==1) { echo 'checked'; } ?> id="option1" value="1" autocomplete="off">
-          <i class="material-icons">check</i>Checkbox - Multiple
-    </label>
-    <label class="btn btn-secondary btn-block <?php if($res['type']==2) { echo 'active'; } ?>">
-          <input type="radio" name="type" <?php if($res['type']==2) { echo 'checked'; } ?> id="option1" value="2" autocomplete="off">
-          <i class="material-icons">arrow_drop_down</i>Select - Single Select
-    </label>
-    <label class="btn btn-secondary btn-block <?php if($res['type']==3) { echo 'active'; } ?>">
-          <input type="radio" name="type" <?php if($res['type']==3) { echo 'checked'; } ?> id="option1" value="3" autocomplete="off">
-          <i class="material-icons">text_format</i>Text Input - Small Text Field
-    </label>
-    <label class="btn btn-secondary btn-block <?php if($res['type']==4) { echo 'active'; } ?>">
-          <input type="radio" name="type" <?php if($res['type']==4) { echo 'checked'; } ?> id="option1" value="4" autocomplete="off">
-          <i class="material-icons">short_text</i>Textarea - Large Text Area
-    </label>
-    <label class="btn btn-secondary btn-block <?php if($res['type']==5) { echo 'active'; } ?>">
-          <input type="radio" name="type" <?php if($res['type']==5) { echo 'checked'; } ?> id="option1" value="5" autocomplete="off">
-          <i class="material-icons">radio_button_checked</i>Yes / No
-    </label>
-    </div> 
-  </div> 
-               <div class="form-group">
-  <label>Conditional?</label>
-  <label class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" value="1" name="has_options" <?php if($res['has_options']==1) { echo 'checked'; }?>>
-  <span class="custom-control-indicator"></span>
-  <span class="custom-control-description">Yes</span>
-  </label>
-               </div>
-           </div>
-           <div class="col-xs-2 col-sm-7">
-               <div class="form-group">
-  <label>Options available (for types Single and Multi) -  One per line</label>
-  <textarea name="options" class="form-control"><?php echo $res['options'];?></textarea>  
-               </div>
-           </div>
-       </div>
-   </div>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <label>Active?</label>
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-secondary <?php if($res['active']==1) { echo 'active'; } ?>">
+                                            <input type="radio" name="active" <?php if($res[ 'active']==1) { echo 'checked'; } ?> id="option1" value="1" autocomplete="off">Yes
+                                        </label>
+                                        <label class="btn btn-secondary <?php if($res['active']==0) { echo 'active'; } ?>">
+                                            <input type="radio" name="active" <?php if($res[ 'active']==0) { echo 'checked'; } ?> id="option1" value="0" autocomplete="off">No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2 col-sm-2">
+                                <div class="form-group">
+                                   <label>Page</label>
+                                   <input type="text" class="form-control" name="page" value="<?php echo $res['page'];?>">
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <label>Order</label>
+                                    <input type="text" class="form-control" name="order_no" value="<?php echo $res['order_no'];?>">
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-6">
+                                <div class="form-group">
+                                    <label>Field Label</label>
+                                    <input type="text" class="form-control" name="title" value="<?php echo $res['title'];?>">
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-2">
+                               <div class="form-group">
+                                  <label>Required?</label>
+                                  <label class="custom-control custom-checkbox">
+                                  <input type="checkbox" class="custom-control-input" value="1" name="required" <?php if($res['required']==1) { echo 'checked'; }?>>
+                                  <span class="custom-control-indicator"></span>
+                                  <span class="custom-control-description">Yes</span>
+                                  </label>
+                               </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <label>Field Description</label>
+                                    <input type="text" class="form-control" name="description" value="<?php echo $res['description'];?>">   
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-5">
+                                <div class="form-group">            
+                                    <label>Field Type</label>
+                                    <div class="field-btns" data-toggle="buttons">
+                                        <label class="btn btn-secondary btn-block <?php if($res['type']==1) { echo 'active'; } ?>">
+                                              <input type="radio" name="type" <?php if($res['type']==1) { echo 'checked'; } ?> id="option1" value="1" autocomplete="off">
+                                              <i class="material-icons">check</i>Checkbox - Multiple
+                                        </label>
+                                        <label class="btn btn-secondary btn-block <?php if($res['type']==2) { echo 'active'; } ?>">
+                                              <input type="radio" name="type" <?php if($res['type']==2) { echo 'checked'; } ?> id="option1" value="2" autocomplete="off">
+                                              <i class="material-icons">arrow_drop_down</i>Select - Single Select
+                                        </label>
+                                        <label class="btn btn-secondary btn-block <?php if($res['type']==3) { echo 'active'; } ?>">
+                                              <input type="radio" name="type" <?php if($res['type']==3) { echo 'checked'; } ?> id="option1" value="3" autocomplete="off">
+                                              <i class="material-icons">text_format</i>Text Input - Small Text Field
+                                        </label>
+                                        <label class="btn btn-secondary btn-block <?php if($res['type']==4) { echo 'active'; } ?>">
+                                              <input type="radio" name="type" <?php if($res['type']==4) { echo 'checked'; } ?> id="option1" value="4" autocomplete="off">
+                                              <i class="material-icons">short_text</i>Textarea - Large Text Area
+                                        </label>
+                                        <label class="btn btn-secondary btn-block <?php if($res['type']==5) { echo 'active'; } ?>">
+                                              <input type="radio" name="type" <?php if($res['type']==5) { echo 'checked'; } ?> id="option1" value="5" autocomplete="off">
+                                              <i class="material-icons">radio_button_checked</i>Yes / No
+                                        </label>
+                                    </div> 
+                                </div> 
+                                <div class="form-group">
+                                    <label>Conditional?</label>
+                                    <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" value="1" name="has_options" <?php if($res['has_options']==1) { echo 'checked'; }?>>
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Yes</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-7">
+                                <div class="form-group">
+                                    <label>Options available (for types Single and Multi) -  One per line</label>
+                                    <textarea name="options" class="form-control"><?php echo $res['options'];?></textarea>  
+                                </div>
+                           </div>
+                       </div>
+                   </div>
                 </div>
             </div>
         </form>
+        </li>
     <?php }
 }
 
@@ -2667,11 +2842,13 @@ function event_info_form() {
         $approval_notice = $_POST['approval_notice'];
         $admin_email = $_POST['admin_email'];
         $exhibitor_update_notice=$_POST['exhibitor_update_notice'];
+        $attendee_update_notice=$_POST['attendee_update_notice'];
         $result = mysqli_query($mysqli, "UPDATE quartz_event SET
         color='$color',
         approval_notice='$approval_notice',
         admin_email = '$admin_email',
-        exhibitor_update_notice='$exhibitor_update_notice'
+        exhibitor_update_notice='$exhibitor_update_notice',
+        attendee_update_notice='$attendee_update_notice'
         WHERE id='$event'");
         echo "<meta http-equiv='refresh' content='0'>";
     } 
@@ -2686,20 +2863,36 @@ function event_info_form() {
                     </div>     
                 </div>
             </div>
+            <hr><br>
             <div class="form-group">
                 <h3>Message to Attendee upon approval</h3>
                 <label>Attendee will receive this notice along with login credentials upon approval status</label>
                 <textarea class="form-control" name="approval_notice"><?php echo $res['approval_notice'];?></textarea>
             </div> 
+            <br><hr><br>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-6">
+                    <div class="form-group">
+                        <h3>Notification Message to Admin  (Exhibitor Updates)</h3>
+                        <label>Message sent to Admin (Email Below) when exhibitor updates profile.</label>
+                        <input type="text" class="form-control" name="exhibitor_update_notice" placeholder="" value="<?php echo $res['exhibitor_update_notice'];?>" />
+                    </div> 
+                </div>
+                <div class="col-12 col-sm-12 col-md-6">
+                    <div class="form-group">
+                        <h3>Notification Message to Admin (Attendee Updates)</h3>
+                        <label>Message sent to Admin (Email Below) when attendee updates profile.</label>
+                        <input type="text" class="form-control" name="attendee_update_notice" placeholder="" value="<?php echo $res['attendee_update_notice'];?>" />
+                    </div>
+                </div>
+            </div>
+            <br><hr><br>
             <div class="form-group">
+                <h3>Message to Attendee upon approval</h3>
                 <label>From Email (Admin Email)</label>
                 <input type="email" class="form-control" name="admin_email" placeholder="" value="<?php echo $res['admin_email'];?>" />
             </div> 
-            <div class="form-group">
-                <h3>Notification Message to Admin</h3>
-                <label>Message sent to Admin (Email Above) when exhibitor updates profile.</label>
-                <input type="text" class="form-control" name="exhibitor_update_notice" placeholder="" value="<?php echo $res['exhibitor_update_notice'];?>" />
-            </div> 
+            <br>
             <div class="form-group">
                 <input type="submit" value="Update Event Info" name="update_info" class="btn btn-success" />
             </div> 
@@ -2733,9 +2926,11 @@ function view_custom_fields() {
         $form_type = $_POST['form_type'];
         $required = $_POST['required'];
         $title = $_POST['title'];
+        $description = $_POST['description'];
         $field_options = $_POST['field_options'];
+        $page = $_POST['page'];
         
-        $result = $mysqli->query("INSERT INTO custom_fields(event, order_no, form_type, required, title, field_options) VALUES('$event', '$order_no', '$form_type', '$required', '$title', '$field_options')");
+        $result = $mysqli->query("INSERT INTO custom_fields(event, order_no, form_type, required, title, description, field_options, page) VALUES('$event', '$order_no', '$form_type', '$required', '$title', '$description', $field_options', '$page')");
         
         /*
         $sql = 'INSERT INTO custom_fields (event, order_no, form_type, required, title, field_options) VALUES ';
@@ -2758,11 +2953,17 @@ function view_custom_fields() {
         <div class="row">
             <div class="col-2 col-sm-2">
                 <div class="form-group">
+                   <label>Page</label>
+                   <input type="text" class="form-control" name="page" value="">
+                </div>
+            </div>
+            <div class="col-2 col-sm-2">
+                <div class="form-group">
                    <label>Order</label>
                    <input type="text" class="form-control" name="order_no" value="">
                 </div>
             </div>
-            <div class="col-2 col-sm-8">
+            <div class="col-2 col-sm-6">
                 <div class="form-group">
                    <label>Title</label>
                    <input type="text" class="form-control" name="title" />
@@ -2778,6 +2979,12 @@ function view_custom_fields() {
                    </label>
                 </div>
             </div>
+            <div class="col-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <label>Field Description</label>
+                    <input type="text" class="form-control" name="description">   
+                </div>
+            </div>
             <div class="col-12 col-sm-5">
                 <div class="form-group">
                    <label>Type</label>
@@ -2788,6 +2995,8 @@ function view_custom_fields() {
                        <option value="2">Select (Single-Select)</option>
                        <option value="3">Text Input</option>
                        <option value="4">Textarea</option>
+                       <option value="5">Yes/No</option>
+                       <option value="6">Message</option>
                    </select>
                    </div>
                 </div>
@@ -2827,8 +3036,12 @@ function view_custom_fields() {
                 echo 'Select';
                 } elseif($res['form_type'] == 3)  { 
                 echo 'Textarea';
-                } else {
+                } elseif($res['form_type'] == 4)  { 
                 echo 'Input';
+                } elseif($res['form_type'] == 5)  { 
+                echo 'Yes/No';
+                } else {
+                echo 'Message';
                 } ?>
             <td><?php echo $res['field_options'];?></td>
             <td>
@@ -2839,6 +3052,7 @@ function view_custom_fields() {
     </table>
     <?php 
 }
+
 
 // View Final Event Form
 function preview_form() {
@@ -2942,16 +3156,34 @@ function event_options() {
     }
 }
 
+// Show Custom Fields
+
+function show_custom_fields($page) {
+global $mysqli; 
+$event = $_GET['event'];
+$result_2 = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event='$event' AND page='$page'");
+while($res = mysqli_fetch_array($result_2)) {?>
+    <li id="<?php echo $res['order_no'];?>">
+        <div class="form-group">
+        <label><?php echo $res['title'];?> </label>
+        <?php if($res['form_type']=='6') { echo $res['description']; } ?>
+        </div>
+    </li>
+<?php }    
+    
+}
+
 // Form Fields Display
 
-function standard_form_field($slug) {
+function standard_form_field($slug, $page) {
 global $mysqli; 
 $brand = $_GET['brand'];
 $event = $_GET['event'];
-$result = mysqli_query($mysqli, "SELECT * FROM fields WHERE event='$event' AND slug='$slug'");
+$result = mysqli_query($mysqli, "SELECT * FROM fields WHERE event='$event' AND slug='$slug' AND page='$page'");
 while($res = mysqli_fetch_array($result)) { ?>              
-   
+                     
     <?php if($res['active'] == 1):?>
+    <li id="<?php echo $res['order_no'];?>">
         <div class="form-group <?php if($res['required']==1) { echo 'required'; } ?>">
             <label class="title"><?php echo $res['title'];?> <?php if($res['required']==1) { echo '*'; } ?> <span><?php echo $res['description'];?></span></label>
             <!-- Checkbox -->
@@ -3001,14 +3233,16 @@ while($res = mysqli_fetch_array($result)) { ?>
             <!-- Textarea -->
             <?php if($res['type'] == 5): ?>
                 <div class="form-check">
-   <label class="form-check-label <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
-   <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="yes"> Yes</label>
-   <label class="form-check-label  <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
-   <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="No"> No</label>
+                   <label class="form-check-label <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
+                   <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="yes"> Yes</label>
+                   <label class="form-check-label  <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
+                   <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="No"> No</label>
                 </div> 
             <?php endif;?>            
   
         </div>
+    </li>          
+
     <?php endif;?>             
 <?php } 
 }
@@ -4098,6 +4332,64 @@ function exhibitors_invite_form() {
     <?php }
     echo '</div>';
 }
+
+// Fields for Pages
+
+function fields_for_page($page_no) {  ?>
+    <ul id="page_<?php echo $page_no;?>" class="list-unstyled">
+        <?php show_custom_fields($page='2'); ?>        
+        <?php standard_form_field($slug='track', $page=$page_no);?>
+        <?php standard_form_field($slug='industry',$page=$page_no);?>
+        <?php standard_form_field($slug='revenue',$page=$page_no);?>
+        <?php standard_form_field($slug='company_size',$page=$page_no);?>
+        <?php standard_form_field($slug='products_services',$page=$page_no);?>   
+        <?php standard_form_field($slug='erp',$page=$page_no);?>   
+        <?php standard_form_field($slug='geo',$page=$page_no);?>
+        <!-- WAREHOUSE -->
+        <?php standard_form_field($slug='warehouse',$page=$page_no);?>
+        <div class="other-input additional-fields" id="warehouse">
+            <?php show_custom_fields(); ?>        
+            <?php standard_form_field($slug='number_facilities',$page=$page_no);?>
+            <?php standard_form_field($slug='facility_responsibilities',$page=$page_no);?>
+            <?php standard_form_field($slug='facilities_size',$page=$page_no);?>
+            <?php standard_form_field($slug='facilities_equipment_interest',$page=$page_no);?>
+            <?php standard_form_field($slug='facilities_software_interest',$page=$page_no);?>
+            <?php standard_form_field($slug='facilities_projects',$page=$page_no);?>
+        </div>
+        <!-- TRANSPORTATION -->
+        <?php standard_form_field($slug='transportation_responsibility',$page=$page_no);?>
+        <div class="other-input additional-fields" id="transportation_responsibility">
+            <?php standard_form_field($slug='ftl',$page=$page_no);?>
+            <?php standard_form_field($slug='ltl',$page=$page_no);?>
+            <?php standard_form_field($slug='intermodel',$page=$page_no);?>
+            <?php standard_form_field($slug='parcel',$page=$page_no);?>
+            <?php standard_form_field($slug='modes_transporation',$page=$page_no);?>
+            <?php standard_form_field($slug='tansportation_interest',$page=$page_no);?>
+            <?php standard_form_field($slug='transportation_projects',$page=$page_no);?>
+        </div>
+        <!-- 3PL-->
+        <?php standard_form_field($slug='threepls',$page=$page_no);?>
+        <div class="other-input additional-fields" id="threepls">
+            <?php standard_form_field($slug='footprint',$page=$page_no);?>
+            <?php standard_form_field($slug='threepl_interest',$page=$page_no);?>
+            <?php standard_form_field($slug='threepl_projects',$page=$page_no);?>
+        </div>
+        <!-- SUPPLY CHAIN -->
+        <?php standard_form_field($slug='supply_responsibility',$page=$page_no);?>
+        <div class="other-input additional-fields" id="supply_responsibility">
+            <?php standard_form_field($slug='supply_services',$page=$page_no);?>
+            <?php standard_form_field($slug='supply_projects',$page=$page_no);?>
+        </div>
+        <!-- PROCUREMENT -->
+        <?php standard_form_field($slug='procurement',$page=$page_no);?>
+        <div class="other-input additional-fields" id="procurement">
+            <?php standard_form_field($slug='procurement_projects',$page=$page_no);?>
+            <?php standard_form_field($slug='procurement_interest',$page=$page_no);?>
+        </div>
+    </ul>        
+<?php 
+}
+
 
 /***************** DELETES ****************/
 
