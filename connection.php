@@ -479,6 +479,7 @@ function add_event() {
         ");
         
         echo "<meta http-equiv='refresh' content='0'>"; 
+        
     } ?>
     <form  method="post" action="">
         <div class="form-group">
