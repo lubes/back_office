@@ -10,13 +10,13 @@ setlocale(LC_MONETARY,"en_US");
 
 $host = $_SERVER['HTTP_HOST'];
 if ($host == 'localhost:8888') {
-	error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
-	ini_set('display_errors', 1);
-	$mysqli = new mysqli('localhost', 'root', 'root', 'a_quartz');
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 1);
+$mysqli = new mysqli('localhost', 'root', 'root', 'a_quartz');
     $uri = 'http://localhost:8888/a_quartz';
 
 } else {
-	$mysqli = new mysqli('localhost', 'qa_user', 'Acc3557916!', 'qa_test_db');
+$mysqli = new mysqli('localhost', 'qa_user', 'Acc3557916!', 'qa_test_db');
     $uri = 'http://qa.esw.me';
 }
 
@@ -797,12 +797,9 @@ function all_exhibitors() {
     global $uri;
     $result = mysqli_query($mysqli, "
     SELECT exhibitors.name AS exhibitor_name, exhibitors.id AS exhibitor_id, exhibitors.active AS active, exhibitors.email AS exhibitor_email, exhibitors.completed AS completed, exhibitors.company AS exhibitor_company, exhibitors.job_title AS exhibitor_job_title, quartz_event.id, quartz_event.Event, quartz_event.brand, events.id, events.name AS event_name, brands.id, brands.name AS brand_name from exhibitors
-    
     LEFT JOIN quartz_event ON exhibitors.event = quartz_event.id
     LEFT JOIN events ON quartz_event.Event = events.id
-    LEFT JOIN brands ON quartz_event.brand = brands.id
-
-    ");
+    LEFT JOIN brands ON quartz_event.brand = brands.id");
     while($res = mysqli_fetch_array($result)) { ?>
         <table class="table filter-table table-responsive" id="all_exhibitors">
             <thead>
@@ -817,26 +814,25 @@ function all_exhibitors() {
             </thead>
             <tbody>
             <?php while($res = mysqli_fetch_array($result)) { ?>
-        <tr>
-        <td><?php echo $res['exhibitor_name'];?></td>
-        <td><?php echo $res['exhibitor_company'];?></td>
-        <td><?php echo $res['exhibitor_job_title'];?></td>
-        <td><a href="mailto:<?php echo $res['exhibitor_email'];?>"><?php echo $res['exhibitor_email'];?></td>
-        <td><?php echo $res['brand_name'];?> <?php echo $res['event_name'];?></td>
-        <td><?php if($res['active'] == 0) { echo 'Inactive'; } else {echo 'Active';}?></td>
-        <td><div class="star-num"><?php echo $res['completed'];?></div><?php if($res['completed'] == 0) { echo 'No'; } else {echo 'Done';}?></td>
-       <td>
-           <div class="btn-group">
-           <a href="<?php echo $uri;?>/exhibitor/edit/?id=<?php echo $res['exhibitor_id'];?>" class="btn btn-warning btn-sm">Edit</a>
-            <a href="<?php echo $uri;?>/exhibitor/delete.php?id=<?php echo $res['exhibitor_id'];?>" onClick="return confirm('Are you sure you want to delete?')" class="btn btn-sm btn-danger">Delete</a>   
-
-           </div>
-       </td>
-                </tr>
+            <tr>
+                <td><?php echo $res['exhibitor_name'];?></td>
+                <td><?php echo $res['exhibitor_company'];?></td>
+                <td><?php echo $res['exhibitor_job_title'];?></td>
+                <td><a href="mailto:<?php echo $res['exhibitor_email'];?>"><?php echo $res['exhibitor_email'];?></td>
+                <td><?php echo $res['brand_name'];?> <?php echo $res['event_name'];?></td>
+                <td><?php if($res['active'] == 0) { echo 'Inactive'; } else {echo 'Active';}?></td>
+                <td><div class="star-num"><?php echo $res['completed'];?></div><?php if($res['completed'] == 0) { echo 'No'; } else {echo 'Done';}?></td>
+                <td>
+                    <div class="btn-group">
+                        <a href="<?php echo $uri;?>/exhibitor/edit/?id=<?php echo $res['exhibitor_id'];?>" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="<?php echo $uri;?>/exhibitor/delete.php?id=<?php echo $res['exhibitor_id'];?>" onClick="return confirm('Are you sure you want to delete?')" class="btn btn-sm btn-danger">Delete</a>   
+                    </div>
+                </td>
+            </tr>
             <?php } ?>    
             </tbody>
         </table>
-    <?php }
+        <?php }
 }
 
 // All Exhibitor Emails
@@ -1292,7 +1288,7 @@ function edit_exhibitor() {
                    </div>
                    <div id='editor' class="form-control" contenteditable><?php echo $res['testimonials'];?></div> 
                 </div>
-                <textarea id='output' name="testimonials" class="hidden-xl-down form-control"><?php echo $res['testimonials'];?></textarea>               
+                <textarea id='output' name="testimonials" class="hidden-xl-down form-control"><?php echo $res['testimonials'];?></textarea>              
             </div>            
             
             
@@ -1476,7 +1472,7 @@ function edit_exhibitor() {
 // Add New Exhibitor
 function add_exhibitor() {
     global $mysqli; 
-    if(isset($_POST['add_new'])) {	
+    if(isset($_POST['add_new'])) {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $phone = $_POST['phone'];
@@ -1619,7 +1615,7 @@ function all_attendees() {
     global $uri;
     // $result = mysqli_query($mysqli, "SELECT * FROM attendees");
     $result = mysqli_query($mysqli, "
-    SELECT attendees.id AS att_id, attendees.name AS name, attendees.job_title AS job_title, attendees.password AS password, attendees.company AS company, attendees.registration_date AS registration_date, attendees.invitation_number AS invitation_number, attendees.email AS email, attendees.approved AS approved, attendees.event,
+    SELECT attendees.id AS att_id, attendees.name AS name, attendees.job_title AS job_title, attendees.company AS company, attendees.registration_date AS registration_date, attendees.invitation_number AS invitation_number, attendees.email AS email, attendees.approved AS approved, attendees.event,
     quartz_event.id AS e_id, quartz_event.Event, quartz_event.brand, 
     events.id, events.name AS event_name, brands.id, brands.name AS brand_name FROM attendees
     LEFT JOIN quartz_event ON attendees.event = quartz_event.id
@@ -1636,7 +1632,6 @@ function all_attendees() {
                 <th>Reg. Date</th>
                 <th>Invitation No.</th>
                 <th>Email</th>
-                <th>Password</th>
                 <th>Status</th>
                 <th></th>
                 <th></th>
@@ -1644,26 +1639,26 @@ function all_attendees() {
             <tbody>
             <?php while($res = mysqli_fetch_array($result)) { ?>
                 <tr>
-                    <td><?php echo $res['name'];?></td>
-                    <td><?php echo $res['company'];?></td>
-                    <td><?php echo $res['job_title'];?></td>
-                    <td><?php echo $res['registration_date'];?></td>
-                    <td><?php echo $res['invitation_number'];?></td>
-                    <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></td>
-                    <td><?php echo $res['password'];?></td>
-                    <td>
-                       <?php
-                           // Check Attendee Approval
-                           if($res['approved'] == 0) {
-                               echo '<div class="approval pending">Pending</div>';
-                           } else if($res['approved'] == 1) {
-                               echo '<div class="approval approved">Approved</div>';
-                           } else if($res['approved'] == 2) {
-                               echo '<div class="approval denied">Denied</div>';
-                           } else {
-                               echo '<div class="approval cancelled">Cancelled</div>';
-                           }
-                       ?>
+               <td><?php echo $res['name'];?></td>
+                <td><?php echo $res['company'];?></td>
+               <td><?php echo $res['job_title'];?></td>
+               <td><?php echo $res['registration_date'];?></td>
+               <td><?php echo $res['invitation_number'];?></td>
+               <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></td>
+               <td>
+                   
+                   <?php
+                       // Check Attendee Approval
+                       if($res['approved'] == 0) {
+                           echo '<div class="approval pending">Pending</div>';
+                       } else if($res['approved'] == 1) {
+                           echo '<div class="approval approved">Approved</div>';
+                       } else if($res['approved'] == 2) {
+                           echo '<div class="approval denied">Denied</div>';
+                       } else {
+                           echo '<div class="approval cancelled">Cancelled</div>';
+                       }
+                   ?>
                 </td>
                <td>
                    <div class="btn-group">
@@ -2348,7 +2343,7 @@ function randomPassword() {
 // Add New Attendee
 function add_attendee() {
     global $mysqli; 
-    if(isset($_POST['add_attendee'])) {	
+    if(isset($_POST['add_attendee'])) {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $phone = $_POST['direct_phone'];
@@ -4031,14 +4026,13 @@ function filter_invite_no() {
 function filter_status() {
     global $mysqli; 
     $result = mysqli_query($mysqli, "
-    SELECT DISTINCT(approved) AS approved FROM attendees ORDER BY approved ASC;
+    SELECT DISTINCT(approved) AS approved FROM attendees ORDER BY approved ASC LIMIT 4;
     ");
     echo '<div class="select-wrap">';?>
     <select class="form-control filter-select industry-filter" data-column-index='6'> 
         <option value="">All Statuses</option>
     <?php 
     while($res = mysqli_fetch_array($result)) { ?>
-        
             <?php
                if($res['approved'] == 0) {
                    $status = 'Pending';

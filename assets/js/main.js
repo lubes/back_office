@@ -51,7 +51,7 @@ $(document).ready(function () {
     }); 
     
     
-    var all_attendees = $('#all_attendees_admin').DataTable({
+    var all_attendees_admin = $('#all_attendees_admin').DataTable({
         pageLength: 100,
         dom: 'Bfrtip',
         buttons: [
@@ -189,6 +189,7 @@ $(document).ready(function () {
         attendees_ranking_table.button( '0-1' ).trigger();
         all_exhibitors.button( '0-1' ).trigger();
         all_attendees.button( '0-1' ).trigger();
+        all_attendees_admin.button( '0-1' ).trigger();
     }); 
     
     $('.ex-filter').on('change', function () {
@@ -218,6 +219,7 @@ $(document).ready(function () {
     $('.industry-filter').on('change', function () {
         attendees_ranking_table.column($(this).data('columnIndex')).search(this.value).draw();
         all_attendees.column($(this).data('columnIndex')).search(this.value).draw();
+        all_attendees_admin.column($(this).data('columnIndex')).search(this.value).draw();
         all_exhibitors.column($(this).data('columnIndex')).search(this.value).draw();
     });    
     

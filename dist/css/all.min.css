@@ -1,4 +1,32 @@
 @charset "UTF-8";
+/*
+$primary:           #3F51B5;
+$primary_hover:     #1A237E;
+
+$secondary:         #4285f4;
+$secondary_hover:   #2969d4;
+
+$info:              #fbbc05;
+$info_hover:        #e8ae05;
+
+$success:           #34a853;
+$success_hover:     #289a46;
+
+$danger:            #F44336;
+$danger_hover:      #d63326;
+
+$light:             #f2f2f2;
+$grey:              #e6e8ea;
+ 
+$dark:              #60727b;
+$darkest:           #263238;
+
+$black:             #252525;
+$black_hover:       #111;
+
+$default:           #263238;
+$radius:            .15rem; 
+*/
 body {
   width: 100%;
   overflow-x: hidden !important;
@@ -29,13 +57,13 @@ h3 {
   margin: 0 auto 20px; }
 
 a {
-  color: #3F51B5;
+  color: #252525;
   -webkit-transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out; }
   a:hover, a:focus {
-    color: #1A237E;
+    color: #111;
     text-decoration: none;
     box-shadow: none !important; }
 
@@ -49,7 +77,7 @@ a {
   outline: none !important; }
 
 .login-page {
-  background: #3F51B5;
+  background: #252525;
   margin-bottom: -80px; }
   .login-page .left-col .col-entry, .login-page .right-col .col-entry {
     padding: 0 60px;
@@ -141,20 +169,20 @@ a {
   padding: 2px 6px;
   font-size: 14px; }
   .approval.approved {
-    background: #34a853; }
+    background: #3ac960; }
   .approval.denied {
     background: #F44336; }
   .approval.cancelled {
     background: #60727b; }
   .approval.pending {
-    background: #fbbc05; }
+    background: #4285f4; }
 
 .page-wrap {
   padding: 40px 20px;
   background: #fff; }
 
 .banner {
-  background: #3F51B5;
+  background: #252525;
   position: relative; }
   .banner .welcome {
     margin-right: 20px;
@@ -186,7 +214,7 @@ a {
     color: #263238;
     padding: 15px; }
     .navbar-inverse .navbar-nav .dropdown-menu .nav-link:hover {
-      background: #3F51B5;
+      background: #252525;
       color: #fff; }
 
 .dropdown-item {
@@ -288,7 +316,7 @@ label {
   -o-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out; }
   .form-control:focus {
-    border-color: #3F51B5; }
+    border-color: #252525; }
   .form-control.parsley-error {
     border: 1px solid #F44336; }
 
@@ -309,7 +337,7 @@ label {
   .error-text.error {
     color: #F44336; }
   .error-text.valid {
-    color: #34a853; }
+    color: #3ac960; }
 
 .logo-use span {
   font-family: 'Roboto', sans-serif;
@@ -368,29 +396,29 @@ textarea {
       color: #fff;
       line-height: 30px; }
     .progress_bar li.active span {
-      background: #34a853;
+      background: #3ac960;
       color: #fff; }
 
 .btn {
   border-radius: 1px; }
   .btn.btn-primary {
-    background: #3F51B5;
-    border-color: #3F51B5; }
+    background: #252525;
+    border-color: #252525; }
     .btn.btn-primary:hover {
-      background: #1A237E;
-      border-color: #1A237E; }
+      background: #111;
+      border-color: #111; }
   .btn.btn-info {
+    background: #333;
+    border-color: #333; }
+    .btn.btn-info:hover {
+      background: #444;
+      border-color: #444; }
+  .btn.btn-warning {
     background: #4285f4;
     border-color: #4285f4; }
-    .btn.btn-info:hover {
+    .btn.btn-warning:hover {
       background: #2969d4;
       border-color: #2969d4; }
-  .btn.btn-warning {
-    background: #fbbc05;
-    border-color: #fbbc05; }
-    .btn.btn-warning:hover {
-      background: #e8ae05;
-      border-color: #e8ae05; }
   .btn.btn-black {
     background: #252525;
     border-color: #252525;
@@ -400,8 +428,8 @@ textarea {
       background: #111;
       border-color: #111; }
   .btn.btn-success {
-    background: #34a853;
-    border-color: #34a853; }
+    background: #3ac960;
+    border-color: #3ac960; }
     .btn.btn-success:hover {
       background: #289a46;
       border-color: #289a46; }
@@ -439,9 +467,9 @@ textarea {
     .form-togglers .btn:hover {
       background: #f2f2f2; }
     .form-togglers .btn.active {
-      background: #3F51B5;
+      background: #252525;
       color: #fff;
-      border-color: #3F51B5; }
+      border-color: #252525; }
 
 .form-tab {
   display: none; }
@@ -462,8 +490,8 @@ textarea {
   border: 1px solid #e6e8ea;
   color: #e6e8ea; }
   .active-state.active {
-    background: #34a853;
-    border-color: #34a853;
+    background: #3ac960;
+    border-color: #3ac960;
     color: #fff; }
   .active-state i {
     line-height: 23px;
@@ -480,15 +508,15 @@ textarea {
 .nav-wrap {
   margin: -84px auto 0; }
   .nav-wrap .nav-pills li a {
-    color: #3F51B5;
+    color: #252525;
     border-radius: 0;
     padding: 15px 30px;
     background: none; }
     .nav-wrap .nav-pills li a:hover {
-      background: #3F51B5;
+      background: #252525;
       color: #fff; }
     .nav-wrap .nav-pills li a.active {
-      color: #3F51B5;
+      color: #252525;
       background: #f2f2f2; }
     .nav-wrap .nav-pills li a i {
       float: left;
@@ -543,7 +571,7 @@ textarea {
   .filters .filtering-list {
     padding: 0 20px 20px; }
     .filters .filtering-list .filter-item {
-      background: #4285f4;
+      background: #333;
       color: #fff;
       padding: 0 25px 0 10px;
       margin: 0 5px 0 0;
@@ -562,14 +590,14 @@ textarea {
         position: absolute;
         top: 4px;
         font-size: 14px;
-        background: #2969d4;
+        background: #444;
         margin-left: 20px;
         float: right;
         right: 5px;
         padding: 1px;
         border-radius: 50%; }
       .filters .filtering-list .filter-item:hover {
-        background: #2969d4; }
+        background: #444; }
   .filters .no-filters {
     text-align: center;
     display: block;
@@ -617,7 +645,7 @@ textarea {
   text-align: center;
   color: #fff;
   cursor: pointer;
-  background: #34a853;
+  background: #3ac960;
   border-radius: 50%;
   z-index: 9; }
   .add-new i {
@@ -639,7 +667,7 @@ textarea {
     transform: scale(1); }
 
 .success-box {
-  background: #34a853;
+  background: #3ac960;
   color: #fff;
   padding: 10px 20px;
   text-align: center;
@@ -789,8 +817,8 @@ textarea {
   margin-right: 10px;
   cursor: pointer; }
   .buttons-csv:hover {
-    background: #3F51B5;
-    border-color: #3F51B5;
+    background: #252525;
+    border-color: #252525;
     color: #fff; }
 
 .dataTables_filter {
@@ -819,8 +847,8 @@ textarea {
   font-size: 14px;
   margin-right: 5px; }
   .paginate_button.current {
-    background: #3F51B5;
-    border-color: #3F51B5;
+    background: #252525;
+    border-color: #252525;
     color: #fff; }
 
 .wysiwyg {
@@ -895,12 +923,12 @@ textarea {
   top: 0;
   bottom: 0;
   width: 60px;
-  background: #3F51B5;
+  background: #252525;
   color: #fff;
   text-shadow: none;
   opacity: 1; }
   .modal .close:hover {
-    background: #1A237E; }
+    background: #111; }
 
 .att_answer {
   color: #60727b;
@@ -1040,7 +1068,7 @@ textarea {
     left: 0;
     right: 0;
     z-index: 99;
-    background: #3F51B5;
+    background: #252525;
     height: 100%;
     min-height: 100vh;
     transform: translateX(-100%);
@@ -1178,7 +1206,7 @@ https://github.com/silviomoreto/bootstrap-select/issues/1135
   box-shadow: none !important; }
 
 .bootstrap-select.btn-group .dropdown-menu li.selected {
-  background: #3F51B5; }
+  background: #252525; }
   .bootstrap-select.btn-group .dropdown-menu li.selected a {
     color: #fff; }
 
