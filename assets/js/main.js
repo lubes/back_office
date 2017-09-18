@@ -1,5 +1,5 @@
-var site_url = 'http://localhost:8888/a_quartz/';
-// var site_url = 'http://qa.esw.me/';
+// var site_url = 'http://localhost:8888/a_quartz/';
+var site_url = 'http://qa.esw.me/';
 
 $(document).ready(function () {
  
@@ -659,6 +659,73 @@ $('.view-exhibitor-info').on('click', function() {
         .fail(function () {
             console.log('Something went wrong...');
         });
+});
+
+
+
+
+$("#page_1 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_1");
+});    
+    
+$("#page_2 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_2");
+});
+    
+$("#page_3 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_3");
+});
+    
+$("#page_4 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_4");
+});    
+    
+$("#page_5 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_5");
+});    
+    
+$("#page_6 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_6");
+});    
+    
+$("#page_7 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_7");
+});
+    
+$("#page_8 li").sort(function(a, b) {
+  return parseInt(a.id) - parseInt(b.id);
+}).each(function() {
+  var elem = $(this);
+  elem.remove();
+  $(elem).appendTo("#page_8");
 });
 
 

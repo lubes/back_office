@@ -58,7 +58,7 @@ $event = $_GET['event'];
                             <input type="text" class="form-control required required-input" required=""  name="name" />
                         </div>
                     </div>
-              
+                    <!--
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
                             <label>Job Title *</label>
@@ -127,7 +127,7 @@ $event = $_GET['event'];
                             <input type="text" class="form-control" required="" name="zip" />
                         </div> 
                     </div>
-             
+                    -->
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
                             <label>Country</label>
@@ -449,73 +449,3 @@ $.ajax({
 
 
 
-
-<!-- ORDER ALL THE FIELDS -->
-
-<script>
-    
-$("#page_1 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_1");
-});    
-    
-$("#page_2 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_2");
-});
-    
-$("#page_3 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_3");
-});
-    
-$("#page_4 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_4");
-});    
-    
-$("#page_5 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_5");
-});    
-    
-$("#page_6 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_6");
-});    
-    
-$("#page_7 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_7");
-});
-    
-$("#page_8 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_8");
-});
-    
-</script>
