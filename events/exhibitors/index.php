@@ -8,6 +8,7 @@ include('../nav.php');?>
     <div class="widget-wrap">
         <div class="widget-title">
             <h3><?php echo event_name();?> Exhibitors</h3>
+            <a href="mailto:<?php all_exhibitor_emails();?>" class="btn btn-secondary btn-sm float-right">Email All Exhibitors</a>
         </div>
         <div class="widget-content">
             <?php exhibitor_by_event();?>

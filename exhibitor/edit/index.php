@@ -17,13 +17,35 @@ include('../../layout/header.php');?>
             <h3>Edit <?php exhibitor_name();?></h3>
         </div>
         <div class="widget-content">
-            <?php if($_SESSION['permission']==1):?>
-            <?php edit_exhibitor_events();?>
-            <?php endif;?>
             <?php edit_exhibitor();?>
-            <?php upload_exhibitor_logo();?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-6">
+            <div class="widget-wrap">
+                <div class="widget-title">
+                    <h3>Exhibitor Events</h3>
+                </div>
+                <div class="widget-content">
+                    <?php if($_SESSION['permission']==1):?>
+                        <?php edit_exhibitor_events();?>
+                        <?php duplicate_exhibitor();?>
+                    <?php // edit_exhibitor_events();?>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6">
+            <div class="widget-wrap">
+                <div class="widget-title">
+                    <h3>Exhibitor Logo</h3>
+                </div>
+                <div class="widget-content">
+                    <?php upload_exhibitor_logo();?>
+                </div>
+            </div> 
+        </div>
+    </div>   
 </div>
 <?php include('../../layout/footer.php');?>
 
