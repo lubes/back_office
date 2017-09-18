@@ -17,6 +17,9 @@ include('../../layout/header.php');?>
             <h3>Edit <?php exhibitor_name();?></h3>
         </div>
         <div class="widget-content">
+            <?php if($_SESSION['permission']==1):?>
+            <?php edit_exhibitor_events();?>
+            <?php endif;?>
             <?php edit_exhibitor();?>
             <?php upload_exhibitor_logo();?>
         </div>

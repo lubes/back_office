@@ -1034,6 +1034,96 @@ function exhibitor_profile_sm() {
     <?php }
 }
 
+
+// Edit Exhibitor Events
+function edit_exhibitor_events() {
+    global $mysqli; 
+    $exhibitor = $_GET['id'];
+    $result = mysqli_query($mysqli, "SELECT * FROM exhibitors WHERE id='$exhibitor'");
+    if(isset($_POST['edit_exhibitor_events'])) {
+        $event_1 = $_POST['event']; 
+        $event_2 = $_POST['event_2']; 
+        $event_3 = $_POST['event_3']; 
+        $result = mysqli_query($mysqli, "UPDATE exhibitors SET
+        event='$event_1',
+        event_2='$event_2',
+        event_3='$event_3'
+        WHERE id='$exhibitor'");   
+        echo "<meta http-equiv='refresh' content='0'>";
+    }
+    while($res = mysqli_fetch_array($result)) { ?>    
+    <form  method="post" action="">
+        <h4 class="sec-title">Exhibitor Events</h4>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-4">
+                <div class="form-group">
+                    <label>Event</label>
+                    <?php $result_event = mysqli_query($mysqli, 
+                    "SELECT quartz_event.*, quartz_event.id AS ev_id, events.id, events.name AS event_name, brands.id, brands.name AS brand_name, brands.name 
+                    FROM quartz_event, events, brands
+                    WHERE quartz_event.Event = events.id AND quartz_event.brand = brands.id");                                                       
+                    echo '<div class="select-wrap">';?>
+                    <select class="form-control" name="event">
+                    <option  value="">Select Event</option>
+                    <?php while($res_event = mysqli_fetch_array($result_event)) { 
+                            $ev_id = $res_event['ev_id'];
+                            $event_name = $res_event['event_name'];
+                            $brand_name = $res_event['brand_name'];
+                            $brand_id = $res_event['brand_id'];
+                            $event_id = $res_event['event_id'];?>
+                            <option <?php if($res['event']==$ev_id): echo 'selected'; endif;?> value="<?php echo $ev_id;?>"><?php echo $brand_name;?> <?php echo $event_name;?></option>  
+                    <?php }
+                    echo '</select></div>';?>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-4">
+                <div class="form-group">
+                    <label>Event</label>
+                    <?php $result_event = mysqli_query($mysqli, 
+                    "SELECT quartz_event.*, quartz_event.id AS ev_id, events.id, events.name AS event_name, brands.id, brands.name AS brand_name, brands.name 
+                    FROM quartz_event, events, brands
+                    WHERE quartz_event.Event = events.id AND quartz_event.brand = brands.id");                                                       
+                    echo '<div class="select-wrap">';?>
+                    <select class="form-control" name="event_2">
+                    <option  value="">Select Event</option>
+                    <?php while($res_event = mysqli_fetch_array($result_event)) { 
+                            $ev_id = $res_event['ev_id'];
+                            $event_name = $res_event['event_name'];
+                            $brand_name = $res_event['brand_name'];
+                            $brand_id = $res_event['brand_id'];
+                            $event_id = $res_event['event_id'];?>
+                            <option <?php if($res['event_2']==$ev_id): echo 'selected'; endif;?> value="<?php echo $ev_id;?>"><?php echo $brand_name;?> <?php echo $event_name;?></option>  
+                    <?php }
+                    echo '</select></div>';?>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-4">
+                <div class="form-group">
+                    <label>Event</label>
+                    <?php $result_event = mysqli_query($mysqli, 
+                    "SELECT quartz_event.*, quartz_event.id AS ev_id, events.id, events.name AS event_name, brands.id, brands.name AS brand_name, brands.name 
+                    FROM quartz_event, events, brands
+                    WHERE quartz_event.Event = events.id AND quartz_event.brand = brands.id");                                                       
+                    echo '<div class="select-wrap">';?>
+                    <select class="form-control" name="event_3">
+                    <option  value="">Select Event</option>
+                    <?php while($res_event = mysqli_fetch_array($result_event)) { 
+                            $ev_id = $res_event['ev_id'];
+                            $event_name = $res_event['event_name'];
+                            $brand_name = $res_event['brand_name'];
+                            $brand_id = $res_event['brand_id'];
+                            $event_id = $res_event['event_id'];?>
+                            <option <?php if($res['event_3']==$ev_id): echo 'selected'; endif;?> value="<?php echo $ev_id;?>"><?php echo $brand_name;?> <?php echo $event_name;?></option>  
+                    <?php }
+                    echo '</select></div>';?>
+                </div>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-success" name="edit_exhibitor_events" value="Update Events" />
+    </form>
+    <hr>    
+<?php } }
+
 // Edit Exhibitor Profile
 function edit_exhibitor() {
     global $mysqli; 
@@ -1151,6 +1241,7 @@ function edit_exhibitor() {
 
         <form  method="post" action="">
             <input type="hidden" name="event" value="<?php echo $res['event'];?>">
+            <?php if($_SESSION['permission']==1):?>
             <h4 class="sec-title">Login Credentials</h4>
             <div class="row">
                 <div class="col-12 col-sm-6">
@@ -1165,7 +1256,8 @@ function edit_exhibitor() {
                         <input class="form-control" name="password" value="<?php echo $res['password'];?>">
                     </div>
                 </div>
-            </div>            
+            </div>           
+            <?php endif;?>
             <h4 class="sec-title">Exhibitor Information</h4>
             <div class="row">
                 <div class="col-12 col-sm-6">
@@ -1531,24 +1623,26 @@ function exhibitor_by_event() {
     <?php }
 }
 
+// All Events for Each Exhibitor
 function exhibitor_events($btn) {
     global $mysqli; 
     global $uri;
-    $exhibitor = $_SESSION['email'];
+    $exhibitor = $_SESSION['id'];
     $result = mysqli_query($mysqli, "
     SELECT 
     exhibitors.*,
-    quartz_event.id AS q_event, quartz_event.Event, 
-    events.id AS event_id, events.name AS event_name,
-    brands.id AS brand_id, brands.name AS brand_name 
-    FROM exhibitors
-    LEFT JOIN quartz_event ON exhibitors.event = quartz_event.id
-    LEFT JOIN events ON quartz_event.Event = events.id
-    LEFT JOIN brands ON quartz_event.brand = brands.id
-    WHERE exhibitors.email='$exhibitor'
-    ");
+    quartz_event.id AS q_event, 
+        quartz_event.Event,
+        events.id AS event_id, events.name AS event_name,
+        brands.id AS brand_id, brands.name AS brand_name      
+    FROM exhibitors   
+    LEFT JOIN quartz_event ON exhibitors.event = quartz_event.id OR exhibitors.event_2 =  quartz_event.id  OR exhibitors.event_3 =  quartz_event.id
+        LEFT JOIN events ON quartz_event.Event = events.id
+        LEFT JOIN brands ON quartz_event.brand = brands.id    
+    WHERE exhibitors.id='$exhibitor'
+    ");    
     while($res = mysqli_fetch_array($result)) { ?>
-        <a class="btn btn-primary <?php echo $btn;?>" href="<?php echo $uri;?>/events/?event=<?php echo $res['q_event'];?>"><?php echo $res['brand_name'];?> <?php echo $res['event_name'];?></a>
+        <a class="btn btn-secondary <?php echo $btn;?>" href="<?php echo $uri;?>/events/?event=<?php echo $res['q_event'];?>"><?php echo $res['brand_name'];?> <?php echo $res['event_name'];?></a>
     <?php }
 }
 
