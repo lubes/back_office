@@ -68,9 +68,16 @@ include_once("connection.php");
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo $uri;?>/admin/exhibitors">Exhibitors</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?php echo $uri;?>/admin/attendees">Attendees</a>
-                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Attendees
+                            </a> 
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="nav-link"  href="<?php echo $uri;?>/admin/attendees">All Attendees</a>
+                                <a class="nav-link"  href="<?php echo $uri;?>/admin/attendees/aborts">Form Aborts</a>
+                            </div>
+                        </li>                        
+                        
                         <?php endif;?>
                         
                         <!-- mobile log out and profile -->

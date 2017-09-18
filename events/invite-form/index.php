@@ -197,6 +197,12 @@ $event = $_GET['event'];
         <!-- Step 8 -->
         <div class="form-section" id="sec_8">
             <h2 class="form-sec-title">Submit Your Application</h2>  
+            
+            <!-- Complete Registration Field for QUARTZ -->
+            <input type="hidden" name="Completed Event Registration" value="true" />
+            
+            <input type="hidden" name="finished" value="1" />
+            
             <div class="form-group">
                 <label>Exhibitor Selection <span>Below you will find a list of solutions and services partners. If you would like to meet with a specific supplier please select their corresponding box. We will arrange an appointment within the meeting windows specified.</span></label>
                 <?php exhibitors_invite_form();?>
@@ -224,24 +230,7 @@ $event = $_GET['event'];
         <?php register_attendee();?> 
         
     </form>
- 
-<!--
-<script type="text/javascript">
-var aoProtocol = location.protocol;
-if ( aoProtocol.indexOf('http') < 0 ) aoProtocol = 'http:';
-var aoCAP = {
-aid: '17258',
-fid: '038f',
-did: 'd-ext-0001',
-server: 'marketing.quartzb2b.com',
-formName: 'registeruserform',
-protocol: aoProtocol
-};
-document.write( '<script type="text/javascript" src="'+aoCAP.protocol+'//'+aoCAP.server+'/acton/js/formcap.min.js"><'+'/script>' );
 
-</script>
-
--->
 </div>
 </div>
 

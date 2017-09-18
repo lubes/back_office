@@ -1610,7 +1610,7 @@ function exhibitor_events($btn) {
 /******* Attendees **********/
 
 // All Attendees
-function all_attendees() {
+function all_attendees($finished) {
     global $mysqli; 
     global $uri;
     // $result = mysqli_query($mysqli, "SELECT * FROM attendees");
@@ -1621,6 +1621,7 @@ function all_attendees() {
     LEFT JOIN quartz_event ON attendees.event = quartz_event.id
     LEFT JOIN events ON quartz_event.Event = events.id
     LEFT JOIN brands ON quartz_event.brand = brands.id
+    WHERE attendees.finished = $finished
     ");
  
     while($res = mysqli_fetch_array($result)) { ?>
@@ -1647,7 +1648,10 @@ function all_attendees() {
                <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></td>
                <td>
                    
-                   <?php
+                   <?php                                     
+                    if($res['finished'] == 0) {
+                       echo 'Unfinished';
+                    } else {
                        // Check Attendee Approval
                        if($res['approved'] == 0) {
                            echo '<div class="approval pending">Pending</div>';
@@ -1655,9 +1659,11 @@ function all_attendees() {
                            echo '<div class="approval approved">Approved</div>';
                        } else if($res['approved'] == 2) {
                            echo '<div class="approval denied">Denied</div>';
-                       } else {
+                       } else if($res['approved'] == 3) {
                            echo '<div class="approval cancelled">Cancelled</div>';
                        }
+                    }                                    
+                                         
                    ?>
                 </td>
                <td>
@@ -3532,6 +3538,13 @@ function register_attendee() {
         $procurement_interest  = $_POST['procurement_interest'];
         // $t_c  = $_POST['t_c'];
         $logo_use  = $_POST['logo_user'];
+        
+        if(isset($_POST['logo_use'])) {
+            $finished = '1';
+        } else {
+            $finished = '0';
+        }
+        
         $result = $mysqli->query("INSERT INTO attendees(
             permission,
             event,
@@ -3582,7 +3595,8 @@ function register_attendee() {
             procurement_projects,
             procurement_interest,
             t_c,
-            logo_user
+            logo_user,
+            finished
         )VALUES(
             '3',
             '$event_id',
@@ -3633,7 +3647,8 @@ function register_attendee() {
             '$procurement_projects',
             '$procurement_interest',
             '1',
-            '$logo_use'
+            '$logo_use',
+            '$finished'
         )");
         
         $last_id = $mysqli->insert_id;

@@ -1,9 +1,9 @@
 <?php 
-include_once("../../connection.php");
-include('../../layout/header.php'); 
+include_once("../../../connection.php");
+include('../../../layout/header.php'); 
 $page_var = 'Attendee';
 $page_vars = 'attendees';
-include ('../../layout/page-header.php');?>
+include ('../../../layout/page-header.php');?>
 
 <div class="container">
     <div class="widget-wrap">
@@ -33,7 +33,7 @@ include ('../../layout/page-header.php');?>
             </div>
         </div>
         <div class="widget-content">
-            <?php all_attendees($finished="1");?>
+            <?php all_attendees($finished="0");?>
         </div>
     </div>
 </div>
@@ -55,5 +55,5 @@ include ('../../layout/page-header.php');?>
   </div>
 </div>
 
-<?php include('../../layout/footer.php');?>
+<?php include('../../../layout/footer.php');?>
 
