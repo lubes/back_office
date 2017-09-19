@@ -43,6 +43,21 @@ include('../nav.php');?>
 <?php include('../../layout/footer.php');?> 
 
 <script>
+var i=100;
+$('.field_order').each(function(){
+    i++;
+    var newID=i;
+    $(this).attr('id',newID);
+});
+    
+var i=0;
+$('.page_1').each(function(){
+    i++;
+    var newID=i;
+    $(this).attr('id',newID);
+});
+
+
 $("#field_order li").sort(function(a, b) {
   return parseInt(a.id) - parseInt(b.id);
 }).each(function() {
@@ -50,4 +65,6 @@ $("#field_order li").sort(function(a, b) {
   elem.remove();
   $(elem).appendTo("#field_order");
 });
+    
+ 
 </script>

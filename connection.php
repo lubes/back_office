@@ -2560,7 +2560,6 @@ function form_fields() {
         echo "<meta http-equiv='refresh' content='0'>";
     } 
 
-    
     // Update Custom Field
     if(isset($_POST['update_custom_field'])) {
         $id = $_POST['id'];
@@ -2585,8 +2584,10 @@ function form_fields() {
     }     
     
     $result_2 = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event='$event'");
-    while($res = mysqli_fetch_array($result_2)) {?>
-                <li id="<?php echo $res['order_no'];?>">
+    $i=500; while($res = mysqli_fetch_array($result_2)) { $i++; ?>
+
+
+                <li class="<?php if($res['page']==1) { echo 'page_1'; } else { echo 'field_order'; } ?> " id="<?php echo $res['order_no'];?>">
                     <form method="post" action="">
                         <input type="hidden" name="id" value="<?php echo $res['id'];?>" />
                         <div class="card">
@@ -2696,7 +2697,7 @@ function form_fields() {
 
     $i=0; while($res = mysqli_fetch_array($result)) { $i++; ?>
 
-    <li id="<?php echo $res['order_no'];?>">
+    <li class="field_order" id="<?php echo $res['order_no'];?>">
         <form method="post" action="">
             <input type="hidden" name="id" value="<?php echo $res['id'];?>" />
             <div class="card <?php if($res['conditional_child']==1) { echo 'conditional'; }?>">
@@ -2798,13 +2799,27 @@ function form_fields() {
                                         </label>
                                     </div> 
                                 </div> 
-                                <div class="form-group">
-                                    <label>Conditional?</label>
-                                    <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" value="1" name="has_options" <?php if($res['has_options']==1) { echo 'checked'; }?>>
-                                    <span class="custom-control-indicator"></span>
-                                    <span class="custom-control-description">Yes</span>
-                                    </label>
+                                <div class="row">
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Conditional?</label>
+                                            <label class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" value="1" name="has_options" <?php if($res['has_options']==1) { echo 'checked'; }?>>
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description">Yes</span>
+                                            </label>
+                                </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Conditional Child?</label>
+                                            <label class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" value="1" name="conditional_child" <?php if($res['conditional_child']==1) { echo 'checked'; }?>>
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description">Yes</span>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-2 col-sm-7">
@@ -2979,20 +2994,14 @@ function form_code() {
     <?php } 
 }
 
-
-
 // View Created Custom Fields
 function view_custom_fields() {
     global $mysqli; 
     $event = $_GET['event'];
-    
     $result_view = mysqli_query($mysqli, "
-    SELECT * FROM custom_fields WHERE event='$event'");?>
-
-    <!-- Update Custom Fields -->
-    <?php
+    SELECT * FROM custom_fields WHERE event='$event'");
+    // Update Custom Fields
     if(isset($_POST['create_custom'])) {
-        // $brand = $_post['brand'];
         $order_no = $_POST['order_no'];
         $form_type = $_POST['form_type'];
         $required = $_POST['required'];
@@ -3001,7 +3010,7 @@ function view_custom_fields() {
         $description = $_POST['description'];
         $page = $_POST['page'];
         
-        $result = $mysqli->query("INSERT INTO custom_fields(event, order_no, form_type, required, title, description, page) VALUES('$event', '$order_no', '$form_type', '$required', '$title', '$description', '$page')");
+        $result = $mysqli->query("INSERT INTO custom_fields(event, order_no, form_type, required, title, field_options, description, page) VALUES('$event', '$order_no', '$form_type', '$required', '$title', '$field_options', '$description', '$page')");
         
         /*
         $sql = 'INSERT INTO custom_fields (event, order_no, form_type, required, title, field_options) VALUES ';
@@ -3228,16 +3237,72 @@ function event_options() {
 }
 
 // Show Custom Fields
-
 function show_custom_fields($page) {
 global $mysqli; 
 $event = $_GET['event'];
 $result_2 = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event='$event' AND page='$page'");
 while($res = mysqli_fetch_array($result_2)) {?>
     <li id="<?php echo $res['order_no'];?>">
+
         <div class="form-group">
-        <label><?php echo $res['title'];?> </label>
-        <?php if($res['form_type']=='6') { echo $res['description']; } ?>
+            <label><?php echo $res['title'];?> <span><?php if($res['form_type'] !=='6') { echo $res['description']; } ?></span></label>
+
+            <!-- Checkbox -->
+            <?php if($res['form_type']=='1'):?>
+                <div class="form-check">
+                <?php
+                $text = trim($res['field_options']); 
+                $textAr = explode("\n", $text);
+                $textAr = array_filter($textAr, 'trim'); 
+                foreach ($textAr as $line) { ?>
+                   <label class="form-check-label">
+                       <input class="form-check-input has-other-field" <?php if($res['required']==1) { echo 'required="" required'; } ?> type="checkbox" name="<?php echo $slug;?>" value="<?php echo $line;?>" data-id="<?php echo $res['title'];?>"> <?php echo $line;?>
+                   </label>
+                <?php } ?> 
+                    <input class="form-control other-input hidden_input" id="<?php echo $res['title'];?>" type="text" placeholder="Other" />
+                </div>
+            <?php endif;?>
+            
+            <!-- Select -->
+            <?php if($res['form_type']=='2'):?>
+                <div class="select-wrap">
+                    <select class="form-control has-other has-other-field" id="field_<?php echo $res['title'];?>" <?php if($res['required']==1) { echo 'required="" required';  } ?> name="<?php echo $res['slug'];?>" data-id="<?php echo $res['slug'];?>">
+                        <option value="-">-</option>
+                       <?php 
+                       $text = trim($res['field_options']); 
+                       $textAr = explode("\n", $text);
+                       $textAr = array_filter($textAr, 'trim'); 
+                       foreach ($textAr as $line) { ?>
+                           <option value="<?php echo $line;?>"><?php echo $line;?></option>
+                       <?php } 
+                       ?> 
+                    </select>
+                </div>
+            <?php endif;?>
+            
+            <!-- Input -->
+            <?php if($res['form_type']=='3'):?>
+                <input class="form-control" <?php if($res['required']==1) { echo 'required="" required';  } ?> name="<?php echo $res['title'];?>" /> 
+            <?php endif;?>
+            
+            <!-- Textarea -->
+            <?php if($res['form_type']=='4'):?>
+                <textarea class="form-control" <?php if($res['required']==1) { echo 'required="" required';  } ?> name="<?php echo $res['title'];?>"></textarea>
+            <?php endif;?>            
+            
+            <!-- Yes/No -->
+            <?php if($res['form_type']=='5'):?>
+                <div class="form-check">
+                   <label class="form-check-label">
+                   <input class="form-check-input" type="radio" name="<?php echo $res['title'];?>" id="exampleRadios1" value="yes"> Yes</label>
+                   <label class="form-check-label">
+                   <input class="form-check-input" type="radio" name="<?php echo $res['title'];?>" id="exampleRadios1" value="No"> No</label>
+                </div>
+            <?php endif;?>             
+            
+            <!-- Message -->
+            <?php if($res['form_type']=='6') { echo '<p>'. $res['description'] .'</p>'; } ?>
+            
         </div>
     </li>
 <?php }    
@@ -3301,7 +3366,7 @@ while($res = mysqli_fetch_array($result)) { ?>
                 <textarea class="form-control" <?php if($res['required']==1) { echo 'required=""';  } ?> name="<?php echo $res['slug'];?>"></textarea>
             <?php endif;?>
             
-            <!-- Textarea -->
+            <!-- yes / no -->
             <?php if($res['type'] == 5): ?>
                 <div class="form-check">
                    <label class="form-check-label <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
