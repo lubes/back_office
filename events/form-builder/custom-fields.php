@@ -12,7 +12,7 @@ include('../nav.php');?>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-10">
                     <div class="form-tab active" id="tab_3">
-                        <h3>Custom Fields</h3>
+                        <h3>Add Custom Field</h3>
                         <?php view_custom_fields();?>
                     </div>
                 </div>

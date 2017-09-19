@@ -25,6 +25,9 @@ include_once("connection.php");
         background: <?php get_event_color();?>;
         border-color:  <?php get_event_color();?>;
     }
+    .invite-form::before {
+        background: <?php get_event_color();?>;
+    }
 </style>
 
 </head>
