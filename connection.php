@@ -2876,10 +2876,8 @@ function event_info_form() {
                 <div class="col-12 col-sm-12">
                     <div class="form-group">
                         <h3>Event JS Code</h3>
-                        <label>JS Code</label>
-                        
+                        <label>Add the URL for the ActOn Beacon code ( //marketing.quartzb2b.com/cdnr/94/acton... )</label>
                         <textarea class="form-control" name="form_code"><?php echo $res['form_code'];?></textarea>    
-                        
                     </div>     
                 </div>
             </div>
