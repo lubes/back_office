@@ -1,33 +1,4 @@
-
 @charset "UTF-8";
-/*
-$primary:           #3F51B5;
-$primary_hover:     #1A237E;
-
-$secondary:         #4285f4;
-$secondary_hover:   #2969d4;
-
-$info:              #fbbc05;
-$info_hover:        #e8ae05;
-
-$success:           #34a853;
-$success_hover:     #289a46;
-
-$danger:            #F44336;
-$danger_hover:      #d63326;
-
-$light:             #f2f2f2;
-$grey:              #e6e8ea;
- 
-$dark:              #60727b;
-$darkest:           #263238;
-
-$black:             #252525;
-$black_hover:       #111;
-
-$default:           #263238;
-$radius:            .15rem; 
-*/
 body {
   width: 100%;
   overflow-x: hidden !important;
