@@ -2849,12 +2849,14 @@ function event_info_form() {
         $admin_email = $_POST['admin_email'];
         $exhibitor_update_notice=$_POST['exhibitor_update_notice'];
         $attendee_update_notice=$_POST['attendee_update_notice'];
+        $code = $_POST['form_code'];
         $result = mysqli_query($mysqli, "UPDATE quartz_event SET
         color='$color',
         approval_notice='$approval_notice',
         admin_email = '$admin_email',
         exhibitor_update_notice='$exhibitor_update_notice',
-        attendee_update_notice='$attendee_update_notice'
+        attendee_update_notice='$attendee_update_notice',
+        form_code='$code'
         WHERE id='$event'");
         echo "<meta http-equiv='refresh' content='0'>";
     } 
@@ -2866,6 +2868,18 @@ function event_info_form() {
                         <h3>Event Color</h3>
                         <label>HEX Color (exclude hash symbol)</label>
                         <input type="text" class="form-control" name="color" placeholder="000000" value="<?php echo $res['color'];?>" />
+                    </div>     
+                </div>
+            </div>
+            <hr><br>
+            <div class="row">
+                <div class="col-12 col-sm-12">
+                    <div class="form-group">
+                        <h3>Event JS Code</h3>
+                        <label>JS Code</label>
+                        
+                        <textarea class="form-control" name="form_code"><?php echo $res['form_code'];?></textarea>    
+                        
                     </div>     
                 </div>
             </div>
@@ -2915,6 +2929,20 @@ function get_event_color() {
          echo '#'. $res['color'];
     } 
 }
+
+// Get Event Code
+function form_code() {
+    global $mysqli; 
+    $event = $_GET['event'];
+    $result = mysqli_query($mysqli, "SELECT * FROM quartz_event WHERE id='$event'");
+    while($res = mysqli_fetch_array($result)) { ?>
+
+        <script>/*<![CDATA[*/(function(w,a,b,d,s){w[a]=w[a]||{};w[a][b]=w[a][b]||{q:[],track:function(r,e,t){this.q.push({r:r,e:e,t:t||+new Date});}};var e=d.createElement(s);var f=d.getElementsByTagName(s)[0];e.async=1;e.src='<?php echo $res['form_code'];?>';f.parentNode.insertBefore(e,f);})(window,'ActOn','Beacon',document,'script');ActOn.Beacon.track();/*]]>*/</script>
+
+    <?php } 
+}
+
+
 
 // View Created Custom Fields
 function view_custom_fields() {

@@ -1,5 +1,5 @@
-var site_url = 'http://localhost:8888/a_quartz/';
-// var site_url = 'http://qa.esw.me/';
+// var site_url = 'http://localhost:8888/a_quartz/';
+var site_url = 'http://qa.esw.me/';
 
 $(document).ready(function () {
  

@@ -7,7 +7,7 @@ $brand = $_GET['brand'];
 $event = $_GET['event'];
 ?>
 
-<script>/*<![CDATA[*/(function(w,a,b,d,s){w[a]=w[a]||{};w[a][b]=w[a][b]||{q:[],track:function(r,e,t){this.q.push({r:r,e:e,t:t||+new Date});}};var e=d.createElement(s);var f=d.getElementsByTagName(s)[0];e.async=1;e.src='//marketing.quartzb2b.com/cdnr/94/acton/bn/tracker/17258';f.parentNode.insertBefore(e,f);})(window,'ActOn','Beacon',document,'script');ActOn.Beacon.track();/*]]>*/</script>
+<?php form_code();?>
 
 <div class="container">
     <div class="invite-wrap">
@@ -58,7 +58,6 @@ $event = $_GET['event'];
                             <input type="text" class="form-control required required-input" required=""  name="name" />
                         </div>
                     </div>
-                    <!--
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
                             <label>Job Title *</label>
@@ -127,7 +126,6 @@ $event = $_GET['event'];
                             <input type="text" class="form-control" required="" name="zip" />
                         </div> 
                     </div>
-                    -->
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
                             <label>Country</label>
