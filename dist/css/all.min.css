@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 body {
   width: 100%;
   overflow-x: hidden !important;
@@ -336,55 +337,37 @@ textarea {
 .invite-form {
   background: #fff;
   margin: 0 auto;
-  padding: 60px 0;
-  position: relative; }
+  padding: 0; }
   .invite-form label {
     font-size: 16px;
     margin-right: 0; }
-  .invite-form .intro-message {
-    margin: 0 auto 40px; }
-  .invite-form:before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 500px; }
 
 .progress_bar {
   text-align: center;
   margin: 40px auto;
-  max-width: 900px;
-  position: relative;
-  clear: both;
-  float: left;
-  width: 100%;
-  /*
-    &:before {
-        content:'';
-        position: absolute;
-        top: 14px;
-        left: 20px;
-        right: 20px;
-        background: $grey;
-        height: 1px;
-        width: auto;
-    }
-    */ }
+  max-width: 360px;
+  position: relative; }
+  .progress_bar:before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    right: 20px;
+    background: #e6e8ea;
+    height: 1px;
+    width: auto; }
   .progress_bar li {
     display: inline-block;
-    margin: 0 auto;
-    float: left;
-    width: 12.5%;
+    margin: 0 5px;
     position: relative; }
     .progress_bar li span {
-      width: 100%;
+      width: 30px;
       height: 30px;
       display: block;
+      border-radius: 50%;
       background: #e6e8ea;
       color: #fff;
-      line-height: 30px;
-      border: 1px solid #fff; }
+      line-height: 30px; }
     .progress_bar li.active span {
       background: #3ac960;
       color: #fff; }
@@ -1001,10 +984,7 @@ textarea {
   background: #fff;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 60px;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); }
+  padding: 60px; }
   .invite-wrap .invite-header {
     margin: 0 auto 20px;
     text-align: center; }

@@ -3794,6 +3794,30 @@ function register_attendee() {
                     
         ?>
 
+
+<!-- 
+CHIMMY! 
+THIS IS AJAX CALL I NEED TO SEND DATA FROM STEP 1 TO ACT ON
+- IF YOU CAN, JUST DO LIKE, NAME FIELD?
+-->
+<script>
+var PostData = '';
+$.ajax({
+  async: false,
+  url: 'https://marketing.quartzb2b.com/acton/form/17258/038f:d-0001/0/-/-/-/-/index.htm',
+  type: 'POST',
+  data: {name: 'bob'},
+  success: function(data) {
+        console.log('SUCCESS!');
+        setTimeout(AoProcessForm($('#registeruserform')[0]), 0);
+  }
+});
+    
+    
+  
+</script>
+            
+                    
         <script>
             // window.location = "./thanks";
             // window.location = "../thanks/?id=<?php echo $last_id;?>&event=<?php echo $event_id;?>";
