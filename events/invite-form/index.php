@@ -28,7 +28,10 @@ $event = $_GET['event'];
             </ul> 
         </div>
         
-    <!--<form class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">-->
+    <!--
+    CHIMMY! : THIS IS FORM HTML TO REPLACE CUURENT FORM HTML BELOW
+
+    <form class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">-->
         
     <form action="" method="post" enctype="multipart/form-data" class="registration-form">
 
@@ -148,7 +151,9 @@ $event = $_GET['event'];
             </ul>
         </div>
         
-        <!--<input type="submit" class="btn btn-black btn-lg float-right" name="submit_form" value="Continue" />-->
+<!--
+CHIMMY! PLACEHOLDER SUBMIT BUTTON IN CASE YOU DONT WANT TO FILL OUT THE ENTIRE FORM - HIDE THE REST OF THE FIELDS BELOW
+<input type="submit" class="btn btn-black btn-lg float-right" name="submit_form" value="Continue" />-->
 
         <!-- Step 2 -->
         <div class="form-section" id="sec_2">
@@ -269,6 +274,8 @@ $event = $_GET['event'];
 <?php include('../../layout/footer.php');?>
 
 <!--
+CHIMMY! 
+THIS IS THE ACT-ON FORM URL:
 https://marketing.quartzb2b.com/acton/form/17258/038f:d-0001/0/-/-/-/-/index.htm
 -->
 
@@ -416,11 +423,16 @@ https://marketing.quartzb2b.com/acton/form/17258/038f:d-0001/0/-/-/-/-/index.htm
 	};
 </script>
 
+<!-- 
+CHIMMY! 
+THIS IS AJAX CALL I NEED TO SEND DATA FROM STEP 1 TO ACT ON
+- IF YOU CAN, JUST DO LIKE, NAME FIELD?
+-->
 <script>
 var PostData = '';
 $.ajax({
   async: false,
-  url: '../thanks/?id=16974&event=10',
+  url: '',
   type: 'POST',
   data: PostData,
   success: function(data) {
