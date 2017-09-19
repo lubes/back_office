@@ -1654,7 +1654,7 @@ function all_attendees($finished) {
     global $uri;
     // $result = mysqli_query($mysqli, "SELECT * FROM attendees");
     $result = mysqli_query($mysqli, "
-    SELECT attendees.id AS att_id, attendees.name AS name, attendees.job_title AS job_title, attendees.company AS company, attendees.registration_date AS registration_date, attendees.invitation_number AS invitation_number, attendees.email AS email, attendees.approved AS approved, attendees.event,
+    SELECT attendees.id AS att_id, attendees.finished AS finished, attendees.name AS name, attendees.job_title AS job_title, attendees.company AS company, attendees.registration_date AS registration_date, attendees.invitation_number AS invitation_number, attendees.email AS email, attendees.approved AS approved, attendees.event,
     quartz_event.id AS e_id, quartz_event.Event, quartz_event.brand, 
     events.id, events.name AS event_name, brands.id, brands.name AS brand_name FROM attendees
     LEFT JOIN quartz_event ON attendees.event = quartz_event.id
@@ -3266,7 +3266,7 @@ while($res = mysqli_fetch_array($result_2)) {?>
             <!-- Select -->
             <?php if($res['form_type']=='2'):?>
                 <div class="select-wrap">
-                    <select class="form-control has-other has-other-field" id="field_<?php echo $res['title'];?>" <?php if($res['required']==1) { echo 'required="" required';  } ?> name="<?php echo $res['slug'];?>" data-id="<?php echo $res['slug'];?>">
+                    <select class="form-control has-other has-other-field" id="field_<?php echo $res['title'];?>" <?php if($res['required']==1) { echo 'required="" required';  } ?> name="question_" data-id="<?php echo $res['slug'];?>">
                         <option value="-">-</option>
                        <?php 
                        $text = trim($res['field_options']); 
@@ -3669,7 +3669,7 @@ function register_attendee() {
         // $t_c  = $_POST['t_c'];
         $logo_use  = $_POST['logo_user'];
         
-        if(isset($_POST['logo_use'])) {
+        if(isset($_POST['logo_user'])) {
             $finished = '1';
         } else {
             $finished = '0';
@@ -3784,52 +3784,19 @@ function register_attendee() {
         $last_id = $mysqli->insert_id;
         
         $result_2 = $mysqli->query("INSERT INTO exhibitors_meta(attendee_id) VALUES('$last_id')");
-            
-        /*
-            // Email Message to Registrant
-            // $to = $from_email; // To Attendee Email
-            // $from = $from_email; // From Admin Email
-            $to = 'lyuba.nova@eatsleepwork.com'; // To Attendee Email
-            $from = 'lyuba.nova@eatsleepwork.com';
-             
-            $name = $name;
-            $subject = "Form submission";
-            $subject2 = "Copy of your form submission";
-            $message = $name . " wrote the following:" . "\n\n" . $company;
-            $message2 = "Here is a copy of your message " . $name . "\n\n" . $company;
-
-            $headers = "From:" . $from;
-            $headers2 = "From:" . $to;
-            mail($to,$subject,$message,$headers);
-            mail($from,$subject2,$message2,$headers2); 
-
-            
-
-        // Send Email to Admin that Attendee has registered
-        $to      = 'john.chimmy@eatsleepwork.com';
-        $subject = 'attendee has Registered';
-        $message = "$name has registered for an event. View attendee: $uri/attendees/?id=$last_id ";
-        $headers = 'From: admin@quartz.com' . "\r\n" .
-            // 'Reply-To: admin@quartz.com' . "\r\n" .
-             'Reply-To: lyuba.nova@eatsleepwork.com' . "\r\n" .
-            'X-Mailer: PHP/' . phpversion();
-        mail($to, $subject, $message, $headers); 
       
-        */
-            
-        /*
-        foreach($_POST["question_"] as $key => $val){
-            $result_2 = mysqli_query($mysqli, "INSERT INTO attendee_meta(attendee_id,question, answer) VALUES('$last_id','$key', '$val')");
+        // Send Custom Field Values into Form
+        // Chimmy Help
+        foreach($_POST["question_"] as $key => $value){
+            echo $value;
+            $result_3 = mysqli_query($mysqli, "INSERT INTO attendee_meta(attendee_id,question, answer) VALUES('$last_id','$key', '$value')");
         } 
-        */
-        
-        // echo "<meta http-equiv='refresh' content='0'>";
-
+                    
         ?>
 
         <script>
             // window.location = "./thanks";
-            window.location = "../thanks/?id=<?php echo $last_id;?>&event=<?php echo $event_id;?>";
+            // window.location = "../thanks/?id=<?php echo $last_id;?>&event=<?php echo $event_id;?>";
         </script>
         <?php
     }
@@ -4504,6 +4471,7 @@ function fields_for_page($page_no) {  ?>
         <!-- TRANSPORTATION -->
         <?php standard_form_field($slug='transportation_responsibility',$page=$page_no);?>
         <div class="other-input additional-fields" id="transportation_responsibility">
+            <?php show_custom_fields(); ?>        
             <?php standard_form_field($slug='ftl',$page=$page_no);?>
             <?php standard_form_field($slug='ltl',$page=$page_no);?>
             <?php standard_form_field($slug='intermodel',$page=$page_no);?>
@@ -4515,6 +4483,7 @@ function fields_for_page($page_no) {  ?>
         <!-- 3PL-->
         <?php standard_form_field($slug='threepls',$page=$page_no);?>
         <div class="other-input additional-fields" id="threepls">
+            <?php show_custom_fields(); ?>        
             <?php standard_form_field($slug='footprint',$page=$page_no);?>
             <?php standard_form_field($slug='threepl_interest',$page=$page_no);?>
             <?php standard_form_field($slug='threepl_projects',$page=$page_no);?>
@@ -4522,12 +4491,14 @@ function fields_for_page($page_no) {  ?>
         <!-- SUPPLY CHAIN -->
         <?php standard_form_field($slug='supply_responsibility',$page=$page_no);?>
         <div class="other-input additional-fields" id="supply_responsibility">
+            <?php show_custom_fields(); ?>        
             <?php standard_form_field($slug='supply_services',$page=$page_no);?>
             <?php standard_form_field($slug='supply_projects',$page=$page_no);?>
         </div>
         <!-- PROCUREMENT -->
         <?php standard_form_field($slug='procurement',$page=$page_no);?>
         <div class="other-input additional-fields" id="procurement">
+            <?php show_custom_fields(); ?>        
             <?php standard_form_field($slug='procurement_projects',$page=$page_no);?>
             <?php standard_form_field($slug='procurement_interest',$page=$page_no);?>
         </div>
