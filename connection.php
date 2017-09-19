@@ -2958,11 +2958,11 @@ function view_custom_fields() {
         $form_type = $_POST['form_type'];
         $required = $_POST['required'];
         $title = $_POST['title'];
-        $description = $_POST['description'];
         $field_options = $_POST['field_options'];
+        $description = $_POST['description'];
         $page = $_POST['page'];
         
-        $result = $mysqli->query("INSERT INTO custom_fields(event, order_no, form_type, required, title, description, field_options, page) VALUES('$event', '$order_no', '$form_type', '$required', '$title', '$description', $field_options', '$page')");
+        $result = $mysqli->query("INSERT INTO custom_fields(event, order_no, form_type, required, title, description, page) VALUES('$event', '$order_no', '$form_type', '$required', '$title', '$description', '$page')");
         
         /*
         $sql = 'INSERT INTO custom_fields (event, order_no, form_type, required, title, field_options) VALUES ';
