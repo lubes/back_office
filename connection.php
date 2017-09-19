@@ -114,6 +114,45 @@ function login_attendee() {
     }   
 }
 
+// Homepage Message
+function homepage_message() {
+    global $mysqli; 
+    global $uri;
+    if(isset($_POST['update'])) {
+        $home_message_title = $_POST['home_message_title'];
+        $home_message = $_POST['home_message'];
+        $result = mysqli_query($mysqli, "UPDATE site_meta SET home_message_title='$home_message_title', home_message='$home_message'");
+        echo "<meta http-equiv='refresh' content='0'>"; 
+    } 
+    $result = mysqli_query($mysqli, "SELECT * FROM site_meta");
+    while($res = mysqli_fetch_array($result)) {  ?>
+    <form  method="post" action="">
+        <div class="form-group">
+            <label>Message Title</label>
+            <input type="text" name="home_message_title" value="<?php echo $res['home_message_title'];?>" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Message Body</label>
+            <input type="text" name="home_message" value="<?php echo $res['home_message'];?>" class="form-control" />
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" name="update" value="Update">
+        </div>
+    </form>
+<?php }
+}
+
+function view_message() {
+    global $mysqli; 
+    $result = mysqli_query($mysqli, "SELECT * FROM site_meta");
+    while($res = mysqli_fetch_array($result)) {  ?>
+
+    <h1><?php echo $res['home_message_title'];?></h1>
+    <p class="lead"><?php echo $res['home_message'];?></p>
+    
+<?php }
+}
+
 // Permissions
 function admin_access() {
     $_SESSION['permission']==1;
@@ -2958,11 +2997,11 @@ function view_custom_fields() {
         $form_type = $_POST['form_type'];
         $required = $_POST['required'];
         $title = $_POST['title'];
-        $description = $_POST['description'];
         $field_options = $_POST['field_options'];
+        $description = $_POST['description'];
         $page = $_POST['page'];
         
-        $result = $mysqli->query("INSERT INTO custom_fields(event, order_no, form_type, required, title, description, field_options, page) VALUES('$event', '$order_no', '$form_type', '$required', '$title', '$description', $field_options', '$page')");
+        $result = $mysqli->query("INSERT INTO custom_fields(event, order_no, form_type, required, title, description, page) VALUES('$event', '$order_no', '$form_type', '$required', '$title', '$description', '$page')");
         
         /*
         $sql = 'INSERT INTO custom_fields (event, order_no, form_type, required, title, field_options) VALUES ';

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 /*
 Error: Invalid US-ASCII character "\xE2"
@@ -39,35 +40,9 @@ body:before {
   font-family: monospace;
   content: "Error: Invalid US-ASCII character \"\xE2\"\A         on line 1743 of /Applications/MAMP/htdocs/a_quartz/assets/css/main.scss\A \A 1738:   color: #fff !important;\A 1739:   background-color: #337ab7 !important;\A 1740: }\A 1741: \A 1742: .bootstrap-select .check-mark::after {\A 1743:   content: \"✓\";\A 1744: }\A 1745: \A 1746: .bootstrap-select button {\A 1747:   overflow: hidden;\A 1748:   text-overflow: ellipsis;"; }
 
+=======
+>>>>>>> a28d238fdf7b25f3382a884ca5d852138d23aeb9
 @charset "UTF-8";
-/*
-$primary:           #3F51B5;
-$primary_hover:     #1A237E;
-
-$secondary:         #4285f4;
-$secondary_hover:   #2969d4;
-
-$info:              #fbbc05;
-$info_hover:        #e8ae05;
-
-$success:           #34a853;
-$success_hover:     #289a46;
-
-$danger:            #F44336;
-$danger_hover:      #d63326;
-
-$light:             #f2f2f2;
-$grey:              #e6e8ea;
- 
-$dark:              #60727b;
-$darkest:           #263238;
-
-$black:             #252525;
-$black_hover:       #111;
-
-$default:           #263238;
-$radius:            .15rem; 
-*/
 body {
   width: 100%;
   overflow-x: hidden !important;

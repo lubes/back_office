@@ -56,6 +56,18 @@ include('../layout/header.php');?>
                 </div>
             </div>
         </div>
+        <div class="col-12 col-sm-12 col-md-12">
+            <div class="widget-wrap">
+                <div class="widget-title">
+                    <h3>Login Page Message</h3>
+                </div>
+                <div class="widget-content">
+                    <?php homepage_message();?>
+                </div>
+            </div>
+        </div>
+        
+        
     </div>
 </div>
 
