@@ -1,23 +1,19 @@
 <?php 
 $body_class = 'invite-form';
 include_once("../../connection.php");
-include('../../layout/header.php');?>
-<?php
-$brand = $_GET['brand'];
+include('../../layout/header.php');
+$step = '1';
 $event = $_GET['event'];
 ?>
-
 <?php form_code();?>
-
 <div class="container">
     <div class="invite-wrap">
        <div class="invite-header">
             <?php brand_logo($slug='event', $slug_2 = 'id');?>
         </div>        
-        <!--<p class="text-muted"><?php event_name();?></p>-->
         <div class="form-progress">
             <ul class="progress_bar list-unstyled">
-                <li class="progress_li sec_1"><span>1</span></li>
+                <li class="progress_li sec_1 active"><span>1</span></li>
                 <li class="progress_li sec_2"><span>2</span></li>
                 <li class="progress_li sec_3"><span>3</span></li>
                 <li class="progress_li sec_4"><span>4</span></li>
@@ -28,18 +24,24 @@ $event = $_GET['event'];
             </ul> 
         </div>
         
-    <!--<form class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">-->
+        <!--<form target="_blank" class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">-->
         
-    <form action="" method="post" enctype="multipart/form-data" class="registration-form">
+        <form target="_blank" class="registration-form" id="registeruserform" type="POST" enctype="multipart/form-data" accept-charset="UTF-8" action="https://marketing.quartzb2b.com/acton/eform/17258/038f/d-ext-0001">
+            
+        <!--<form action="" method="post" enctype="multipart/form-data" class="registration-form">-->
+        
 
-        <!-- Step 1 -->
+            
+            
         <div class="form-section" id="sec_1">
             <?php form_message($slug='intro');?>
             <ul id="page_1" class="list-unstyled">
             <?php show_custom_fields($page='1'); ?>
-            <li id="1">
-                <h2 class="form-sec-title">Contact Information</h2>  
+            <li id="0">
+                <h2 class="form-sec-title">Contact Information</h2> 
+
                 <div class="row">
+ 
                     <div class="col-12 col-sm-12 col-md-12">
                         <div class="form-group">
                             <label>Invitation Code <a href="#" data-toggle="modal" class="btn-help view-exhibitor-info" data-target="#invitationCode"><i class="material-icons">info</i></a></label>
@@ -48,15 +50,15 @@ $event = $_GET['event'];
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>Company *</label>
-                            <input type="text" class="form-control" required=""  name="company" />
-                        </div>                
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-4">
-                        <div class="form-group">
                             <label>Name *</label>
                             <input type="text" class="form-control required required-input" required=""  name="name" />
                         </div>
+                    </div>  
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label>Company *</label>
+                            <input type="text" class="form-control" required=""  name="company" />
+                        </div>                
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
@@ -77,7 +79,6 @@ $event = $_GET['event'];
                             <p class="error-text"></p>
                         </div> 
                     </div>
-
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
                             <label>Alternate Email</label>
@@ -147,88 +148,25 @@ $event = $_GET['event'];
                 </li>
             </ul>
         </div>
-        
-        <!--<input type="submit" class="btn btn-black btn-lg float-right" name="submit_form" value="Continue" />-->
-
-        <!-- Step 2 -->
-        <div class="form-section" id="sec_2">
-            <h2 class="form-sec-title">Additional Information</h2>  
-            <div class="form-group">
-                <label>Meetings Scheduling</label>
-                <div class="form-msg">
-                    <?php form_message($slug='meetings');?> 
-                </div>
-            </div>
-            <?php fields_for_page($page_no='2');?>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="form-section" id="sec_3">
-            <h2 class="form-sec-title">DC/Warehouse</h2>  
-            <?php fields_for_page($page_no='3');?>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="form-section" id="sec_4">
-            <h2 class="form-sec-title">Transportation</h2>  
-            <?php fields_for_page($page_no='4');?>
-        </div>
-
-        <!-- Step 5 -->
-        <div class="form-section" id="sec_5">
-            <h2 class="form-sec-title">3PL</h2>  
-            <?php fields_for_page($page_no='5');?>
-        </div>
-
-        <!-- Step 6 -->
-        <div class="form-section" id="sec_6">
-            <h2 class="form-sec-title">Supply Chain</h2>  
-            <?php fields_for_page($page_no='6');?>
-        </div>
-
-        <!-- Step 7 -->
-        <div class="form-section" id="sec_7">
-            <h2 class="form-sec-title">Procurement</h2>  
-            <?php fields_for_page($page_no='7');?>
-        </div>
-
-        <!-- Step 8 -->
-        <div class="form-section" id="sec_8">
-            <h2 class="form-sec-title">Submit Your Application</h2>  
-            
-            <!-- Complete Registration Field for QUARTZ -->
-            <input type="hidden" name="Completed Event Registration" value="true" />
-            
-            <input type="hidden" name="finished" value="1" />
-            
-            <div class="form-group">
-                <label>Exhibitor Selection <span>Below you will find a list of solutions and services partners. If you would like to meet with a specific supplier please select their corresponding box. We will arrange an appointment within the meeting windows specified.</span></label>
-                <?php exhibitors_invite_form();?>
-            </div>
-            <div class="form-group">
-                <label>Logo Permission <span>Can <?php event_name();?> use your company logo to show your participation at the conference?</span></label>
-                <div class="form-check">
-                    <label class="form-check-label" data-id="">
-                        <input class="form-check-input" type="radio" name="logo_user" id="exampleRadios1" value="1"> Yes
-                    </label>
-                    <label class="form-check-label" data-id="">
-                        <input class="form-check-input" type="radio" name="logo_user" id="exampleRadios1" value="0"> No
-                    </label>
-                </div>
-            </div>
-        </div>
-        
+        <br>
+        <?php $random = rand(0,1000000000);?>
+        <input type="hidden" name="id" value="<?php echo $random;?>" />    
+        <input type="hidden" name="event" value="<?php echo $event;?>" />     
+        <div class="steps-2-8">
+            <?php include('steps-2-8.php');?>   
+        </div>        
         <div class="form-navigation">
             <button type="button" class="previous btn btn-black btn-lg float-left"><i class="material-icons">arrow_back</i> Previous</button>
-            <button type="button" class="next btn btn-black btn-lg float-right">Continue <i class="material-icons">arrow_forward</i></button>
+            <!-- First Next Button to Capture Fields and Data -->
+            <button type="button" class="next submit-attendee btn btn-black btn-lg float-right">Continue <i class="material-icons">arrow_forward</i></button>
+            <!-- Other Next Button to Capture Fields and Data -->
+            <button type="button" class="next update-attendee btn btn-black btn-lg float-right">Continue<i class="material-icons">arrow_forward</i></button>
+            
+            <input type="submit" value="Submit" name="submit_form" data-attendee="<?php echo $random;?>" class="submit-form btn btn-success float-right btn-lg">
             <div class="clearfix"></div>
-            <input type="submit" value="Submit" name="submit_form" class="submit-form btn btn-success float-right btn-lg">
-        </div>        
-        
-        <?php register_attendee();?> 
-        
+        </div> 
+        <div class="clearfix"></div>
     </form>
-
 </div>
 </div>
 
@@ -268,30 +206,92 @@ $event = $_GET['event'];
 
 <?php include('../../layout/footer.php');?>
 
-<!--
-https://marketing.quartzb2b.com/acton/form/17258/038f:d-0001/0/-/-/-/-/index.htm
--->
-
-
-<script type="text/javascript">
-  var aoProtocol = location.protocol;
-	if ( aoProtocol.indexOf('http') < 0 ) {
-		aoProtocol = 'http:';
-	}
-	var aoCAP = {
-		aid: '17258',
-		fid: '038f',
-		did: 'd-0001',
-		server: 'qa.esw.me',
-		formId: 'registeruserform',
-		protocol: aoProtocol
-	};
-	var aoArr = aoArr || []; 
-	aoArr.push(aoCAP); 
+<script type="text/javascript">    
+      
+    
+// Ajax to Send data to DB and Act On
+$('.submit-attendee').click(function(event) {
+    serializedData =$("#registeruserform").serialize();
+    $.ajax({
+          async: false,
+          url: '../../_includes/add-attendee.php',
+          type: 'POST',
+          data: serializedData,
+          success: function(data) {
+                // console.log('SUCCESS!');
+            
+                setTimeout(function(){ 
+                    console.log('inserted attende');
+                }, 200);
+              
+          }
+        });
+    return true; // return false to cancel form action
+});
+   
+    
+// Ajax to Send data to DB and Act On
+$('.update-attendee').click(function(event) {
+    serializedData =$("#registeruserform").serialize();
+    $.ajax({
+          async: false,
+          url: '../../_includes/update-attendee.php',
+          type: 'POST',
+          data: serializedData,
+          success: function(data) {
+                // console.log('SUCCESS!');
+            
+                setTimeout(function(){ 
+                    console.log('updated attende');
+                }, 200);
+              
+          }
+        });
+    return true; // return false to cancel form action
+});
+    
+    
+ 
+$('.submit-form').click(function(event) {
+    $('#registeruserform').submit(); 
+});
+    
+// Ajax to Send data to DB and Act On
+$('#registeruserform').submit(function() {
+    serializedData =$("#registeruserform").serialize();
+    var att_id = $('.submit-form').data('attendee');
+    $.ajax({
+          async: false,
+          url: '../../_includes/update-attendee.php',
+          type: 'POST',
+          data: serializedData,
+          success: function(data) {
+                setTimeout(function(){
+                    window.location = "../thanks/?id="+att_id+"&event=<?php echo $event;?>";
+                }, 200);
+          }
+        });
+    return true;
+});    
+ 
+// Act On
+var aoProtocol = location.protocol;
+if ( aoProtocol.indexOf('http') < 0 ) aoProtocol = 'http:';
+var aoCAP = {
+aid: '17258',
+fid: '038f',
+did: 'd-ext-0001',
+server: 'marketing.quartzb2b.com',
+formName: 'registeruserform',
+protocol: aoProtocol
+};
+document.write( '<script type="text/javascript" src="'+aoCAP.protocol+'//'+aoCAP.server+'/acton/js/formcap.min.js"><'+'/script>' );
 </script>
 
 <script type="text/javascript">
 	function AoProcessForm(formelement) {
+        
+        
 	  for (AoI = 0; AoI < aoArr.length; AoI++) {
 	    if (aoArr[AoI].aid && aoArr[AoI].fid && aoArr[AoI].did &&
 	      aoArr[AoI].server && (aoArr[AoI].formId ||
@@ -415,23 +415,3 @@ https://marketing.quartzb2b.com/acton/form/17258/038f:d-0001/0/-/-/-/-/index.htm
 	  }
 	};
 </script>
-
-<script>
-var PostData = '';
-$.ajax({
-  async: false,
-  url: '../thanks/?id=16974&event=10',
-  type: 'POST',
-  data: PostData,
-  success: function(data) {
-        console.log('SUCCESS!');
-        setTimeout(AoProcessForm($('#registeruserform')[0]), 0);
-  }
-});
-</script>
-
-
-
-
-
-

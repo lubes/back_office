@@ -439,7 +439,6 @@ function edit_brand() {
     <?php }
 }
 
-        
 /******* Events **********/
 
 // New Event
@@ -1734,8 +1733,10 @@ function attendee_approval_status() {
                 echo '<div class="approval approved">Approved</div>';
             } else if($res['approved'] == 2) {
                 echo '<div class="approval denied">Denied</div>';
-            } else {
+            } else if($res['approved'] == 3) {
                 echo '<div class="approval cancelled">Cancelled</div>';
+            } else {
+                echo '<div class="approval unfinished">Unfinished</div>';
             }
         ?>
     <?php }
@@ -1885,7 +1886,9 @@ function edit_attendee() {
         echo "<meta http-equiv='refresh' content='0'>";
     } 
     while($res = mysqli_fetch_array($result)) { ?>
+        
         <form  method="post" action="">
+            
             <input type="hidden" name="event" value="<?php echo $res['event'];?>">
             <?php if($_SESSION['permission']==1):?>
             <div class="form-group">
@@ -3256,7 +3259,7 @@ while($res = mysqli_fetch_array($result_2)) {?>
                 $textAr = array_filter($textAr, 'trim'); 
                 foreach ($textAr as $line) { ?>
                    <label class="form-check-label">
-                       <input class="form-check-input has-other-field" <?php if($res['required']==1) { echo 'required="" required'; } ?> type="checkbox" name="<?php echo $slug;?>" value="<?php echo $line;?>" data-id="<?php echo $res['title'];?>"> <?php echo $line;?>
+                       <input class="form-check-input has-other-field <?php if($res['required']==1) { echo 'required-field';  } ?>" type="checkbox" name="<?php echo $slug;?>" value="<?php echo $line;?>" data-id="<?php echo $res['title'];?>"> <?php echo $line;?>
                    </label>
                 <?php } ?> 
                     <input class="form-control other-input hidden_input" id="<?php echo $res['title'];?>" type="text" placeholder="Other" />
@@ -3266,7 +3269,7 @@ while($res = mysqli_fetch_array($result_2)) {?>
             <!-- Select -->
             <?php if($res['form_type']=='2'):?>
                 <div class="select-wrap">
-                    <select class="form-control has-other has-other-field" id="field_<?php echo $res['title'];?>" <?php if($res['required']==1) { echo 'required="" required';  } ?> name="question_" data-id="<?php echo $res['slug'];?>">
+                    <select class="form-control has-other has-other-field <?php if($res['required']==1) { echo 'required-field';  } ?>" id="field_<?php echo $res['title'];?>" name="question_" data-id="<?php echo $res['slug'];?>">
                         <option value="-">-</option>
                        <?php 
                        $text = trim($res['field_options']); 
@@ -3282,12 +3285,12 @@ while($res = mysqli_fetch_array($result_2)) {?>
             
             <!-- Input -->
             <?php if($res['form_type']=='3'):?>
-                <input class="form-control" <?php if($res['required']==1) { echo 'required="" required';  } ?> name="<?php echo $res['title'];?>" /> 
+                <input class="form-control <?php if($res['required']==1) { echo 'required-field';  } ?>" name="<?php echo $res['title'];?>" /> 
             <?php endif;?>
             
             <!-- Textarea -->
             <?php if($res['form_type']=='4'):?>
-                <textarea class="form-control" <?php if($res['required']==1) { echo 'required="" required';  } ?> name="<?php echo $res['title'];?>"></textarea>
+                <textarea class="form-control <?php if($res['required']==1) { echo 'required-field';  } ?>" name="<?php echo $res['title'];?>"></textarea>
             <?php endif;?>            
             
             <!-- Yes/No -->
@@ -3612,6 +3615,123 @@ function register_attendee_HOLD() {
         <?php
     } 
 }
+
+// UPDATE ATTENDEE REGISTRATION FORM
+/*
+function update_registration_form() {
+    global $mysqli; 
+    
+    if(isset($_POST['update_form'])) {
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $company= $_POST['company'];
+        $job_title= $_POST['job_title'];
+        $address= $_POST['address'];
+        $city= $_POST['city'];
+        $state= $_POST['state'];
+        $zip= $_POST['zip'];
+        $country= $_POST['country'];
+        $alt_email  = $_POST['alt_email'];
+        $direct_phone  = $_POST['direct_phone'];
+        $cell_phone  = $_POST['cell_phone'];
+        $fax  = $_POST['fax'];
+        $website  = $_POST['website'];
+        $revenue  = $_POST['revenue'];
+        $company_size  = $_POST['company_size'];
+        $track = $_POST['track'];
+        $industry  = $_POST['industry'];
+        $scheduling  = $_POST['scheduling'];
+        $erp  = $_POST['erp'];
+        $geo  = $_POST['geo'];
+        $warehouse  = $_POST['warehouse'];
+        $number_facilities  = $_POST['number_facilities'];
+        $facility_responsibilities  = $_POST['facility_responsibilities'];
+        $facilities_size  = $_POST['facilities_size'];
+        $facilities_equipment_interest  = $_POST['facilities_equipment_interest'];
+        $facilities_software_interest  = $_POST['facilities_software_interest'];
+        $facilities_projects  = $_POST['facilities_projects'];
+        $transportation_responsibility  = $_POST['transportation_responsibility'];
+        $ftl  = $_POST['ftl'];
+        $ltl  = $_POST['ltl'];
+        $intermodel  = $_POST['intermodel'];
+        $parcel  = $_POST['parcel'];
+        $modes_transporation  = $_POST['modes_transporation'];
+        $tansportation_interest  = $_POST['tansportation_interest'];
+        $transportation_projects  = $_POST['transportation_projects'];
+        $threepls  = $_POST['threepls'];
+        $footprint  = $_POST['footprint'];
+        $threepl_interest  = $_POST['threepl_interest'];
+        $threepl_projects  = $_POST['threepl_projects'];
+        $supply_responsibility  = $_POST['supply_responsibility'];
+        $supply_services  = $_POST['supply_services'];
+        $supply_projects  = $_POST['supply_projects'];
+        $procurement  = $_POST['procurement'];
+        $procurement_projects  = $_POST['procurement_projects'];
+        $procurement_interest  = $_POST['procurement_interest'];
+        $logo_use  = $_POST['logo_user'];
+        if(isset($_POST['logo_user'])) {
+            $finished = '1';
+        } else {
+            $finished = '0';
+        }
+        
+        $result = mysqli_query($mysqli, "UPDATE attendees SET
+            permission='$permision',
+            event='$event',
+            name='$name',
+            email='$email',
+            company='$company',
+            job_title='$job_title',
+            address='$address',
+            city='$city',
+            state='$state',
+            zip='$zip',
+            country='$country',
+            alt_email='$alt_email',
+            direct_phone='$direct_phone',
+            cell_phone='$cell_phone',
+            fax='$fax',
+            website='$website',
+            track='$track',
+            revenue='$revenue',
+            company_size='$company_size',
+            industry='$industry',
+            scheduling='$schedule',
+            erp='$erp',
+            geo='$geo',
+            warehouse='$warehouse',
+            number_facilities='$number_facilities',
+            facility_responsibilities='$facility_responsibilities',
+            facilities_size='$facilities_size',
+            facilities_equipment_interest='$facilities_equipment_interest',
+            facilities_software_interest='$facilities_software_interest',
+            facilities_projects='$facilities_projects',
+            transportation_responsibility='$transportation_responsibility',
+            ftl='$ftl',
+            ltl='$ltl',
+            intermodel='$intermodel',
+            parcel='$parcel',
+            modes_transporation='$modes_transporation',
+            tansportation_interest='$tansportation_interest',
+            transportation_projects='$transportation_projects',
+            threepls='$threepls',
+            footprint='$footprint',
+            threepl_interest='$threepl_interest',
+            threepl_projects='$threepl_projects',
+            supply_responsibility='$supply_responsibility',
+            supply_services='$supply_services',
+            supply_projects='$supply_projects',
+            procurement='$procurement',
+            procurement_projects='$procurement_projects',
+            procurement_interest='$procurement_interest',
+            t_c='$t_c',
+            logo_user='$logo_user',
+            finished='$finished'
+        ");   
+    } 
+}
+*/
+
 
 function register_attendee() {
     global $mysqli; 
@@ -4459,7 +4579,7 @@ function fields_for_page($page_no) {  ?>
         <?php standard_form_field($slug='geo',$page=$page_no);?>
         <!-- WAREHOUSE -->
         <?php standard_form_field($slug='warehouse',$page=$page_no);?>
-        <div class="other-input additional-fields" id="warehouse">
+        <div class="other-input additional-fields conditional-fields" id="warehouse">
             <?php show_custom_fields(); ?>        
             <?php standard_form_field($slug='number_facilities',$page=$page_no);?>
             <?php standard_form_field($slug='facility_responsibilities',$page=$page_no);?>

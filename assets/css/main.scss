@@ -485,6 +485,8 @@ label {
     list-style: none;
     margin: 0 auto;
     padding: 0;
+    position: absolute;
+    bottom: -20px;
     li {
         color: $danger;
         @include med();
@@ -511,6 +513,10 @@ label {
 
 textarea {
     min-height: 250px;
+}
+
+.update-attendee {
+    display: none;
 }
 
 .other-input {
@@ -540,6 +546,10 @@ textarea {
     margin: 0 auto;
     padding: 60px 0;
     position: relative;
+    .form-group {
+        margin-top: 20px;
+        // margin-bottom: 40px;
+    }
     label {
         font-size: 16px;
         margin-right: 0;
@@ -681,6 +691,8 @@ textarea {
         font-size: 16px;
     }
 }
+
+
 
 // Form Builder
 
@@ -1648,21 +1660,30 @@ $bar-spacing: 8px;
     -webkit-transition: opacity 0.2s;
 }
 .form-section.current {
- position: relative;
-  visibility:visible;
-  opacity:1;
-  transition: opacity 0.2s ease-in-out;
-   -moz-transition: opacity 0.2s ease-in-out;
-   -webkit-transition: opacity 0.2s ease-in-out;
+    position: relative;
+    visibility:visible;
+    opacity:1;
+    transition: opacity 0.2s ease-in-out;
+    -moz-transition: opacity 0.2s ease-in-out;
+    -webkit-transition: opacity 0.2s ease-in-out;
 }
 
 .form-navigation{
- transition: all 0.2s ease-in-out;
-   -moz-transition: all 0.2s ease-in-out;
-   -webkit-transition: all 0.2s ease-in-out; 
+    transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out; 
 }
 
-
+.steps-2-8 {
+    .form-navigation {
+        display: none;
+    }
+    &.active {
+        .form-navigation {
+            display: block;
+        } 
+    }
+}
 
 
 
@@ -1681,10 +1702,11 @@ https://github.com/silviomoreto/bootstrap-select/issues/1135
     }
 }
 
+
 .bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover,
 .bootstrap-select .dropdown-toggle:focus {
     outline: none !important;
-    box-shadow: none !important;
+    box-shadow: none !important; 
 }
      
 .bootstrap-select.btn-group .dropdown-menu li.selected {
@@ -1761,3 +1783,5 @@ https://github.com/silviomoreto/bootstrap-select/issues/1135
         margin: 0 auto;
     }
 }
+
+

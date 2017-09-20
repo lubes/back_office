@@ -1,3 +1,4 @@
+
 @charset "UTF-8";
 body {
   width: 100%;
@@ -295,7 +296,9 @@ label {
 .parsley-errors-list {
   list-style: none;
   margin: 0 auto;
-  padding: 0; }
+  padding: 0;
+  position: absolute;
+  bottom: -20px; }
   .parsley-errors-list li {
     color: #F44336;
     font-family: 'Roboto', sans-serif;
@@ -318,6 +321,9 @@ label {
 textarea {
   min-height: 250px; }
 
+.update-attendee {
+  display: none; }
+
 .other-input {
   margin: 20px auto 0;
   display: none; }
@@ -338,6 +344,8 @@ textarea {
   margin: 0 auto;
   padding: 60px 0;
   position: relative; }
+  .invite-form .form-group {
+    margin-top: 20px; }
   .invite-form label {
     font-size: 16px;
     margin-right: 0; }
@@ -1185,6 +1193,12 @@ textarea {
   transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out; }
+
+.steps-2-8 .form-navigation {
+  display: none; }
+
+.steps-2-8.active .form-navigation {
+  display: block; }
 
 /*
 Make bootstrap-select work with bootstrap 4 see:
