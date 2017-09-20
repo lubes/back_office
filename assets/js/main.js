@@ -1,16 +1,9 @@
-var site_url = 'http://localhost:8888/a_quartz/';
-// var site_url = 'http://qa.esw.me/';
-
-
-
-
-
+// var site_url = 'http://localhost:8888/a_quartz/';
+var site_url = 'http://qa.esw.me/';
 
 
 $(document).ready(function () {
  
-    
-    
 // Order Fields on Form
 $("#page_1 li").sort(function (a, b) {
     return parseInt(a.id) - parseInt(b.id);

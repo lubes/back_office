@@ -1,21 +1,21 @@
 /*
 Error: Invalid US-ASCII character "\xE2"
-        on line 1758 of /Applications/MAMP/htdocs/a_quartz/assets/css/main.scss
+        on line 1759 of /Applications/MAMP/htdocs/a_quartz/assets/css/main.scss
 
-1753:   color: #fff !important;
-1754:   background-color: #337ab7 !important;
-1755: }
-1756: 
-1757: .bootstrap-select .check-mark::after {
-1758:   content: "✓";
-1759: }
-1760: 
-1761: .bootstrap-select button { 
-1762:   overflow: hidden;
-1763:   text-overflow: ellipsis;
+1754:   color: #fff !important;
+1755:   background-color: #337ab7 !important;
+1756: }
+1757: 
+1758: .bootstrap-select .check-mark::after {
+1759:   content: "✓";
+1760: }
+1761: 
+1762: .bootstrap-select button { 
+1763:   overflow: hidden;
+1764:   text-overflow: ellipsis;
 
 Backtrace:
-/Applications/MAMP/htdocs/a_quartz/assets/css/main.scss:1758
+/Applications/MAMP/htdocs/a_quartz/assets/css/main.scss:1759
 /Applications/Adobe Dreamweaver CC 2017/Adobe Dreamweaver CC 2017.app/Contents/Resources/gems/rubygems/gems/sass-3.4.19/lib/sass/util.rb:1296:in `rescue in block in find_encoding_error'
 /Applications/Adobe Dreamweaver CC 2017/Adobe Dreamweaver CC 2017.app/Contents/Resources/gems/rubygems/gems/sass-3.4.19/lib/sass/util.rb:1293:in `block in find_encoding_error'
 /Applications/Adobe Dreamweaver CC 2017/Adobe Dreamweaver CC 2017.app/Contents/Resources/gems/rubygems/gems/sass-3.4.19/lib/sass/util.rb:1292:in `each'
@@ -36,4 +36,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid US-ASCII character \"\xE2\"\A         on line 1758 of /Applications/MAMP/htdocs/a_quartz/assets/css/main.scss\A \A 1753:   color: #fff !important;\A 1754:   background-color: #337ab7 !important;\A 1755: }\A 1756: \A 1757: .bootstrap-select .check-mark::after {\A 1758:   content: \"✓\";\A 1759: }\A 1760: \A 1761: .bootstrap-select button { \A 1762:   overflow: hidden;\A 1763:   text-overflow: ellipsis;"; }
+  content: "Error: Invalid US-ASCII character \"\xE2\"\A         on line 1759 of /Applications/MAMP/htdocs/a_quartz/assets/css/main.scss\A \A 1754:   color: #fff !important;\A 1755:   background-color: #337ab7 !important;\A 1756: }\A 1757: \A 1758: .bootstrap-select .check-mark::after {\A 1759:   content: \"✓\";\A 1760: }\A 1761: \A 1762: .bootstrap-select button { \A 1763:   overflow: hidden;\A 1764:   text-overflow: ellipsis;"; }

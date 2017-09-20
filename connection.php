@@ -4131,6 +4131,12 @@ function thank_you() {
             $subject = $subject_registrant; 
             $message = $message_registrant;
                   
+            // Email to Admin
+            $to_admin = $res['from_email'];                            
+            $from_admin = $res['from_email'];
+            $subject_admin = $res['subject_admin'];
+            $message_admin = $res['message_admin'];
+                                               
             // Registrant Information                                
             $name = $res['name'];    
             $company = $res['company'];   
@@ -4212,11 +4218,19 @@ function thank_you() {
             "\r\n Procurement Interest: ".$procurement_interest;  
                                                
             $txt = $message_registrant. "\r\n \r\n" .$att_info;                           
+            $txt_admin = $message_admin. "\r\n \r\n" .$att_info; 
                                                
             $headers = "From: " .$from. "\r\n" .
-            "CC: lyuba.nova@eatsleepwork.com";
+            "BCC: lyuba.nova@eatsleepwork.com";
+
+            $headers_admin = "From: " .$from_admin. "\r\n" .
+            "BCC: lyuba.nova@eatsleepwork.com";
                                                
-            // mail($to,$subject,$txt,$headers);                                       
+            // Email to Registrant
+            mail($to,$subject,$txt,$headers);
+            
+            // Eamil to Admin
+            mail($to_admin,$subject_admin,$txt_admin,$headers_admin);
                                  
     } 
 }
