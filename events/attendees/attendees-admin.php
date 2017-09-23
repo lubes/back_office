@@ -9,6 +9,15 @@ include('../nav.php');?>
         <div class="widget-title">
             <h3><?php echo event_name();?> Attendees</h3>
         </div>
+         <div class="widget-title">
+            <h3>Registrations Pending Approval</h3>
+        </div>
+        <div class="widget-content">
+            <?php approve_attendees();?>
+        </div>
+         <div class="widget-title">
+            <h3>All Registrations</h3>
+        </div>
         <div class="widget-content">
             <?php basic_event_attendees();?>
             <!--
@@ -44,7 +53,7 @@ include('../nav.php');?>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Attende Information</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Attendee Information</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <i class="material-icons">close</i>
         </button>

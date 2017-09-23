@@ -1,8 +1,87 @@
 // var site_url = 'http://localhost:8888/a_quartz/';
-var site_url = 'http://qa.esw.me/';
+var site_url = 'https://quartzevents.com/dashboard/';
+
 
 $(document).ready(function () {
  
+// Order Fields on Form
+$("#page_1 li").sort(function (a, b) {
+    return parseInt(a.id) - parseInt(b.id);
+}).each(function () {
+    var elem = $(this);
+    elem.remove();
+    $(elem).appendTo("#page_1");
+});
+
+$("#page_2 li").sort(function (a, b) {
+    return parseInt(a.id) - parseInt(b.id);
+}).each(function () {
+    var elem = $(this);
+    elem.remove();
+    $(elem).appendTo("#page_2");
+});
+    
+
+/*
+$("#page_3 li").sort(function (a, b) {
+    return parseInt(a.id) - parseInt(b.id);
+}).each(function () {
+    var elem = $(this);
+    elem.remove();
+    $(elem).appendTo("#page_3");
+});
+
+$("#page_4 li").sort(function (a, b) {
+    return parseInt(a.id) - parseInt(b.id);
+}).each(function () {
+    var elem = $(this);
+    elem.remove();
+    $(elem).appendTo("#page_4");
+});
+
+$("#page_5 li").sort(function (a, b) {
+    return parseInt(a.id) - parseInt(b.id);
+}).each(function () {
+    var elem = $(this);
+    elem.remove();
+    $(elem).appendTo("#page_5");
+});
+
+$("#page_6 li").sort(function (a, b) {
+    return parseInt(a.id) - parseInt(b.id);
+}).each(function () {
+    var elem = $(this);
+    elem.remove();
+    $(elem).appendTo("#page_6");
+});
+
+$("#page_7 li").sort(function (a, b) {
+    return parseInt(a.id) - parseInt(b.id);
+}).each(function () {
+    var elem = $(this);
+    elem.remove();
+    $(elem).appendTo("#page_7");
+});
+*/
+$("#page_8 li").sort(function (a, b) {
+    return parseInt(a.id) - parseInt(b.id);
+}).each(function () {
+    var elem = $(this);
+    elem.remove();
+    $(elem).appendTo("#page_8");
+});
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     $('select').selectpicker({
         style: 'btn-secondary'
@@ -123,19 +202,7 @@ $(document).ready(function () {
           }
         ],
     });
-     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     // DataTables 
     var table = $('#example').DataTable({
         paging: true,
@@ -372,13 +439,32 @@ function update_output() {
         var this_id = $(this).data('id');
         if(other.val() == 'other' || other.val() == 'yes') {
             $('#'+this_id+'.other-input').addClass('visible');
+            //console.log($('#'+this_id+'.other-input').find('*[data-req="required"]'));
+            $('#'+this_id+'.other-input').find('*[data-req="required"]').attr('required', 'required');
         }
         else {
             $('#'+this_id+'.other-input').removeClass('visible');
+            $('#'+this_id+'.other-input').find('*[data-req="required"]').removeAttr('required');
         }
     });
     
-
+    
+    
+    /*  
+    $('.has-other').change(function() {
+        var other = $(this).find(":checked");
+        var this_id = $(this).data('id');
+        if(other.val() == 'other' || other.val() == 'yes') {
+            $('#'+this_id+'.conditional-fields').show();
+        }
+        else {
+            $('#'+this_id+'.conditional-fields').hide();
+        }
+    });
+    */
+    
+    
+    
 
     $('.form-toggle').click(function(e) {
         e.preventDefault();
@@ -434,18 +520,6 @@ function update_output() {
     }); 
      
 
-
-    /*
-    $('.btn-star').on('click', function() {
-        var this_star_form = $(this).data('star');
-        console.log(this_star_form);
-        var this_parent = $(this).data('id');
-        $('#main-star_'+ this_parent ).removeAttr('class');
-        $('#main-star_'+ this_parent ).addClass('star');
-        $('#main-star_'+ this_parent ).addClass(this_star_form);
-    });
-    */
-       
     $('.btn-star').on('click', function() {
         var this_btn = $(this).data('id');
         $('.star_'+this_btn).removeClass('active');
@@ -513,92 +587,26 @@ function update_output() {
     
  
     
-});
- 
+    
+    
+    
+    
+    
+    
+    
+    
 
     
     
-$(function () {
-  var $sections = $('.form-section');
-
-  function navigateTo(index) { 
-    // Mark the current section with the class 'current'
-    $sections
-      .removeClass('current')
-      .eq(index)
-        .addClass('current');
-    // Show only the navigation buttons that make sense for the current section:
-    $('.form-navigation .previous').toggle(index > 0);
-    var atTheEnd = index >= $sections.length - 1;
-    $('.form-navigation .next').toggle(!atTheEnd);
-    $('.form-navigation [type=submit]').toggle(atTheEnd);
-      
-      
-      
-// Progress Bar 
-// $('.progress_li').removeClass('active');
-if($('#sec_1').hasClass('current')) {
-    $('.progress_bar .sec_1').addClass('active');
-}
-if($('#sec_2').hasClass('current')) {
-    $('.progress_bar .sec_2').addClass('active');
-} 
-if($('#sec_3').hasClass('current')) {
-    $('.progress_bar .sec_3').addClass('active');
-} 
-if($('#sec_4').hasClass('current')) {
-    $('.progress_bar .sec_4').addClass('active');
-} 
-if($('#sec_5').hasClass('current')) {
-    $('.progress_bar .sec_5').addClass('active');
-} 
-if($('#sec_6').hasClass('current')) {
-    $('.progress_bar .sec_6').addClass('active');
-} 
-if($('#sec_7').hasClass('current')) {
-    $('.progress_bar .sec_7').addClass('active');
-} 
-if($('#sec_8').hasClass('current')) {
-    $('.progress_bar .sec_8').addClass('active');
-}  
-
-      
-      
-      
-  }
-
-  function curIndex() {
-    // Return the current index by looking at which section has the class 'current'
-    return $sections.index($sections.filter('.current'));
-  }
-
-  // Previous button is easy, just go back
-  $('.form-navigation .previous').click(function() {
-    navigateTo(curIndex() - 1);
-        $('html, body').animate({
-            scrollTop: 0
-        }, 400); 
-  });
-
-  // Next button goes forward iff current block validates
-  $('.form-navigation .next').click(function() {
-    if ($('.registration-form').parsley().validate('block-' + curIndex()))
-      navigateTo(curIndex() + 1);
-        $('html, body').animate({
-            scrollTop: 0
-        }, 400); 
-  });
-
-  // Prepare sections by setting the `data-parsley-group` attribute to 'block-0', 'block-1', etc.
-  $sections.each(function(index, section) {
-    $(section).find(':input').attr('data-parsley-group', 'block-' + index);
-  });
-  navigateTo(0); // Start at the beginning
-});
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
 // Match Emails
 $(".email_input").last().on("blur", function () {
     if ($(this).val() === $(".email_input").first().val()) {
@@ -619,8 +627,6 @@ $(function () {
      
     $('.has-other-field').on('change', function () {
         
-        
-        console.log('hey');
         var this_id = $(this).data('id');
         var field_name = $('#field_' + this_id + ' ' + 'option:selected').val();
         var this_attribute = $(this).attr('name');
@@ -661,71 +667,149 @@ $('.view-exhibitor-info').on('click', function() {
         });
 });
 
+$(function () {
+  var $sections = $('.form-section');
+
+  function navigateTo(index) { 
+    // Mark the current section with the class 'current'
+    $sections
+      .removeClass('current')
+      .eq(index)
+        .addClass('current');
+      
+        // Show only the navigation buttons that make sense for the current section:
+        $('.form-navigation .previous').toggle(index > 0);
+        var atTheEnd = index >= $sections.length - 1;
+        $('.form-navigation .next').toggle(!atTheEnd);
+        $('.form-navigation [type=submit]').toggle(atTheEnd);
+      
+        // Progress Bar 
+        // $('.progress_li').removeClass('active');
+        if($('#sec_1').hasClass('current')) {
+            $('.progress_bar .sec_1').addClass('active');
+        }
+        if($('#sec_2').hasClass('current')) {
+            $('.progress_bar .sec_2').addClass('active');
+        } 
+        if($('#sec_3').hasClass('current')) {
+            $('.progress_bar .sec_3').addClass('active');
+        } 
+        if($('#sec_4').hasClass('current')) {
+            $('.progress_bar .sec_4').addClass('active');
+        } 
+        if($('#sec_5').hasClass('current')) {
+            $('.progress_bar .sec_5').addClass('active');
+        } 
+        if($('#sec_6').hasClass('current')) {
+            $('.progress_bar .sec_6').addClass('active');
+        } 
+        if($('#sec_7').hasClass('current')) {
+            $('.progress_bar .sec_7').addClass('active');
+        } 
+        if($('#sec_8').hasClass('current')) {
+            $('.progress_bar .sec_8').addClass('active');
+        }  
+      
+      if($('#sec_8').hasClass('current')) {
+            $('.update-attendee').hide();
+            $('.submit-attendee').hide();
+      } else {
+        if($('#sec_1').hasClass('current')) {
+            $('.submit-attendee').show();
+            $('.update-attendee').hide();
+        } else {
+            $('.update-attendee').show();
+            $('.submit-attendee').hide();
+        } 
+      }
+  }
+
+  function curIndex() {
+    // Return the current index by looking at which section has the class 'current'
+    return $sections.index($sections.filter('.current'));
+  }
+
+
+  // Previous button is easy, just go back
+  $('.form-navigation .previous').click(function() {
+    navigateTo(curIndex() - 1);
+        $('html, body').animate({
+            scrollTop: 0
+        }, 400); 
+  });
+
+  
+  // Next button goes forward iff current block validates
+  $('.form-navigation .next').click(function() {
+    if ($('.registration-form').parsley().validate('block-' + curIndex()))
+      navigateTo(curIndex() + 1);
+        $('html, body').animate({
+            scrollTop: 0
+        }, 400); 
+  });
+
+    
+  // Prepare sections by setting the `data-parsley-group` attribute to 'block-0', 'block-1', etc.
+  $sections.each(function(index, section) {
+    $(section).find(':input').attr('data-parsley-group', 'block-' + index);
+  });
+  
+  navigateTo(0); // Start at the beginning
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+});
+
+    
+    
+    
+    
+    
+    
+  
+    
+    
+    
+});
+// End Doc Ready
 
 
 
-$("#page_1 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_1");
-});    
-    
-$("#page_2 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_2");
+
+
+
+
+
+
+
+
+
+
+
+// Validate
+/*
+$('.form-navigation .next').click(function () {
+    if ($('.registration-form').parsley().validate('block-' + curIndex()))
+        navigateTo(curIndex() + 1);
+        $('html, body').animate({
+            scrollTop: 0
+        }, 400);
 });
-    
-$("#page_3 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_3");
+*/
+/*
+$('.next').click(function(e){
+    $('.registration-form').parsley().validate();
 });
-    
-$("#page_4 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_4");
-});    
-    
-$("#page_5 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_5");
-});    
-    
-$("#page_6 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_6");
-});    
-    
-$("#page_7 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_7");
-});
-    
-$("#page_8 li").sort(function(a, b) {
-  return parseInt(a.id) - parseInt(b.id);
-}).each(function() {
-  var elem = $(this);
-  elem.remove();
-  $(elem).appendTo("#page_8");
-});
+*/
 
 

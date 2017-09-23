@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 body {
   width: 100%;
   overflow-x: hidden !important;
@@ -296,7 +295,9 @@ label {
 .parsley-errors-list {
   list-style: none;
   margin: 0 auto;
-  padding: 0; }
+  padding: 0;
+  position: absolute;
+  bottom: -20px; }
   .parsley-errors-list li {
     color: #F44336;
     font-family: 'Roboto', sans-serif;
@@ -319,6 +320,9 @@ label {
 textarea {
   min-height: 250px; }
 
+.update-attendee {
+  display: none; }
+
 .other-input {
   margin: 20px auto 0;
   display: none; }
@@ -337,37 +341,57 @@ textarea {
 .invite-form {
   background: #fff;
   margin: 0 auto;
-  padding: 0; }
+  padding: 60px 0;
+  position: relative; }
+  .invite-form .form-group {
+    margin-top: 20px; }
   .invite-form label {
     font-size: 16px;
     margin-right: 0; }
+  .invite-form .intro-message {
+    margin: 0 auto 40px; }
+  .invite-form:before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 500px; }
 
 .progress_bar {
   text-align: center;
   margin: 40px auto;
-  max-width: 360px;
-  position: relative; }
-  .progress_bar:before {
-    content: '';
-    position: absolute;
-    top: 14px;
-    left: 20px;
-    right: 20px;
-    background: #e6e8ea;
-    height: 1px;
-    width: auto; }
+  max-width: 900px;
+  position: relative;
+  clear: both;
+  float: left;
+  width: 100%;
+  /*
+    &:before {
+        content:'';
+        position: absolute;
+        top: 14px;
+        left: 20px;
+        right: 20px;
+        background: $grey;
+        height: 1px;
+        width: auto;
+    }
+    */ }
   .progress_bar li {
     display: inline-block;
-    margin: 0 5px;
+    margin: 0 auto;
+    float: left;
+    width: 25%;
     position: relative; }
     .progress_bar li span {
-      width: 30px;
+      width: 100%;
       height: 30px;
       display: block;
-      border-radius: 50%;
       background: #e6e8ea;
       color: #fff;
-      line-height: 30px; }
+      line-height: 30px;
+      border: 1px solid #fff; }
     .progress_bar li.active span {
       background: #3ac960;
       color: #fff; }
@@ -984,7 +1008,10 @@ textarea {
   background: #fff;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 60px; }
+  padding: 60px;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); }
   .invite-wrap .invite-header {
     margin: 0 auto 20px;
     text-align: center; }
@@ -1166,6 +1193,12 @@ textarea {
   -moz-transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out; }
 
+.steps-2-8 .form-navigation {
+  display: none; }
+
+.steps-2-8.active .form-navigation {
+  display: block; }
+
 /*
 Make bootstrap-select work with bootstrap 4 see:
 https://github.com/silviomoreto/bootstrap-select/issues/1135
@@ -1207,17 +1240,21 @@ https://github.com/silviomoreto/bootstrap-select/issues/1135
   .bootstrap-select > .dropdown-menu > .dropdown-menu li a:hover {
     background: #e6e8ea; }
 
+/*
 .dropdown-menu > li.active > a {
   color: #fff !important;
-  background-color: #337ab7 !important; }
+  background-color: #337ab7 !important;
+}
 
 .bootstrap-select .check-mark::after {
-  content: "✓"; }
+  content: "✓";
+}
 
-.bootstrap-select button {
+.bootstrap-select button { 
   overflow: hidden;
-  text-overflow: ellipsis; }
-
+  text-overflow: ellipsis;
+}
+*/
 .bootstrap-select.btn-group .dropdown-toggle .filter-option {
   display: inline !important; }
 

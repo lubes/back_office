@@ -16,11 +16,8 @@ $mysqli = new mysqli('localhost', 'root', 'root', 'a_quartz');
     $uri = 'http://localhost:8888/a_quartz';
 
 } else {
-error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
-ini_set('display_errors', 1);
-$mysqli = new mysqli('683aa0db9a05d4e8950d0af751acc5344e9df3c3.rackspaceclouddb.com', 'esw_admin', 'Acc3557916!', 'backoffice');
-    $uri = 'https://quartzevents.com/dashboard';
-        
+$mysqli = new mysqli('localhost', 'qa_user', 'Acc3557916!', 'qa_test_db');
+    $uri = 'http://qa.esw.me';
 }
 
 if(($mysqli->connect_errno > 0)){
@@ -36,7 +33,7 @@ function login_admin() {
     $user = mysqli_real_escape_string($mysqli, $_POST['email']);
     $pass = mysqli_real_escape_string($mysqli, $_POST['password']);
     if($user == "" || $pass == "") {
-        echo "<div class='bg-danger' style='text-align:center;'>Either username or password field is empty.</div>";
+        echo "Either username or password field is empty.";
     } else {
         $result = mysqli_query($mysqli, "SELECT * FROM admin WHERE email='$user' AND password=md5('$pass')")
    or die("Could not execute the select query.");
@@ -47,7 +44,7 @@ function login_admin() {
             $_SESSION['id'] = $row['id'];
             $_SESSION['permission'] = $row['permission'];
         } else {
-             echo "<div class='bg-danger' style='text-align:center;'>Invalid username or password.</div>";
+            echo "Invalid username or password.";
         }
         if(isset($_SESSION['valid'])) { 
             header('Location: ./admin');
@@ -63,7 +60,7 @@ function login_exhibitor() {
     $pass = mysqli_real_escape_string($mysqli, $_POST['password']);
 
     if($user == "" || $pass == "") {
-        echo "<div class='bg-danger' style='text-align:center;'>Either username or password field is empty.</div>";
+        echo "Either username or password field is empty.";
     } else {
         $result = mysqli_query($mysqli, "SELECT * FROM exhibitors WHERE username='$user' AND password=md5('$pass')")
    or die("Could not execute the select query.");
@@ -78,7 +75,7 @@ function login_exhibitor() {
             $_SESSION['brand'] = $row['brand'];
             $_SESSION['permission'] = $row['permission'];
         } else {
-             echo "<div class='bg-danger' style='text-align:center;'>Invalid username or password.</div>";
+            echo "Invalid username or password.";
         }
         if(isset($_SESSION['valid'])) { 
             header('Location: ./exhibitor/?id='.$_SESSION['id'].'');
@@ -93,7 +90,7 @@ function login_attendee() {
     $user = mysqli_real_escape_string($mysqli, $_POST['email']);
     $pass = mysqli_real_escape_string($mysqli, $_POST['password']);
     if($user == "" || $pass == "") {
-         echo "<div class='bg-danger' style='text-align:center;'>Either username or password field is empty.</div>";
+        echo "Either username or password field is empty.";
     } else {
         $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE email='$user' AND password='$pass'")
    or die("Could not execute the select query.");
@@ -109,7 +106,7 @@ function login_attendee() {
             $_SESSION['permission'] = $row['permission'];
             
         } else {
-             echo "<div class='bg-danger' style='text-align:center;'>Invalid username or password.</div>";
+            echo "Invalid username or password.";
         }
         if(isset($_SESSION['valid'])) { 
             header('Location: ./attendee/?id='.$_SESSION['id'].'');
@@ -990,10 +987,9 @@ function exhibitor_profile_sm() {
             <h3><?php echo $res['company'];?> | <?php echo $res['job_title'];?></h3>
         </div>
         <h3><a href="http://<?php echo $res['website'];?>" target="_blank"><?php echo $res['website'];?></a></h3>
-        <!--<p><?php echo $res['address'];?>, <?php echo $res['address'];?>, <?php echo $res['city'];?>, <?php echo $res['state'];?> <?php echo $res['zip'];?>, <?php echo $res['country'];?></p>-->
+        <p><?php echo $res['address'];?>, <?php echo $res['address'];?>, <?php echo $res['city'];?>, <?php echo $res['state'];?> <?php echo $res['zip'];?>, <?php echo $res['country'];?></p>
         <hr>
-        <p><?php echo $res['description'];?></p>
-        <!--<div class="row">
+        <div class="row">
             <div class="col-12 col-sm-6 col-md-6">
                 <h3>Products and Services</h3>
                 <?php
@@ -1032,7 +1028,7 @@ function exhibitor_profile_sm() {
                 <h3>Testimonials</h3>
                 <p><?php echo $res['testimonials'];?></p>
             </div>
-        </div>-->    
+        </div>    
     <?php }
 }
 
@@ -1595,7 +1591,7 @@ function duplicate_exhibitor() {
         
         // Email Exhibitor that they've been added to another event
         $to = $email;
-        $from_email = 'noreply@quartzevents.com';
+        $from_email = 'lyuba.nova@eatsleepwork.com';
         $subject = "You've been added to another event!";
         $login_creds = 
         "\r\n Username: ".$username.
@@ -2464,22 +2460,15 @@ function form_messages() {
         $t_c = $_POST['t_c'];
         $rules = $_POST['rules'];
         $meetings =  $_POST['meetings'];
-        /*$result = mysqli_query($mysqli, "UPDATE forms SET
+        $result = mysqli_query($mysqli, "UPDATE forms SET
         form_type=9,
         intro='$intro',
         thank_you_message='$thank_you_message',
         t_c='$t_c',
         rules='$rules',
         meetings='$meetings'
-        WHERE event=$event");*/
-        
-        $i = 9;
-        $update = $mysqli->prepare("UPDATE forms SET form_type=?, intro=?, thank_you_message=?, t_c=?, rules=?, meetings=? 
-        WHERE event=?");
-        $update->bind_param("isssssi", $i, $intro, $thank_you_message, $t_c, $rules, $meetings, $event );
-        $update->execute();
-
-       echo "<meta http-equiv='refresh' content='0'>";
+        WHERE event=$event");
+        echo "<meta http-equiv='refresh' content='0'>";
     } 
     while($res = mysqli_fetch_array($result)) { ?>
 
@@ -2558,7 +2547,7 @@ function form_fields() {
         $has_options = $_POST['has_options'];
         $conditional_child = $_POST['conditional_child'];
         $page=$_POST['page'];
-        /*$result = mysqli_query($mysqli, "UPDATE fields SET
+        $result = mysqli_query($mysqli, "UPDATE fields SET
         id='$id',
         active='$active',
         order_no='$order_no',
@@ -2570,23 +2559,7 @@ function form_fields() {
         has_options='$has_options',
         conditional_child='$conditional_child',
         page='$page'
-        WHERE id='$id'");*/
-        
-        $update = $mysqli->prepare("UPDATE fields SET 
-        id=?, 
-        active=?, 
-        order_no=?,
-        title=?,
-        description=?,
-        type=?,
-        options=?,
-        required=?,
-        has_options=?,
-        conditional_child=?,
-        page=?
-        WHERE id=?");
-        $update->bind_param("iiissisiiiii", $id, $active, $order_no, $title, $description, $type, $options, $required, $has_options, $conditional_child, $page, $id);
-        $update->execute();
+        WHERE id='$id'");
         echo "<meta http-equiv='refresh' content='0'>";
     } 
 
@@ -2600,7 +2573,7 @@ function form_fields() {
         $required = $_POST['required'];
         $description = $_POST['description'];
         $page=$_POST['page'];
-        /*$result = mysqli_query($mysqli, "UPDATE custom_fields SET
+        $result = mysqli_query($mysqli, "UPDATE custom_fields SET
         id='$id',
         order_no='$order_no',
         title='$title',
@@ -2609,25 +2582,12 @@ function form_fields() {
         required='$required',
         description='$description',
         page='$page'
-        WHERE id='$id'");*/
-        $update = $mysqli->prepare("UPDATE custom_fields SET 
-        id=?,
-        order_no=?,
-        title=?,
-        form_type=?,
-        field_options=?,
-        required=?,
-        description=?,
-        page=?
-        WHERE id=?");
-        $update->bind_param("iisisisii", $id, $order_no,$title,$type,$options,$required,$description,$page, $id);
-        $update->execute();
-        
+        WHERE id='$id'");
         echo "<meta http-equiv='refresh' content='0'>";
     }     
     
     $result_2 = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event='$event'");
-    $i=500; while($res = mysqli_fetch_array($result_2)) { $i++;  ?>
+    $i=500; while($res = mysqli_fetch_array($result_2)) { $i++; ?>
 
 
                 <li class="<?php if($res['page']==1) { echo 'page_1'; } else { echo 'field_order'; } ?> " id="<?php echo $res['order_no'];?>">
@@ -2892,24 +2852,13 @@ function email_messages() {
         $message_admin = $_POST['message_admin'];
         $subject_registrant = $_POST['subject_registrant'];
         $message_registrant = $_POST['message_registrant'];
-        /*$result = mysqli_query($mysqli, "UPDATE forms SET
+        $result = mysqli_query($mysqli, "UPDATE forms SET
         from_email='$from_email',
         subject_admin='$subject_admin',
         message_admin='$message_admin',
         subject_registrant='$subject_registrant',
         message_registrant='$message_registrant'
-        WHERE Event='$event'");*/
-        
-        $update = $mysqli->prepare("UPDATE forms SET
-        from_email=?,
-        subject_admin=?,
-        message_admin=?,
-        subject_registrant=?,
-        message_registrant=?
-        WHERE Event=?");
-        $update->bind_param("sssssi", $from_email, $subject_admin, $message_admin, $subject_registrant, $message_registrant, $event);
-        $update->execute();
-        
+        WHERE Event='$event'");
         echo "<meta http-equiv='refresh' content='0'>";
     } 
     while($res = mysqli_fetch_array($result)) { ?>
@@ -2958,26 +2907,14 @@ function event_info_form() {
         $exhibitor_update_notice=$_POST['exhibitor_update_notice'];
         $attendee_update_notice=$_POST['attendee_update_notice'];
         $code = $_POST['form_code'];
-        /*$result = mysqli_query($mysqli, "UPDATE quartz_event SET
+        $result = mysqli_query($mysqli, "UPDATE quartz_event SET
         color='$color',
         approval_notice='$approval_notice',
         admin_email = '$admin_email',
         exhibitor_update_notice='$exhibitor_update_notice',
         attendee_update_notice='$attendee_update_notice',
         form_code='$code'
-        WHERE id='$event'");*/
-        
-        $update = $mysqli->prepare("UPDATE quartz_event SET
-        color=?,
-        approval_notice=?,
-        admin_email=?,
-        exhibitor_update_notice=?,
-        attendee_update_notice=?,
-        form_code=?
-        WHERE id=?");
-        $update->bind_param("ssssssi", $color, $approval_notice, $admin_email, $exhibitor_update_notice, $attendee_update_notice, $code, $event);
-        $update->execute();
-        
+        WHERE id='$event'");
         echo "<meta http-equiv='refresh' content='0'>";
     } 
     while($res = mysqli_fetch_array($result)) { ?>
@@ -3028,7 +2965,7 @@ function event_info_form() {
             <div class="form-group">
                 <h3>Message to Admin upon registration (comma separated for multiple emails)</h3>
                 <label>From Email (Admin Email)</label>
-                <input type="text" class="form-control" name="admin_email" placeholder="" value="<?php echo $res['admin_email'];?>" />
+                <input type="email" class="form-control" name="admin_email" placeholder="" value="<?php echo $res['admin_email'];?>" />
             </div> 
             <br>
             <div class="form-group">
@@ -4238,11 +4175,9 @@ function thank_you() {
             $fax  = $res['fax'];
             $website  = $res['website'];
             
-            $results_email = "<p><strong>Name:</strong> ".$name. "</p><p><strong>Email:</strong> ".$email. "</p><p><strong>Company:</strong> ".$company. "</p><p><strong>Job Title:</strong> ".$job_title. "</p><p><strong>Address:</strong> ".$address. "</p><p><strong>City:</strong> ".$city."</p><p><strong>State:</strong> ".$state."</p><p><strong>Zip:</strong> ".$zip."</p><p><strong>Country:</strong> ".$country."</p>";
+            $results_email = "<p><strong>Name:</strong> ".$name. "</p><p><strong>Email:</strong> ".$email. "</p><p><strong>Company:</strong> ".$company. "</p><p><strong>Job Title:</strong> ".$job_title. "</p><p><strong>Address:</strong> ".$address. "</p><p><strong>City:</strong> ".$city."</p><p><strong>State:</strong> ".$state."</p><p><strong>Zip:</strong> ".$zip."</p><p><strong>Country:</strong> ".$country."</p>". "<hr /><p>" . $res["formtc"] . "</p>"."<hr /><p>" . $res["rules"] . "</p>" . "<hr /><p>" . $res["meetings"] . "</p>";
                                    
             echo $results_email;
-                                               
-            $results_email .="<hr /><p>" . $res["formtc"] . "</p>";
 
             foreach($data as $key => $value){
                 foreach($value as $k => $v ){
@@ -4349,9 +4284,6 @@ function thank_you() {
 
                                                
             $headers_admin = "From: " .$from_admin. "\r\n"; 
-            $headers_admin .= "bcc :" . $to_admin . "r\n" ; 
-                                 
-                                               
             $headers_admin .= "MIME-Version: 1.0" . "\r\n";
 	        $headers_admin .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
                                                                                               

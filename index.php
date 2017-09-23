@@ -43,12 +43,11 @@ if(isset($_POST['login_exhibitor'])) {
                     <form name="form_exhibitor" class="login-form" method="post" action="">
                         <h2>Exhibitor Login</h2>
                         <div class="form-group">
-                            <input type="text" name="username" class="form-control" placeholder="Username" value="exhibitor">
-                            <input type="password" name="password" class="form-control" placeholder="Password" value="acc355">
+                            <input type="text" name="username" class="form-control" placeholder="Username" value="">
+                            <input type="password" name="password" class="form-control" placeholder="Password" value="">
                             <input type="submit" class="btn btn-primary btn-block" name="login_exhibitor" value="Login">
                         </div>
                     </form>  
-                    <p class="text-muted">user: exhibitor<br>password: acc355</p>
                 </div>
             </div>
             <div class="tab-pane active" id="profile" role="tabpanel">
@@ -56,12 +55,11 @@ if(isset($_POST['login_exhibitor'])) {
                     <form name="form_admin" class="login-form" method="post" action="">
                         <h2>Admin Login</h2>
                         <div class="form-group">
-                            <input type="text" name="email" class="form-control" placeholder="Email" value="admin@admin.com">
-                            <input type="password" name="password" class="form-control" placeholder="Password" value="acc355">
+                            <input type="text" name="email" class="form-control" placeholder="Email" value="">
+                            <input type="password" name="password" class="form-control" placeholder="Password" value="">
                             <input type="submit" class="btn btn-primary btn-block" name="login_admin" value="Login">
                         </div>
                     </form> 
-                    <p class="text-muted">user: admin@admin.com<br>password: acc355</p>
                 </div>
             </div>
             <div class="tab-pane" id="messages" role="tabpanel">
@@ -69,12 +67,11 @@ if(isset($_POST['login_exhibitor'])) {
                     <form name="form_attendee" class="login-form" method="post" action="">
                         <h2>Attendee Login</h2>
                         <div class="form-group">
-                            <input type="text" name="email" class="form-control" placeholder="Email" value="lybovtch@gmail.com">
-                            <input type="password" name="password" class="form-control" placeholder="Password" value="acc355">
+                            <input type="text" name="email" class="form-control" placeholder="Email" value="">
+                            <input type="password" name="password" class="form-control" placeholder="Password" value="">
                             <input type="submit" class="btn btn-primary btn-block" name="login_attendee" value="Login">
                         </div>
                     </form>    
-                    <p class="text-muted">user: lybovtch@gmail.com<br>password: acc355</p>
                 </div>
             </div>
             </div>

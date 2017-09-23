@@ -16,8 +16,9 @@ $mysqli = new mysqli('localhost', 'root', 'root', 'a_quartz');
     $uri = 'http://localhost:8888/a_quartz';
 
 } else {
-$mysqli = new mysqli('localhost', 'qa_user', 'Acc3557916!', 'qa_test_db');
-    $uri = 'http://qa.esw.me';
+$mysqli = new mysqli('683aa0db9a05d4e8950d0af751acc5344e9df3c3.rackspaceclouddb.com', 'esw_admin', 'Acc3557916!', 'backoffice');
+    $uri = 'https://quartzevents.com/dashboard';
+
 }
 
 if(($mysqli->connect_errno > 0)){
@@ -26,11 +27,11 @@ if(($mysqli->connect_errno > 0)){
 
     global $mysqli; 
     global $uri; 
-    $event_id = $_GET['event'];
-
+    // $event_id = $_GET['event'];
     if(isset($_POST['name'])) {
-
+        $id = $_POST['id'];
         $name = $_POST['name'];
+        $event = $_POST['event'];
         $email = $_POST['email'];
         $company= $_POST['company'];
         $job_title= $_POST['job_title'];
@@ -79,13 +80,14 @@ if(($mysqli->connect_errno > 0)){
         // $t_c  = $_POST['t_c'];
         $logo_use  = $_POST['logo_user'];
         
-        if(isset($_POST['logo_user'])) {
+        if(isset($_POST['submit_form'])) {
             $finished = '1';
         } else {
             $finished = '0';
         }
         
         $result = $mysqli->query("INSERT INTO attendees(
+            id,
             permission,
             event,
             name,   
@@ -138,8 +140,9 @@ if(($mysqli->connect_errno > 0)){
             logo_user,
             finished
         )VALUES(
+            '$id',
             '3',
-            '$event_id',
+            '$event',
             '$name',   
             '$email',
             '$company',
@@ -203,10 +206,5 @@ if(($mysqli->connect_errno > 0)){
         } 
                     
         ?>
-
-        <script>
-            // window.location = "./thanks";
-            // window.location = "../thanks/?id=<?php echo $last_id;?>&event=<?php echo $event_id;?>";
-        </script>
         <?php
     }
