@@ -28,7 +28,6 @@ if(($mysqli->connect_errno > 0)){
     global $mysqli; 
 
     if(isset($_POST['name'])) {
-        $date = date('Y-m-d');
         $id = $_POST['id'];
         $event = $_POST['event'];
         $name = $_POST['name'];
@@ -85,7 +84,6 @@ if(($mysqli->connect_errno > 0)){
         }
         $result = mysqli_query($mysqli, "UPDATE attendees SET
             name='$name',
-            registration_date='$date',
             email='$email',
             company='$company',
             job_title='$job_title',

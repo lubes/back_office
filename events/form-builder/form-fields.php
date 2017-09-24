@@ -19,7 +19,10 @@ include('../nav.php');?>
                                <div class="col-4 col-sm-1 col-md-1">
                                    <p>Active</p>
                                </div>
-                               <div class="col-8 col-sm-2 col-md-2">
+                               <div class="col-8 col-sm-1 col-md-1">
+                                   <p>ID</p>
+                               </div>
+                                <div class="col-8 col-sm-1 col-md-1">
                                    <p>Page</p>
                                </div>
                                <div class="col-8 col-sm-2 col-md-1">

@@ -645,7 +645,9 @@ function event_name() {
     LEFT JOIN brands ON quartz_event.brand = brands.id
     WHERE quartz_event.id = '$event'
     ");
-    while($res = mysqli_fetch_array($brand_res)) { echo $res['brand_name']; echo ' '; echo $res['event_title'];  echo ' '; return $res['event_name'];}
+    while($res = mysqli_fetch_array($brand_res)) { 
+        return $res['event_name'];
+    }
 }
 
 
@@ -987,14 +989,19 @@ function exhibitor_profile_sm() {
 
         <div class="attendee-card">
             <h1><?php echo $res['name'];?></h1>
-            <h3><?php echo $res['company'];?> | <?php echo $res['job_title'];?></h3>
         </div>
-        <h3><a href="http://<?php echo $res['website'];?>" target="_blank"><?php echo $res['website'];?></a></h3>
-        <!--<p><?php echo $res['address'];?>, <?php echo $res['address'];?>, <?php echo $res['city'];?>, <?php echo $res['state'];?> <?php echo $res['zip'];?>, <?php echo $res['country'];?></p>-->
+        <?php if($res['website']){?>
+        <h3><a href="<?php echo $res['website'];?>" target="_blank"><?php echo $res['website'];?></a></h3>
+        <?php } 
+        if($res['address']){
+        ?>        
+        <p><?php echo $res['address'];?>, <?php echo $res['address'];?>, <?php echo $res['city'];?>, <?php echo $res['state'];?> <?php echo $res['zip'];?>, <?php echo $res['country'];?></p>
+        <?php } ?>
         <hr>
         <p><?php echo $res['description'];?></p>
-        <!--<div class="row">
+        <div class="row">
             <div class="col-12 col-sm-6 col-md-6">
+                <?php if($res['products_services']){ ?>
                 <h3>Products and Services</h3>
                 <?php
                 echo '<ul class="normal-list"><li>';
@@ -1003,9 +1010,8 @@ function exhibitor_profile_sm() {
                 $products_services = str_replace(",", "</li><li>", $products_services);   
                 echo $products_services;                                               
                 echo '</li></ul>';
+        } if($res['industries_served']){
                 ?>
-
-
                 <h3>Industries Served</h3>
                 <?php
                 echo '<ul class="normal-list"><li>';
@@ -1014,6 +1020,7 @@ function exhibitor_profile_sm() {
                 $industries_served = str_replace(",", "</li><li>", $industries_served);   
                 echo $industries_served;                                               
                 echo '</li></ul>';
+        } if($res['customers']){
                 ?>
 
                 <h3>Customers</h3>
@@ -1025,6 +1032,7 @@ function exhibitor_profile_sm() {
                 $customers = str_replace(",", "</li><li>", $customers);                                        
                 echo $customers;                                               
                 echo '</li></ul>';
+        }  if($res['testimonials']){
                 ?>
                 </p>
             </div>
@@ -1032,8 +1040,10 @@ function exhibitor_profile_sm() {
                 <h3>Testimonials</h3>
                 <p><?php echo $res['testimonials'];?></p>
             </div>
-        </div>-->    
-    <?php }
+        </div>   
+    <?php 
+        } 
+                                              }
 }
 
 
@@ -2484,7 +2494,6 @@ function form_messages() {
     while($res = mysqli_fetch_array($result)) { ?>
 
         <form method="post" action="">
-            <input type="submit" value="Save" name="update_messages" class="btn btn-success btn-lg float-right" /><div class="clearfix"></div>
             <input type="hidden" name="id" value="<?php echo $res['id'];?>" />
 
             <div class="form-group"> 
@@ -2510,12 +2519,33 @@ function form_messages() {
                 </div>
                 <textarea id='output' name="intro" class="hidden-xl-down form-control"><?php echo $res['intro'];?></textarea>               
             </div>
+            <input type="submit" value="Save" name="update_messages" class="btn btn-success btn-lg float-right" /><div class="clearfix"></div>
 
             <div class="form-group">
                 <label>Thank You Message<span>After attendee registers</span></label>
+                <div class="wysiwyg">
+                   <div id='editControls'>
+                     <div class="editor-controls btn-group">
+                       <a class="btn" data-role='undo' href='javascript:void(0)'><i class='fa fa-undo'></i></a>
+                       <a class="btn" data-role='bold' href='javascript:void(0)'><i class='fa fa-bold'></i></a>
+                       <a class="btn" data-role='italic' href='javascript:void(0)'><i class='fa fa-italic'></i></a>
+                       <a class="btn" data-role='underline' href='javascript:void(0)'><i class='fa fa-underline'></i></a>
+                       <a class="btn" data-role='justifyLeft' href='javascript:void(0)'><i class='fa fa-align-left'></i></a>
+                       <a class="btn" data-role='justifyCenter' href='javascript:void(0)'><i class='fa fa-align-center'></i></a>
+                       <a class="btn" data-role='justifyRight' href='javascript:void(0)'><i class='fa fa-align-right'></i></a>
+                       <a class="btn" data-role='insertUnorderedList' href='javascript:void(0)'><i class='fa fa-list-ul'></i></a>
+                       <a class="btn" data-role='insertOrderedList' href='javascript:void(0)'><i class='fa fa-list-ol'></i></a>
+                       <a class="btn" data-role='h1' href='javascript:void(0)'>h<sup>1</sup></a>
+                       <a class="btn" data-role='h2' href='javascript:void(0)'>h<sup>2</sup></a>
+                       <a class="btn" data-role='p' href='javascript:void(0)'>p</a>
+                     </div>
+                   </div>
+                   <div id='editor' class="form-control" contenteditable><?php echo $res['thank_you_message'];?></div> 
+                </div>
                 <textarea name="thank_you_message" class="form-control"><?php echo $res['thank_you_message'];?></textarea>
             </div>
-            
+            <input type="submit" value="Save" name="update_messages" class="btn btn-success btn-lg float-right" /><div class="clearfix"></div>
+
             <div class="form-group">
                 <label>Rules of Engagement</label>
                 <textarea name="rules" class="form-control"><?php echo $res['rules'];?></textarea>
@@ -2542,7 +2572,7 @@ function form_fields() {
     $event = $_GET['event'];
     $brand = $_GET['brand'];    
     // Get All Fields
-    $result = mysqli_query($mysqli, "SELECT * FROM fields WHERE event='$event' ORDER BY order_no ASC");
+    $result = mysqli_query($mysqli, "SELECT * FROM fields WHERE event='$event' ORDER BY page, order_no ASC");
 
 
     // Update Standard Field
@@ -2556,24 +2586,10 @@ function form_fields() {
         $options = $_POST['options'];
         $required = $_POST['required'];
         $has_options = $_POST['has_options'];
-        $conditional_child = $_POST['conditional_child'];
         $page=$_POST['page'];
-        /*$result = mysqli_query($mysqli, "UPDATE fields SET
-        id='$id',
-        active='$active',
-        order_no='$order_no',
-        title='$title',
-        description='$description',
-        type='$type',
-        options='$options',
-        required='$required',
-        has_options='$has_options',
-        conditional_child='$conditional_child',
-        page='$page'
-        WHERE id='$id'");*/
+        $parent_id = $_POST['parent_id'];
         
         $update = $mysqli->prepare("UPDATE fields SET 
-        id=?, 
         active=?, 
         order_no=?,
         title=?,
@@ -2582,175 +2598,32 @@ function form_fields() {
         options=?,
         required=?,
         has_options=?,
-        conditional_child=?,
-        page=?
+        page=?,
+        parent_id=?
         WHERE id=?");
-        $update->bind_param("iiissisiiiii", $id, $active, $order_no, $title, $description, $type, $options, $required, $has_options, $conditional_child, $page, $id);
+        $update->bind_param("iissisiiiii", $active, $order_no, $title, $description, $type, $options, $required, $has_options, $page, $parent_id, $id);
         $update->execute();
         echo "<meta http-equiv='refresh' content='0'>";
     } 
-
-    // Update Custom Field
-    if(isset($_POST['update_custom_field'])) {
-        $id = $_POST['id'];
-        $order_no = $_POST['order_no'];
-        $title = $_POST['title'];
-        $type = $_POST['form_type'];
-        $options = $_POST['field_options'];
-        $required = $_POST['required'];
-        $description = $_POST['description'];
-        $page=$_POST['page'];
-        /*$result = mysqli_query($mysqli, "UPDATE custom_fields SET
-        id='$id',
-        order_no='$order_no',
-        title='$title',
-        form_type='$type',
-        field_options='$options',
-        required='$required',
-        description='$description',
-        page='$page'
-        WHERE id='$id'");*/
-        $update = $mysqli->prepare("UPDATE custom_fields SET 
-        id=?,
-        order_no=?,
-        title=?,
-        form_type=?,
-        field_options=?,
-        required=?,
-        description=?,
-        page=?
-        WHERE id=?");
-        $update->bind_param("iisisisii", $id, $order_no,$title,$type,$options,$required,$description,$page, $id);
-        $update->execute();
-        
-        echo "<meta http-equiv='refresh' content='0'>";
-    }     
-    
-    $result_2 = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event='$event'");
-    $i=500; while($res = mysqli_fetch_array($result_2)) { $i++;  ?>
-
-
-                <li class="<?php if($res['page']==1) { echo 'page_1'; } else { echo 'field_order'; } ?> " id="<?php echo $res['order_no'];?>">
-                    <form method="post" action="">
-                        <input type="hidden" name="id" value="<?php echo $res['id'];?>" />
-                        <div class="card">
-                            <div class="card-header" role="tab" id="field_<?php echo $i;?>">
-                               <div class="row">
-                                   <div class="col-4 col-sm-1 col-md-1">
-                                       <span class="active-state active"><i class="material-icons">check</i></span>
-                                   </div>
-                                   <div class="col-8 col-sm-2 col-md-2">
-                                       <span class="page">Page <?php echo $res['page'];?></span>
-                                   </div>
-                                   <div class="col-8 col-sm-2 col-md-1">
-                                       <span class="order-no"><?php echo $res['order_no'];?></span>
-                                   </div>
-                                   <div class="col-12 col-sm-8 col-md-5">
-                                       <p><?php echo $res['title'];?> - Custom Field - <?php if($res['form_type']==6) { echo '(Message)'; } ?></p>
-                                   </div>
-                                   <div class="col-12 col-sm-2 col-md-3">
-                                       <div class="btn-group float-right">
-                                           <a class="btn btn-info btn-sm" data-toggle="collapse" data-parent="#accordion" href="#collapse_<?php echo $i;?>" aria-expanded="true" aria-controls="collapseOne">Edit</a>
-                                           <input type="submit" class="btn btn-success btn-sm" name="update_custom_field" value="Save">
-                                       </div>
-                                   </div>
-                               </div>
-                            </div>
-                            <div id="collapse_<?php echo $i;?>" class="collapse" role="tabpanel" aria-labelledby="field_<?php echo $i;?>">
-                                <div class="card-block">
-                                    <div class="row">
-                                        <div class="col-2 col-sm-2">
-                                            <div class="form-group">
-                                               <label>Page</label>
-                                               <input type="text" class="form-control" name="page" value="<?php echo $res['page'];?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-2 col-sm-2">
-                                            <div class="form-group">
-                                                <label>Order</label>
-                                                <input type="text" class="form-control" name="order_no" value="<?php echo $res['order_no'];?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-2 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Field Label</label>
-                                                <input type="text" class="form-control" name="title" value="<?php echo $res['title'];?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-2 col-sm-2">
-                                           <div class="form-group">
-                                              <label>Required?</label>
-                                              <label class="custom-control custom-checkbox">
-                                              <input type="checkbox" class="custom-control-input" value="1" name="required" <?php if($res['required']==1) { echo 'checked'; }?>>
-                                              <span class="custom-control-indicator"></span>
-                                              <span class="custom-control-description">Yes</span>
-                                              </label>
-                                           </div>
-                                        </div>
-                                        <div class="col-12 col-sm-12 col-md-12">
-                                            <div class="form-group">
-                                                <label>Field Description</label>
-                                                <input type="text" class="form-control" name="description" value="<?php echo $res['description'];?>">   
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-2 col-sm-5">
-                                            <div class="form-group">            
-                                                <label>Field Type</label>
-                                                <div class="field-btns" data-toggle="buttons">
-                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==1) { echo 'active'; } ?>">
-                                                          <input type="radio" name="form_type" <?php if($res['form_type']==1) { echo 'checked'; } ?> id="option1" value="1" autocomplete="off">
-                                                          <i class="material-icons">check</i>Checkbox - Multiple
-                                                    </label>
-                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==2) { echo 'active'; } ?>">
-                                                          <input type="radio" name="form_type" <?php if($res['form_type']==2) { echo 'checked'; } ?> id="option1" value="2" autocomplete="off">
-                                                          <i class="material-icons">arrow_drop_down</i>Select - Single Select
-                                                    </label>
-                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==3) { echo 'active'; } ?>">
-                                                          <input type="radio" name="form_type" <?php if($res['form_type']==3) { echo 'checked'; } ?> id="option1" value="3" autocomplete="off">
-                                                          <i class="material-icons">text_format</i>Text Input - Small Text Field
-                                                    </label>
-                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==4) { echo 'active'; } ?>">
-                                                          <input type="radio" name="form_type" <?php if($res['form_type']==4) { echo 'checked'; } ?> id="option1" value="4" autocomplete="off">
-                                                          <i class="material-icons">short_text</i>Textarea - Large Text Area
-                                                    </label>
-                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==5) { echo 'active'; } ?>">
-                                                          <input type="radio" name="form_type" <?php if($res['form_type']==5) { echo 'checked'; } ?> id="option1" value="5" autocomplete="off">
-                                                          <i class="material-icons">radio_button_checked</i>Yes / No
-                                                    </label>
-                                                    <label class="btn btn-secondary btn-block <?php if($res['form_type']==6) { echo 'active'; } ?>">
-                                                          <input type="radio" name="form_type" <?php if($res['form_type']==6) { echo 'checked'; } ?> id="option1" value="6" autocomplete="off">
-                                                          <i class="material-icons">chat</i>Message
-                                                    </label>
-                                                </div> 
-                                            </div> 
-                                        </div>
-                                        <div class="col-xs-2 col-sm-7">
-                                            <div class="form-group">
-                                                <label>Options available (for types Single and Multi) -  One per line</label>
-                                                <textarea name="field_options" class="form-control"><?php echo $res['field_options'];?></textarea>  
-                                            </div>
-                                       </div>
-                                   </div>
-                               </div>
-                            </div>
-                        </div>
-                    </form>
-                </li>
-    <?php }     
-
-    $i=0; while($res = mysqli_fetch_array($result)) { $i++; ?>
-
+    $page_id = 2;
+    $i=0; 
+    while($res = mysqli_fetch_array($result)) { 
+        $i++; 
+    ?>
     <li class="field_order" id="<?php echo $res['order_no'];?>">
         <form method="post" action="">
             <input type="hidden" name="id" value="<?php echo $res['id'];?>" />
-            <div class="card <?php if($res['conditional_child']==1) { echo 'conditional'; }?>">
+            <div class="card <?php if($res['parent_id']>0) { echo 'conditional'; }?>">
                 <div class="card-header" role="tab" id="field_<?php echo $i;?>">
                    <div class="row">
                        <div class="col-4 col-sm-1 col-md-1">
                            <span class="active-state <?php if($res['active']==1) { echo 'active'; }?>"><i class="material-icons">check</i></span>
                        </div>
-                       <div class="col-8 col-sm-2 col-md-2">
-                           <span class="page">Page <?php echo $res['page'];?></span>
+                       <div class="col-8 col-sm-1 col-md-1">
+                           <span class="page"><?php echo $res['id'];?></span>
+                       </div>
+                       <div class="col-8 col-sm-1 col-md-1">
+                           <?php if($res['parent_id']==0) { ?><span class="page">Page <?php echo $res['page'];?></span><?php } ?>
                        </div>
                        <div class="col-8 col-sm-2 col-md-1">
                            <span class="order-no"><?php echo $res['order_no'];?></span>
@@ -2782,6 +2655,12 @@ function form_fields() {
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-xs-2 col-sm-2">
+                                <div class="form-group">
+                                    <label>Parent ID</label>
+                                    <input type="text" class="form-control" name="parent_id" value="<?php echo $res['parent_id'];?>">
+                                </div>
+                            </div>
                             <div class="col-2 col-sm-2">
                                 <div class="form-group">
                                    <label>Page</label>
@@ -2794,12 +2673,6 @@ function form_fields() {
                                     <input type="text" class="form-control" name="order_no" value="<?php echo $res['order_no'];?>">
                                 </div>
                             </div>
-                            <div class="col-xs-2 col-sm-6">
-                                <div class="form-group">
-                                    <label>Field Label</label>
-                                    <input type="text" class="form-control" name="title" value="<?php echo $res['title'];?>">
-                                </div>
-                            </div>
                             <div class="col-xs-2 col-sm-2">
                                <div class="form-group">
                                   <label>Required?</label>
@@ -2809,6 +2682,12 @@ function form_fields() {
                                   <span class="custom-control-description">Yes</span>
                                   </label>
                                </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-6">
+                                <div class="form-group">
+                                    <label>Field Label</label>
+                                    <input type="text" class="form-control" name="title" value="<?php echo $res['title'];?>">
+                                </div>
                             </div>
                             <div class="col-12 col-sm-12 col-md-12">
                                 <div class="form-group">
@@ -2853,7 +2732,7 @@ function form_fields() {
                                             </label>
                                 </div>
                                     </div>
-                                    <div class="col-12 col-sm-6">
+                                    <!--<div class="col-12 col-sm-6">
                                         <div class="form-group">
                                             <label>Conditional Child?</label>
                                             <label class="custom-control custom-checkbox">
@@ -2862,7 +2741,7 @@ function form_fields() {
                                             <span class="custom-control-description">Yes</span>
                                             </label>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                             <div class="col-xs-2 col-sm-7">
@@ -2915,20 +2794,21 @@ function email_messages() {
     while($res = mysqli_fetch_array($result)) { ?>
 
         <form method="post" action="">
-            <input type="submit" value="Save" name="update_emails" class="btn btn-success btn-lg float-right" /><div class="clearfix"></div>
-            <h5>Email to Admin</h5>
+            <!--<h5>Email to Admin</h5>-->
             <div class="form-group">
-                <label>From Email</label>
-                <input type="text" class="form-control" name="from_email" value="<?php echo $res['from_email'];?>" />
+                <!--<label>From Email</label>-->
+                <input type="hidden" class="form-control" name="from_email" value="<?php echo $res['from_email'];?>" />
             </div>
             <div class="form-group">
                 <label>Subject Line to Admin</label>
                 <input type="text" class="form-control" name="subject_admin" value="<?php echo $res['subject_admin'];?>" />
             </div>
+            <input type="submit" value="Save" name="update_emails" class="btn btn-success btn-lg float-right" /><div class="clearfix"></div>
             <div class="form-group">
                 <label>Message to Admin</label>
                 <textarea name="message_admin" class="form-control"><?php echo $res['message_admin'];?></textarea>
             </div>
+            <input type="submit" value="Save" name="update_emails" class="btn btn-success btn-lg float-right" /><div class="clearfix"></div>
             <hr>
             <h5>Email to Registrant</h5>
             <div class="form-group">
@@ -2991,23 +2871,31 @@ function event_info_form() {
                     </div>     
                 </div>
             </div>
+            <div class="form-group">
+                <input type="submit" value="Update Event Info" name="update_info" class="btn btn-success" />
+            </div> 
             <hr><br>
             <div class="row">
                 <div class="col-12 col-sm-12">
                     <div class="form-group">
                         <h3>Event JS Code</h3>
                         <label>Add the URL for the ActOn Beacon code ( //marketing.quartzb2b.com/cdnr/94/acton... )</label>
-                        <textarea class="form-control" name="form_code"><?php echo $res['form_code'];?></textarea>    
+                        <input type="text" class="form-control" name="form_code" value="<?php echo $res['form_code'];?>">
                     </div>     
                 </div>
             </div>
+            <div class="form-group">
+                <input type="submit" value="Update Event Info" name="update_info" class="btn btn-success" />
+            </div> 
             <hr><br>
             <div class="form-group">
                 <h3>Message to Attendee upon approval</h3>
                 <label>Attendee will receive this notice along with login credentials upon approval status</label>
                 <textarea class="form-control" name="approval_notice"><?php echo $res['approval_notice'];?></textarea>
-            </div> 
-            <br><hr><br>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update Event Info" name="update_info" class="btn btn-success" />
+            </div>             <br><hr><br>
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-6">
                     <div class="form-group">
@@ -3024,6 +2912,7 @@ function event_info_form() {
                     </div>
                 </div>
             </div>
+            
             <br><hr><br>
             <div class="form-group">
                 <h3>Message to Admin upon registration (comma separated for multiple emails)</h3>
@@ -3060,15 +2949,46 @@ function form_code() {
     <?php } 
 }
 
+function seoUrl($string) {
+    //Lower case everything
+    $string = strtolower($string);
+    //Make alphanumeric (removes all other characters)
+    $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);
+    //Clean up multiple dashes or whitespaces
+    $string = preg_replace("/[\s-]+/", " ", $string);
+    //Convert whitespaces and underscore to dash
+    $string = preg_replace("/[\s_]/", "-", $string);
+    return $string;
+}
+
 // View Created Custom Fields
 function view_custom_fields() {
     global $mysqli; 
     $event = $_GET['event'];
-    $result_view = mysqli_query($mysqli, "
-    SELECT * FROM custom_fields WHERE event='$event'");
     // Update Custom Fields
     if(isset($_POST['create_custom'])) {
+        $active = 1;
+        $page=$_POST['page'];
         $order_no = $_POST['order_no'];
+        $title = $_POST['title'];
+        $required = $_POST['required'];
+        $description = $_POST['description'];
+        $slug = seoUrl($title );
+        $type = $_POST['form_type'];
+        $options = $_POST['field_options'];
+        $has_options = 0;
+        $conditional_child =0;
+        $parent_id = 0;
+        
+        
+        $insert = $mysqli->prepare("INSERT INTO fields(event, active, order_no, title, description, slug, type, options, required, has_options, conditional_child, page, parent_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $insert->bind_param("iiisssisiiiii", $event, $active, $order_no, $title, $description, $slug, $type, $options, $required, $has_options, $conditional_child, $page, $parent_id );
+        $insert->execute();
+        
+        var_dump($_POST);
+        echo  $event . " : " . $active . " : " . $order_no . " : " . $title . " : " . $description . " : " . $slug . " : " . $type . " : " . $options . " : " . $required . " : " . $has_options . " : " . $conditional_child . " : " . $page . " : " . $parent_id;
+        
+        /*$order_no = $_POST['order_no'];
         $form_type = $_POST['form_type'];
         $required = $_POST['required'];
         $title = $_POST['title'];
@@ -3077,7 +2997,7 @@ function view_custom_fields() {
         $page = $_POST['page'];
         
         $result = $mysqli->query("INSERT INTO custom_fields(event, order_no, form_type, required, title, field_options, description, page) VALUES('$event', '$order_no', '$form_type', '$required', '$title', '$field_options', '$description', '$page')");
-        
+        */
         /*
         $sql = 'INSERT INTO custom_fields (event, order_no, form_type, required, title, field_options) VALUES ';
         foreach ($_POST['title'] as $key => $value) {
@@ -3090,8 +3010,11 @@ function view_custom_fields() {
         // echo $sql; 
         // $result = mysqli_query($mysqli, $sql);   
         // $result_2 = mysqli_query($mysqli, $sql_2);    
-            echo "<meta http-equiv='refresh' content='0'>";
-        } ?>
+        } 
+
+    $result_view = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event='$event'");
+
+?>
     <!-- End Update Custom Fields -->
 
     <!-- Add Custom Fields -->
@@ -4197,10 +4120,9 @@ function thank_you() {
     }
     
     while($res = mysqli_fetch_array($result)) { ?>
-            <figure class="brand-logo">
+            <figure class="brand-logo" style="text-align: center;">
                     <img src="<?php echo brand_logo($slug='event', $slug_2 = 'id');?>" class="" />
             </figure>  
-            <h1>Thank you, your registration for <?php echo event_name();?>.</h1>
             <hr>
             <p class="lead"><?php echo $res['thank_you_message']; ?></p>
             
@@ -4226,6 +4148,9 @@ function thank_you() {
         
             // Not yet added Fields
             $email = $res['att_email'];
+            $altemail = $res['alt_email'];
+            $direct_phone = $res['direct_phone'];
+            $cell_phone = $res['cell_phone'];
             $job_title= $res['job_title'];
             $address= $res['address'];
             $city= $res['city'];
@@ -4238,22 +4163,36 @@ function thank_you() {
             $fax  = $res['fax'];
             $website  = $res['website'];
             
-            $results_email = "<p><strong>Name:</strong> ".$name. "</p><p><strong>Email:</strong> ".$email. "</p><p><strong>Company:</strong> ".$company. "</p><p><strong>Job Title:</strong> ".$job_title. "</p><p><strong>Address:</strong> ".$address. "</p><p><strong>City:</strong> ".$city."</p><p><strong>State:</strong> ".$state."</p><p><strong>Zip:</strong> ".$zip."</p><p><strong>Country:</strong> ".$country."</p>";
-                                   
+            $results_email = "<p><strong>Name:</strong> ".$name. "</p>
+            <p><strong>Company:</strong> ".$company. "</p>
+            <p><strong>Job Title:</strong> ".$job_title. "</p>
+            <p><strong>Business Email:</strong> ".$email. "</p>
+            <p><strong>Alternate Email:</strong> ".$altemail. "</p>
+            <p><strong>Direct Phone :</strong> ". $direct_phone	. "</p>
+            <p><strong>Cell Phone :</strong> ". $cell_phone	. "</p>
+            <p><strong>Website:</strong> ".$website . "</p>
+            <p><strong>Mailing Street:</strong> ".$address. "</p>
+            <p><strong>City:</strong> ".$city."</p>
+            <p><strong>State:</strong> ".$state."</p>
+            <p><strong>Zip:</strong> ".$zip."</p>
+            <p><strong>Country:</strong> ".$country."</p>";
+                                  
             echo $results_email;
                                                
-            $results_email .="<hr /><p>" . $res["formtc"] . "</p>";
 
             foreach($data as $key => $value){
                 foreach($value as $k => $v ){
                     foreach($v as $l){
-                        $results_email .= "<p><strong>" . $l["title"] .":</strong> " . $res[$l["slug"]] .  "</p>";
-                        echo "<p><strong>" . $l["title"] .":</strong> " . $res[$l["slug"]] .  "</p>";
+                        $results_email .= "<p><strong>" . $l["description"] .":</strong> " . $res[$l["slug"]] .  "</p>";
+                        echo "<p><strong>" . $l["description"] ."</strong> " . $res[$l["slug"]]  . "</p>";
 
                     }
                 }
             }
-                                               
+            $results_email .="<hr /><p><strong>Terms & Conditions</strong></p>";
+            $results_email .="<p>" . $res["formtc"] . "</p><hr />";
+            echo "<hr /><p><strong>Rules of Engagement</strong></p>";
+            echo "<p>" . $res["formtc"] . "</p><hr />";
             /*                                   
             $revenue  = $res['revenue'];
             $company_size  = $res['company_size'];
@@ -4325,7 +4264,6 @@ function thank_you() {
             $txt .= "<table bgcolor='#dee1e3'><tr><td align='center'>";
             $txt .= "<div style='background-color:#fff; width:600px; color:#333; margin:40px; padding:40px;'>";
             $txt .= "<figure><img src=\"" . $logo ."\" style=\"width:450px;\" /></figure>";
-            $txt .= "<h1>Thank you, your registration for " . $event_name . "</h1><p>";
             $txt .= "<div style=\"text-align:left;\">";
 
             $txt_admin = $txt;
@@ -4710,63 +4648,107 @@ function exhibitors_invite_form() {
 
 // Fields for Pages
 
-function fields_for_page($page_no) {  ?>
-    <ul id="page_<?php echo $page_no;?>" class="list-unstyled">
-        <?php show_custom_fields($page=$page_no); ?>        
-        <?php standard_form_field($slug='track', $page=$page_no);?>
-        <?php standard_form_field($slug='industry',$page=$page_no);?>
-        <?php standard_form_field($slug='revenue',$page=$page_no);?>
-        <?php standard_form_field($slug='company_size',$page=$page_no);?>
-        <?php standard_form_field($slug='products_services',$page=$page_no);?>   
-        <?php standard_form_field($slug='erp',$page=$page_no);?>   
-        <?php standard_form_field($slug='geo',$page=$page_no);?>
-        <!-- WAREHOUSE -->
-        <?php standard_form_field($slug='warehouse',$page=$page_no);?>
-        <div class="other-input additional-fields conditional-fields" id="warehouse">
-            <?php show_custom_fields(); ?>        
-            <?php standard_form_field($slug='number_facilities',$page=$page_no);?>
-            <?php standard_form_field($slug='facility_responsibilities',$page=$page_no);?>
-            <?php standard_form_field($slug='facilities_size',$page=$page_no);?>
-            <?php standard_form_field($slug='facilities_equipment_interest',$page=$page_no);?>
-            <?php standard_form_field($slug='facilities_software_interest',$page=$page_no);?>
-            <?php standard_form_field($slug='facilities_projects',$page=$page_no);?>
-        </div>
-        <!-- TRANSPORTATION -->
-        <?php standard_form_field($slug='transportation_responsibility',$page=$page_no);?>
-        <div class="other-input additional-fields" id="transportation_responsibility">
-            <?php show_custom_fields(); ?>        
-            <?php standard_form_field($slug='ftl',$page=$page_no);?>
-            <?php standard_form_field($slug='ltl',$page=$page_no);?>
-            <?php standard_form_field($slug='intermodel',$page=$page_no);?>
-            <?php standard_form_field($slug='parcel',$page=$page_no);?>
-            <?php standard_form_field($slug='modes_transporation',$page=$page_no);?>
-            <?php standard_form_field($slug='tansportation_interest',$page=$page_no);?>
-            <?php standard_form_field($slug='transportation_projects',$page=$page_no);?>
-        </div>
-        <!-- 3PL-->
-        <?php standard_form_field($slug='threepls',$page=$page_no);?>
-        <div class="other-input additional-fields" id="threepls">
-            <?php show_custom_fields(); ?>        
-            <?php standard_form_field($slug='footprint',$page=$page_no);?>
-            <?php standard_form_field($slug='threepl_interest',$page=$page_no);?>
-            <?php standard_form_field($slug='threepl_projects',$page=$page_no);?>
-        </div>
-        <!-- SUPPLY CHAIN -->
-        <?php standard_form_field($slug='supply_responsibility',$page=$page_no);?>
-        <div class="other-input additional-fields" id="supply_responsibility">
-            <?php show_custom_fields(); ?>        
-            <?php standard_form_field($slug='supply_services',$page=$page_no);?>
-            <?php standard_form_field($slug='supply_projects',$page=$page_no);?>
-        </div>
-        <!-- PROCUREMENT -->
-        <?php standard_form_field($slug='procurement',$page=$page_no);?>
-        <div class="other-input additional-fields" id="procurement">
-            <?php show_custom_fields(); ?>        
-            <?php standard_form_field($slug='procurement_projects',$page=$page_no);?>
-            <?php standard_form_field($slug='procurement_interest',$page=$page_no);?>
-        </div>
-    </ul>        
-<?php 
+function fields_for_page() { 
+    global $mysqli; 
+    $brand = $_GET['brand'];
+    $event = $_GET['event'];
+    $result = mysqli_query($mysqli, "SELECT * FROM fields WHERE event='$event' ORDER BY page, order_no ASC");
+    $page_id = 1;
+    $parent_id = 0;
+    //echo '<ul id="page_2" class="list-unstyled">';
+        while($res = mysqli_fetch_array($result)) {
+            $fields[] = $res;
+             //var_dump($res);
+        }// end while
+   
+    
+        foreach($fields as $key => $res){
+            if($page_id != $res["page"]){
+                if($page_id != 1){
+                    echo "</ul></div>";
+                }
+                $page_id = $res["page"];
+                echo "<div class=\"form-section\" id=\"sec_$page_id\">";
+
+                echo "<ul id=\"page_$page_id\" class=\"list-unstyled\">";
+            }
+            
+            if(($res["parent_id"] == 0) && ($parent_id > 0)){
+                //echo "</div>";
+                //echo "<!-- End Parent ID $parent_id -->";
+                $parent_id = 0;
+                    $class = "";
+            }
+
+            if(($parent_id != $res["parent_id"]) && ($res["parent_id"] != 0)){
+                $parent_id = $res["parent_id"];
+                $class = "other-input additional-fields conditional-fields";
+            }
+            if($res['active'] == 1) { 
+        ?>
+             <div id="<?php echo "parent_" . $parent_id;?>" data-id="<?php echo $res["id"]; ?>" data-order="<?php echo $res['order_no']; ?>" class="<?php echo $class; ?>">
+            <div class="form-group <?php if($res['required']==1) { echo 'required'; } ?>">
+                <label class="title"><?php echo $res['description'];?> <?php if($res['required']==1) { echo '*'; } ?> <span><?php // echo $res['description'];?></span></label>
+                <!-- Checkbox -->
+                <?php if($res['type'] == 1): ?>
+                    <div class="form-check">
+                    <?php
+                    $text = trim($res['options']); 
+                    $textAr = explode("\n", $text);
+                    $textAr = array_filter($textAr, 'trim'); 
+                    foreach ($textAr as $line) { ?>
+                       <label class="form-check-label">
+                           <input class="form-check-input has-other-field" <?php if($res['required']==1) { echo 'required="" required'; } ?> type="checkbox" name="<?php echo $slug;?>" value="<?php echo $line;?>" data-id="<?php echo $res['slug'];?>"> <?php echo $line;?>
+                       </label>
+                    <?php } ?> 
+                        <input class="form-control other-input hidden_input" id="<?php echo $res['slug'];?>" type="text" placeholder="Other" />
+                    </div>
+                <?php endif;?>
+
+                <!-- Select -->
+                <?php if($res['type'] == 2): ?>
+                    <div class="select-wrap">
+                   <select class="form-control has-other has-other-field" id="field_<?php echo $res['slug'];?>" <?php if($res['required']==1) { echo 'required=""';  } ?> name="<?php echo $res['slug'];?>" data-id="<?php echo $res['slug'];?>">
+                       <option value=" ">Select One</option>
+                       <?php 
+                       $text = trim($res['options']); 
+                       $textAr = explode("\n", $text);
+                       $textAr = array_filter($textAr, 'trim'); 
+                       foreach ($textAr as $line) { ?>
+                           <option value="<?php echo $line;?>"><?php echo $line;?></option>
+                       <?php } 
+                       ?> 
+                   </select>
+                    </div>
+                    <input class="form-control other-input hidden_input" id="<?php echo $res['slug'];?>" type="text" placeholder="Other" />
+                <?php endif;?>
+
+                <!-- Input -->
+                <?php if($res['type'] == 3): ?>
+                    <input type="text" class="form-control" <?php if($res['required']==1) { echo 'required=""'; } ?> name="<?php echo $res['slug'];?>">
+                <?php endif;?>
+
+                <!-- Textarea -->
+                <?php if($res['type'] == 4): ?>
+                    <textarea class="form-control" data-req="<?php if(($res['required']==1) && ($res["conditional_child"] > 0)) { echo 'required';  } ?>" <?php if(($res['required']==1) && ($res["conditional_child"] == 0)) { echo 'required=""';  } ?> name="<?php echo $res['slug'];?>"></textarea>
+                <?php endif;?>
+
+                <!-- yes / no -->
+                <?php if($res['type'] == 5): ?>
+                    <div class="form-check">
+                       <label class="form-check-label <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo "parent_" . $res["id"];?>">
+                       <input class="form-check-input " type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="yes"> Yes</label>
+                       <label class="form-check-label  <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo "parent_" . $res["id"];?>">
+                       <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="No"> No</label>
+                    </div> 
+                <?php endif;?>            
+
+            </div>
+        </div>          
+
+    <?php    } // end active if
+        }
+    echo "</ul></div>";
 }
 
 
