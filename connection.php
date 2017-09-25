@@ -2749,6 +2749,9 @@ function form_fields() {
                                     <label>Options available (for types Single and Multi) -  One per line</label>
                                     <textarea name="options" class="form-control"><?php echo $res['options'];?></textarea>  
                                 </div>
+                                <div class="form-group">
+                                    <a onClick="return confirm('Are you sure you want to delete?')" href="delete.php?id=<?php echo $res["id"]; ?>" class="btn btn-danger btn-sm pull-right">Delete?</a>
+                                </div>
                            </div>
                        </div>
                    </div>
@@ -2971,7 +2974,7 @@ function view_custom_fields() {
         $page=$_POST['page'];
         $order_no = $_POST['order_no'];
         $title = $_POST['title'];
-        $required = $_POST['required'];
+        if($_POST['required']){$required = $_POST['required'];} else { $required = 0; }
         $description = $_POST['description'];
         $slug = seoUrl($title );
         $type = $_POST['form_type'];
@@ -2983,33 +2986,16 @@ function view_custom_fields() {
         
         $insert = $mysqli->prepare("INSERT INTO fields(event, active, order_no, title, description, slug, type, options, required, has_options, conditional_child, page, parent_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $insert->bind_param("iiisssisiiiii", $event, $active, $order_no, $title, $description, $slug, $type, $options, $required, $has_options, $conditional_child, $page, $parent_id );
-        $insert->execute();
+        //$insert->execute();
         
-        var_dump($_POST);
-        echo  $event . " : " . $active . " : " . $order_no . " : " . $title . " : " . $description . " : " . $slug . " : " . $type . " : " . $options . " : " . $required . " : " . $has_options . " : " . $conditional_child . " : " . $page . " : " . $parent_id;
-        
-        /*$order_no = $_POST['order_no'];
-        $form_type = $_POST['form_type'];
-        $required = $_POST['required'];
-        $title = $_POST['title'];
-        $field_options = $_POST['field_options'];
-        $description = $_POST['description'];
-        $page = $_POST['page'];
-        
-        $result = $mysqli->query("INSERT INTO custom_fields(event, order_no, form_type, required, title, field_options, description, page) VALUES('$event', '$order_no', '$form_type', '$required', '$title', '$field_options', '$description', '$page')");
-        */
-        /*
-        $sql = 'INSERT INTO custom_fields (event, order_no, form_type, required, title, field_options) VALUES ';
-        foreach ($_POST['title'] as $key => $value) {
-            $sql .= '( '.$event . ','.$order_no .','.$form_type .','.$required.',\'' . $value . '\',\'' . $field_options . '\'),';
-            // $sql .= '(\'' . $brand . ',' . $value . '\'),';
+        if($insert->execute()){
+            header("Location: form-fields.php?event=" . $event);
+        } else {
+            echo "<div class='bg-danger' style='padding:10px;'>";
+            printf("Error: %s.\n", $insert->error);
+            echo "</div>";
         }
-        $sql = rtrim($sql, ','); 
-        */
-        
-        // echo $sql; 
-        // $result = mysqli_query($mysqli, $sql);   
-        // $result_2 = mysqli_query($mysqli, $sql_2);    
+       
         } 
 
     $result_view = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event='$event'");
@@ -3023,26 +3009,26 @@ function view_custom_fields() {
             <div class="col-2 col-sm-2">
                 <div class="form-group">
                    <label>Page</label>
-                   <input type="text" class="form-control" name="page" value="">
+                   <input type="text" class="form-control" name="page" placeholder="2" value="<?php echo $_POST['page']; ?>">
                 </div>
             </div>
             <div class="col-2 col-sm-2">
                 <div class="form-group">
                    <label>Order</label>
-                   <input type="text" class="form-control" name="order_no" value="">
+                   <input type="text" class="form-control" name="order_no" placeholder="1" value="<?php echo $_POST['order_no']; ?>">
                 </div>
             </div>
             <div class="col-2 col-sm-6">
                 <div class="form-group">
                    <label>Title</label>
-                   <input type="text" class="form-control" name="title" />
+                   <input type="text" class="form-control" name="title" placeholder="Field Label" value="<?php echo $_POST['title']; ?>" required/>
                 </div>
             </div>
             <div class="col-2 col-sm-2">
                 <div class="form-group">
                    <label>Required?</label>
                    <label class="custom-control custom-checkbox">
-                   <input type="checkbox" class="custom-control-input" value="1" name="required" <?php if($res['required']==1) { echo 'checked'; }?>>
+                   <input type="checkbox" class="custom-control-input" value="1" name="required" <?php if($post['required']==1) { echo 'checked'; }?>>
                    <span class="custom-control-indicator"></span>
                    <span class="custom-control-description">Yes</span>
                    </label>
@@ -3051,21 +3037,21 @@ function view_custom_fields() {
             <div class="col-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <label>Field Description</label>
-                    <input type="text" class="form-control" name="description">   
+                    <input type="text" class="form-control" name="description" placeholder="Description" value="<?php echo $_POST['description']; ?>" required>   
                 </div>
             </div>
             <div class="col-12 col-sm-5">
                 <div class="form-group">
                    <label>Type</label>
                    <div class="select-wrap">
-                   <select class="form-control input-type" name="form_type">
-                       <option selected disabled>Field Type</option>
-                       <option value="1">Checkbock (Multi-select)</option>
-                       <option value="2">Select (Single-Select)</option>
-                       <option value="3">Text Input</option>
-                       <option value="4">Textarea</option>
-                       <option value="5">Yes/No</option>
-                       <option value="6">Message</option>
+                   <select class="form-control input-type" name="form_type" required>
+                       <option disabled>Field Type</option>
+                       <option value="1" <?php if($_POST["form_type"] == 1){ echo "selected"; } ?>>Checkbock (Multi-select)</option>
+                       <option value="2" <?php if($_POST["form_type"] == 2){ echo "selected"; } ?>>Select (Single-Select)</option>
+                       <option value="3" <?php if($_POST["form_type"] == 3){ echo "selected"; } ?>>Text Input</option>
+                       <option value="4" <?php if($_POST["form_type"] == 4){ echo "selected"; } ?>>Textarea</option>
+                       <option value="5" <?php if($_POST["form_type"] == 5){ echo "selected"; } ?>>Yes/No</option>
+                       <option value="6" <?php if($_POST["form_type"] == 6){ echo "selected"; } ?>>Message</option>
                    </select>
                    </div>
                 </div>
@@ -3084,7 +3070,7 @@ function view_custom_fields() {
         </div>
     </form>
     <hr>
-    <h3>Current Custom Fields</h3>
+   <!-- <h3>Current Custom Fields</h3>
     <table class="table table-responsive">
         <thead>
             <th>Order</th>
@@ -3118,7 +3104,7 @@ function view_custom_fields() {
         </tr>
         <?php endif; } ?>
         </tbody>
-    </table>
+    </table>-->
     <?php 
 }
 
@@ -4808,5 +4794,5 @@ function delete_season() {
 function delete_custom_field() {
     global $mysqli; 
     $id = $_GET['id'];
-    $result=mysqli_query($mysqli, "DELETE FROM custom_fields WHERE id=$id"); 
+    $result=mysqli_query($mysqli, "DELETE FROM fields WHERE id=$id"); 
 }
