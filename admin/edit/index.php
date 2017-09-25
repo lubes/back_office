@@ -10,7 +10,7 @@ include ('../../layout/page-header.php');?>
 <div class="container">
     <div class="widget-wrap">
         <div class="widget-title">
-            <h3>Edit <?php event_name();?></h3>
+            <h3>Edit <?php echo event_name();?></h3>
         </div>
         <div class="widget-content">
             <?php edit_quartz_event();?>

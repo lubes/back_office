@@ -486,11 +486,11 @@ label {
     margin: 0 auto;
     padding: 0;
     position: absolute;
-    bottom: -20px;
+    top: 5px;
     li {
         color: $danger;
         @include med();
-        font-size: 14px;
+        font-size: 12px;
     }
 }
 

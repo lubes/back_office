@@ -114,8 +114,8 @@ $event = $_GET['event'];
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>State</label>
-                            <input type="text" class="form-control"  name="state" />
+                            <label>State*</label>
+                            <input type="text" class="form-control" required name="state" />
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
@@ -146,8 +146,8 @@ $event = $_GET['event'];
             </ul>
         </div>
         <br>
-        <?php $random = rand(0,1000000000);?>
-        <input type="hidden" name="id" value="<?php echo $random;?>" />    
+        <?php //$random = rand(0,1000000000);?>
+        <input type="hidden" name="id" class="attendee_id" value="" />    
         <input type="hidden" name="event" value="<?php echo $event;?>" />     
         <div class="steps-2-8">
             <?php include('steps-2-8.php');?>   
@@ -155,9 +155,9 @@ $event = $_GET['event'];
         <div class="form-navigation">
             <button type="button" class="previous btn btn-black btn-lg float-left"><i class="material-icons">arrow_back</i> Previous</button>
             <!-- First Next Button to Capture Fields and Data -->
-            <button type="button" class="next submit-attendee btn btn-black btn-lg float-right">Continue <i class="material-icons">arrow_forward</i></button>
+            <button type="button" class="next submit-attendee btn btn-black btn-lg float-right">Continue </button>
             <!-- Other Next Button to Capture Fields and Data -->
-            <button type="button" class="next update-attendee btn btn-black btn-lg float-right">Continue <i class="material-icons">arrow_forward</i></button>
+            <button type="button" class="next update-attendee btn btn-black btn-lg float-right">Continue </button>
             
             <input type="submit" value="Submit" name="submit_form" data-attendee="<?php echo $random;?>" class="submit-form btn btn-success float-right btn-lg">
             <div class="clearfix"></div>
@@ -215,10 +215,10 @@ $('.submit-attendee').click(function(event) {
           type: 'POST',
           data: serializedData,
           success: function(data) {
-                // console.log('SUCCESS!');
-            
+              $(".attendee_id").val(data.trim());
+                 //console.log(data);
                 setTimeout(function(){ 
-                    console.log('inserted attende');
+                    console.log('inserted attendee');
                 }, 200);
               
           }
@@ -228,6 +228,7 @@ $('.submit-attendee').click(function(event) {
    
     
 // Ajax to Send data to DB and Act On
+/*
 $('.update-attendee').click(function(event) {
     serializedData =$("#registeruserform").serialize();
     $.ajax({
@@ -246,17 +247,14 @@ $('.update-attendee').click(function(event) {
         });
     return true; // return false to cancel form action
 });
+*/    
     
-    
- 
-$('.submit-form').click(function(event) {
-    $('#registeruserform').submit(); 
-});
-    
+
 // Ajax to Send data to DB and Act On
 $('#registeruserform').submit(function() {
     serializedData =$("#registeruserform").serialize();
-    var att_id = $('.submit-form').data('attendee');
+    var att_id = $(".attendee_id").val();
+    console.log("id: " + att_id);
     $.ajax({
           async: false,
           url: '../../_includes/update-attendee.php',
@@ -264,7 +262,7 @@ $('#registeruserform').submit(function() {
           data: serializedData,
           success: function(data) {
                 setTimeout(function(){
-                    window.location = "../thanks/?id="+att_id+"&event=<?php echo $event;?>";
+                   // window.location = "../thanks/?id="+att_id+"&event=<?php echo $event;?>";
                 }, 200);
           }
         });
