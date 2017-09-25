@@ -146,8 +146,8 @@ $event = $_GET['event'];
             </ul>
         </div>
         <br>
-        <?php $random = rand(0,1000000000);?>
-        <input type="hidden" name="id" value="<?php echo $random;?>" />    
+        <?php //$random = rand(0,1000000000);?>
+        <input type="hidden" name="id" class="attendee_id" value="" />    
         <input type="hidden" name="event" value="<?php echo $event;?>" />     
         <div class="steps-2-8">
             <?php include('steps-2-8.php');?>   
@@ -215,10 +215,10 @@ $('.submit-attendee').click(function(event) {
           type: 'POST',
           data: serializedData,
           success: function(data) {
-                // console.log('SUCCESS!');
-            
+              $(".attendee_id").val(data.trim());
+                 //console.log(data);
                 setTimeout(function(){ 
-                    console.log('inserted attende');
+                    console.log('inserted attendee');
                 }, 200);
               
           }
@@ -228,6 +228,7 @@ $('.submit-attendee').click(function(event) {
    
     
 // Ajax to Send data to DB and Act On
+
 $('.update-attendee').click(function(event) {
     serializedData =$("#registeruserform").serialize();
     $.ajax({
@@ -237,18 +238,17 @@ $('.update-attendee').click(function(event) {
           data: serializedData,
           success: function(data) {
                 // console.log('SUCCESS!');
-            
+                console.log(data);
                 setTimeout(function(){ 
-                    console.log('updated attende');
+                    console.log('updated attendee');
                 }, 200);
               
           }
         });
     return true; // return false to cancel form action
 });
+   
     
-    
- 
 $('.submit-form').click(function(event) {
     $('#registeruserform').submit(); 
 });
@@ -256,15 +256,18 @@ $('.submit-form').click(function(event) {
 // Ajax to Send data to DB and Act On
 $('#registeruserform').submit(function() {
     serializedData =$("#registeruserform").serialize();
-    var att_id = $('.submit-form').data('attendee');
+    var att_id = $(".attendee_id").val();
+    console.log(serializedData);
+    console.log("id: " + att_id);
     $.ajax({
           async: false,
           url: '../../_includes/update-attendee.php',
           type: 'POST',
           data: serializedData,
           success: function(data) {
+              console.log(data);
                 setTimeout(function(){
-                    window.location = "../thanks/?id="+att_id+"&event=<?php echo $event;?>";
+                window.location = "../thanks/?id="+att_id+"&event=<?php echo $event;?>";
                 }, 200);
           }
         });

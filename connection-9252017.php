@@ -1762,10 +1762,6 @@ function edit_attendee() {
     $attendee = $_GET['id'];
 
     $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'");
-    
-
-    
-    
     if(isset($_POST['edit_attendee'])) {
         
         $event = $_POST['event'];
@@ -1903,9 +1899,7 @@ function edit_attendee() {
 
         echo "<meta http-equiv='refresh' content='0'>";
     } 
-    while($res = mysqli_fetch_array($result)) { 
-        
-        ?>
+    while($res = mysqli_fetch_array($result)) { ?>
         
         <form  method="post" action="">
             
@@ -2035,47 +2029,49 @@ function edit_attendee() {
             </div>
             <hr>
             <h4 class="sec-title">Other Information</h4>
-            <?php 
-             foreach($data as $key => $value){
-                foreach($value as $k => $v ){
-                    foreach($v as $l){
-                        $answer = "";
-                         switch ( $attendee_answers[$l["id"]]["type"]) {
-                            case 1:
-                                 $listed = explode('/,/',$attendee_answers[$l["id"]]["text_value"]);
-                                 foreach($listed as $list){
-                                     $answer .= "<li>" . $list . "</li>";
-                                 }
-                                break;
-                            case 2:
-                                 $answer = $attendee_answers[$l["id"]]["string_value"];
-                                break;
-                            case 3:
-                                 $answer = $attendee_answers[$l["id"]]["string_value"];
-                                break;
-                            case 4:
-                                 $answer = $attendee_answers[$l["id"]]["text_value"];
-                                break;
-                            case 5:
-                                 $answer = $attendee_answers[$l["id"]]["int_value"];
-                                break;
-                        }
-                             
-                        if($l["has_options"] == 1){
-                            $results_email .= "<hr />";
-                            echo "<hr />";
-                        }     
-                             
-                        $results_email .= "<p><strong>" . $l["description"] .":</strong> " . $answer .  "</p>";
-                        echo "<p><strong>" . $l["description"] ."</strong> " . $answer  . "</p>";
-
-                    }
-                }
-            }
-        ?>
             
-            <?php standard_form_field_attendee_edit();?>
+                <?php standard_form_field_attendee_edit($slug='industry');?>
+                <?php standard_form_field_attendee_edit($slug='revenue');?>
+                <?php standard_form_field_attendee_edit($slug='company_size');?>
+                <?php standard_form_field_attendee_edit($slug='products_services');?>   
+                <?php standard_form_field_attendee_edit($slug='erp');?>   
+                <?php standard_form_field_attendee_edit($slug='geo');?>
 
+                <h4 class="sec-title">Warehouse</h4>
+                <?php standard_form_field_attendee_edit($slug='warehouse');?>
+                <?php standard_form_field_attendee_edit($slug='number_facilities');?>
+                <?php standard_form_field_attendee_edit($slug='facility_responsibilities');?>
+                <?php standard_form_field_attendee_edit($slug='facilities_size');?>
+                <?php standard_form_field_attendee_edit($slug='facilities_equipment_interest');?>
+                <?php standard_form_field_attendee_edit($slug='facilities_software_interest');?>
+                <?php standard_form_field_attendee_edit($slug='facilities_projects');?>
+
+                <h4 class="sec-title">Transportation</h4>
+                <?php standard_form_field($slug='transportation_responsibility');?>
+                <?php standard_form_field_attendee_edit($slug='ftl');?>
+                <?php standard_form_field_attendee_edit($slug='ltl');?>
+                <?php standard_form_field_attendee_edit($slug='intermodel');?>
+                <?php standard_form_field_attendee_edit($slug='parcel');?>
+                <?php standard_form_field_attendee_edit($slug='modes_transporation');?>
+                <?php standard_form_field_attendee_edit($slug='tansportation_interest');?>
+                <?php standard_form_field_attendee_edit($slug='transportation_projects');?>
+
+                <h4 class="sec-title">3PL</h4>
+                <?php standard_form_field_attendee_edit($slug='threepls');?>
+                <?php standard_form_field_attendee_edit($slug='footprint');?>
+                <?php standard_form_field_attendee_edit($slug='threepl_interest');?>
+                <?php standard_form_field_attendee_edit($slug='threepl_projects');?>
+
+                <h4 class="sec-title">Supply Chain</h4> 
+                <?php standard_form_field_attendee_edit($slug='supply_responsibility');?>
+                <?php standard_form_field_attendee_edit($slug='supply_services');?>
+                <?php standard_form_field_attendee_edit($slug='supply_projects');?>
+
+                <h4 class="sec-title">Procurement</h4>
+                <?php standard_form_field_attendee_edit($slug='procurement');?>
+                <?php standard_form_field_attendee_edit($slug='procurement_projects');?>
+                <?php standard_form_field_attendee_edit($slug='procurement_interest');?>
+            
             <div class="form-group">
                 <input type="submit" class="btn btn-success" name="edit_attendee" value="Save">
             </div>
@@ -3350,9 +3346,9 @@ while($res = mysqli_fetch_array($result)) { ?>
             <?php if($res['type'] == 5): ?>
                 <div class="form-check">
                    <label class="form-check-label <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
-                   <input class="form-check-input " type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="1"> Yes</label>
+                   <input class="form-check-input " type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="yes"> Yes</label>
                    <label class="form-check-label  <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
-                   <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="0"> No</label>
+                   <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="No"> No</label>
                 </div> 
             <?php endif;?>            
   
@@ -3364,7 +3360,7 @@ while($res = mysqli_fetch_array($result)) { ?>
 }
 
 // Attendee Edit Form Fields
-function standard_form_field_attendee_edit() {
+function standard_form_field_attendee_edit($slug) {
 global $mysqli; 
 $brand = $_GET['brand'];
 $event = $_GET['event'];
@@ -3372,28 +3368,14 @@ $attendee = $_GET['id'];
 $result_1 = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'");
     while($res_1 = mysqli_fetch_array($result_1)) { 
         $this_event  = $res_1['event'];     
-        
-        $result = mysqli_query($mysqli, "SELECT * FROM fields WHERE event = $this_event  ORDER BY page, order_no ASC");
-
-        $count=0;
-        while($field = mysqli_fetch_array($fields)){
-            //var_dump($field);
-            $data[$count++][$field["page"]][$field["order_no"]] = $field;
-        }
-        
-        $metas = mysqli_query($mysqli, "SELECT * FROM attendee_meta WHERE attendee_id =$attendee");
-        while($meta = mysqli_fetch_array($metas)){
-            $attendee_answers[$meta["field_id"]] = $meta;
-        }
-        
-        while($res = mysqli_fetch_array($result)) { 
-            $selected = "";
-        ?>    
+        $result = mysqli_query($mysqli, "SELECT * FROM fields WHERE event='$this_event' AND slug='$slug'");
+        while($res = mysqli_fetch_array($result)) { ?>    
             <?php if($res['active'] == 1):?>
                 <div class="form-group <?php if($res['required']==1) { echo 'required'; } ?>">
                     <label class="title"><?php echo $res['description'];?> <?php if($res['required']==1) { echo '*'; } ?> <span><?php //echo $res['description'];?></span></label>
                     
-                    <p class="att_answer"><?php echo $res_1["description"];?></p>
+                    <p class="att_answer"><?php echo $res_1[$slug];?></p>
+                    
                     <!-- Checkbox -->
                     <?php if($res['type'] == 1): ?>
                         <div class="form-check">
@@ -3401,23 +3383,10 @@ $result_1 = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'"
                         $text = trim($res['options']); 
                         $textAr = explode("\n", $text);
                         $textAr = array_filter($textAr, 'trim'); 
-                                                   
-                        $vals = array_map('trim', explode("/,/",$attendee_answers[$res["id"]]["text_value"]));                           
-                        //var_dump($vals);
-                                                   
-                        foreach ($textAr as $line) {
-                            $val = trim(str_replace(array("\n", "\t", "\r"), '', $line));
-
-                            if(in_array($val,$vals)){
-                                $selected = "checked";
-                            } else {
-                                $selected = "";
-                            }
-
-                        ?>
+                        foreach ($textAr as $line) { ?>
                            <label class="form-check-label">
-                               <input class="form-check-input has-other-field" type="checkbox" name="<?php echo $res['slug'];?>[]" value="<?php echo $val;?>" data-id="<?php echo $res['slug'];?>" <?php echo $selected; ?>> <?php echo $val; ?>
-                            </label>
+                               <input class="form-check-input has-other-field" type="checkbox" name="<?php echo $slug;?>" value="<?php echo $line;?>" data-id="<?php echo $res['slug'];?>"> <?php echo $line;?>
+                           </label>
                         <?php } ?> 
                             <input class="form-control other-input hidden_input" id="<?php echo $res['slug'];?>" type="text" placeholder="Other" />
                         </div>
@@ -3427,21 +3396,13 @@ $result_1 = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'"
                     <?php if($res['type'] == 2): ?>
                         <div class="select-wrap">
                        <select class="form-control has-other has-other-field" id="field_<?php echo $res['slug'];?>" name="<?php echo $res['slug'];?>" data-id="<?php echo $res['slug'];?>">
-                           <option value="">Select One</option>
+                           <option value="-">-</option>
                            <?php 
                            $text = trim($res['options']); 
                            $textAr = explode("\n", $text);
-                           $textAr = array_filter($textAr, 'trim');                    
-                                                   
-                           foreach ($textAr as $line) { 
-                                $val = trim(str_replace(array("\n", "\t", "\r"), '', $line));
-                                if(trim($attendee_answers[$res["id"]]["string_value"]) == $val){
-                                    $selected = "selected";
-                                }  else {
-                                    $selected = "";
-                                }  
-                           ?>
-                               <option value="<?php echo $line;?>"<?php echo $selected; ?>><?php echo $line;?></option>
+                           $textAr = array_filter($textAr, 'trim'); 
+                           foreach ($textAr as $line) { ?>
+                               <option value="<?php echo $line;?>"><?php echo $line;?></option>
                            <?php } 
                            ?> 
                        </select>
@@ -3451,23 +3412,22 @@ $result_1 = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'"
 
                     <!-- Input -->
                     <?php if($res['type'] == 3): ?>
-                        <input type="text" class="form-control" name="<?php echo $res['slug'];?>" value="<?php echo $attendee_answers[$res["id"]]["string_value"];?>">
+                        <input type="text" class="form-control" name="<?php echo $res['slug'];?>" value="<?php echo $res_1[$slug];?>">
                     <?php endif;?>
 
                     <!-- Textarea -->
                     <?php if($res['type'] == 4): ?>
                     <?php echo $res_1[$slug];?>
-                        <textarea class="form-control"  name="<?php echo $res['slug'];?>"><?php echo $attendee_answers[$res["id"]]["text_value"];?></textarea>
+                        <textarea class="form-control"  name="<?php echo $res['slug'];?>"><?php echo $res_1[$slug];?></textarea>
                     <?php endif;?>
 
                     <!-- Textarea -->
-                    <?php if($res['type'] == 5):
-                                            ?>
+                    <?php if($res['type'] == 5): ?>
                         <div class="form-check">
                            <label class="form-check-label <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
-                           <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="1" <?php if($attendee_answers[$res["id"]]["int_value"] == "1") { echo "checked"; }?>> Yes</label>
+                           <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="yes"> Yes</label>
                            <label class="form-check-label  <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
-                           <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="0" <?php if($attendee_answers[$res["id"]]["int_value"] == "0") { echo "checked"; }?>> No</label>
+                           <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="No"> No</label>
                         </div> 
                     <?php endif;?>            
 
@@ -4018,7 +3978,11 @@ while($res = mysqli_fetch_array($result)) {
     </div>
     <div class="form-response">
         <p><span class="question">Country </span><?php echo $res['country'];?></p>
-    </div>      
+    </div>
+    <div class="form-response">
+        <p><span class="question">Track </span><?php echo $res['track'];?></p>
+    </div>            
+                    
                     
     <?php 
      }
@@ -4127,8 +4091,7 @@ function thank_you() {
     WHERE attendees.id='$attendee' AND forms.event='$event'");    
  
     $fields = mysqli_query($mysqli, "SELECT * FROM fields WHERE event = $event ORDER BY page, order_no ASC");
-    //$custom_fields = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event = $event ORDER BY page, order_no ASC");
-    
+    $custom_fields = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event = $event ORDER BY page, order_no ASC");
 
     
     $count=0;
@@ -4142,15 +4105,7 @@ function thank_you() {
         $data[$count++][$field["page"]][$field["order_no"]] = $field;
     }
     
-    while($res = mysqli_fetch_array($result)) { 
-        $metas = mysqli_query($mysqli, "SELECT * FROM attendee_meta WHERE attendee_id =$res[id]");
-        while($meta = mysqli_fetch_array($metas)){
-            $attendee_answers[$meta["field_id"]] = $meta;
-        }
-?>
-                    
-                
-                    
+    while($res = mysqli_fetch_array($result)) { ?>
             <figure class="brand-logo" style="text-align: center;">
                     <img src="<?php echo brand_logo($slug='event', $slug_2 = 'id');?>" class="" />
             </figure>  
@@ -4193,8 +4148,8 @@ function thank_you() {
             $cell_phone  = $res['cell_phone'];
             $fax  = $res['fax'];
             $website  = $res['website'];
-            $results_email = "<hr />";
-            $results_email .= "<p><strong>Name:</strong> ".$name. "</p>
+            
+            $results_email = "<p><strong>Name:</strong> ".$name. "</p>
             <p><strong>Company:</strong> ".$company. "</p>
             <p><strong>Job Title:</strong> ".$job_title. "</p>
             <p><strong>Business Email:</strong> ".$email. "</p>
@@ -4207,56 +4162,22 @@ function thank_you() {
             <p><strong>State:</strong> ".$state."</p>
             <p><strong>Zip:</strong> ".$zip."</p>
             <p><strong>Country:</strong> ".$country."</p>";
-            $results_email .= "<hr />";
+                                  
             echo $results_email;
                                                
-            $parent_id = 0;
+
             foreach($data as $key => $value){
                 foreach($value as $k => $v ){
                     foreach($v as $l){
-                        $answer = "";
-                         switch ( $attendee_answers[$l["id"]]["type"]) {
-                            case 1:
-                                 $listed = explode('/,/',$attendee_answers[$l["id"]]["text_value"]);
-                                 foreach($listed as $list){
-                                     if($list){
-                                        $answer .= "<li>" . $list . "</li>";
-                                     }
-                                 }
-                                break;
-                            case 2:
-                                 $answer = $attendee_answers[$l["id"]]["string_value"];
-                                break;
-                            case 3:
-                                 $answer = $attendee_answers[$l["id"]]["string_value"];
-                                break;
-                            case 4:
-                                 $answer = $attendee_answers[$l["id"]]["text_value"];
-                                break;
-                            case 5:
-                                 $answer = $attendee_answers[$l["id"]]["int_value"];
-                                 if($answer == 1){
-                                     $answer = "Yes";
-                                 } else {
-                                     $answer = "No";
-                                 }
-                                break;
-                        }
-                             
-                        if($l["has_options"] == 1){
-                            $results_email .= "<hr />";
-                            echo "<hr />";
-                        }     
-                             
-                        $results_email .= "<p><strong>" . $l["description"] ."</strong></p><p>" . $answer .  "</p>";
-                        echo "<p><strong>" . $l["description"] ."</strong></p><p>" . $answer  . "</p>";
+                        $results_email .= "<p><strong>" . $l["description"] .":</strong> " . $res[$l["slug"]] .  "</p>";
+                        echo "<p><strong>" . $l["description"] ."</strong> " . $res[$l["slug"]]  . "</p>";
 
                     }
                 }
             }
             $results_email .="<hr /><p><strong>Terms & Conditions</strong></p>";
             $results_email .="<p>" . $res["formtc"] . "</p><hr />";
-            echo "<hr /><p><strong>Terms & Conditions</strong></p>";
+            echo "<hr /><p><strong>Rules of Engagement</strong></p>";
             echo "<p>" . $res["formtc"] . "</p><hr />";
             /*                                   
             $revenue  = $res['revenue'];
@@ -4701,9 +4622,9 @@ function exhibitors_invite_form() {
     while($res = mysqli_fetch_array($result)) { ?>                   
     <div class="col-12 col-sm-6">
       <label class="custom-control custom-checkbox">
-      <input type="checkbox" class="custom-control-input" name="exhibitors[]" value="<?php echo $res['company'];?>" />
+      <input type="checkbox" class="custom-control-input" name="exhibitors" value="<?php echo $res['company'];?>" />
       <span class="custom-control-indicator"></span>
-      <?php echo $res['name'];?>
+      <span class="custom-control-description"><?php echo $res['name'];?></span>
       </label>
     <a href="#" data-toggle="modal" class="btn-help view-exhibitor-info" data-target="#exhibitorInfo" data-exhibitor="<?php echo $res['id'];?>"><i class="material-icons">info</i></a>
     </div>
