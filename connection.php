@@ -33,7 +33,7 @@ function login_admin() {
     $user = mysqli_real_escape_string($mysqli, $_POST['email']);
     $pass = mysqli_real_escape_string($mysqli, $_POST['password']);
     if($user == "" || $pass == "") {
-        echo "Either username or password field is empty.";
+        echo "<div class='bg-danger' style='text-align:center;'>Either username or password field is empty.</div>";
     } else {
         $result = mysqli_query($mysqli, "SELECT * FROM admin WHERE email='$user' AND password=md5('$pass')")
    or die("Could not execute the select query.");
@@ -44,7 +44,7 @@ function login_admin() {
             $_SESSION['id'] = $row['id'];
             $_SESSION['permission'] = $row['permission'];
         } else {
-            echo "Invalid username or password.";
+             echo "<div class='bg-danger' style='text-align:center;'>Invalid username or password.</div>";
         }
         if(isset($_SESSION['valid'])) { 
             header('Location: ./admin');
@@ -60,7 +60,7 @@ function login_exhibitor() {
     $pass = mysqli_real_escape_string($mysqli, $_POST['password']);
 
     if($user == "" || $pass == "") {
-        echo "Either username or password field is empty.";
+        echo "<div class='bg-danger' style='text-align:center;'>Either username or password field is empty.</div>";
     } else {
         $result = mysqli_query($mysqli, "SELECT * FROM exhibitors WHERE username='$user' AND password=md5('$pass')")
    or die("Could not execute the select query.");
@@ -75,7 +75,7 @@ function login_exhibitor() {
             $_SESSION['brand'] = $row['brand'];
             $_SESSION['permission'] = $row['permission'];
         } else {
-            echo "Invalid username or password.";
+             echo "<div class='bg-danger' style='text-align:center;'>Invalid username or password.</div>";
         }
         if(isset($_SESSION['valid'])) { 
             header('Location: ./exhibitor/?id='.$_SESSION['id'].'');
@@ -90,7 +90,7 @@ function login_attendee() {
     $user = mysqli_real_escape_string($mysqli, $_POST['email']);
     $pass = mysqli_real_escape_string($mysqli, $_POST['password']);
     if($user == "" || $pass == "") {
-        echo "Either username or password field is empty.";
+         echo "<div class='bg-danger' style='text-align:center;'>Either username or password field is empty.</div>";
     } else {
         $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE email='$user' AND password='$pass'")
    or die("Could not execute the select query.");
@@ -106,7 +106,7 @@ function login_attendee() {
             $_SESSION['permission'] = $row['permission'];
             
         } else {
-            echo "Invalid username or password.";
+             echo "<div class='bg-danger' style='text-align:center;'>Invalid username or password.</div>";
         }
         if(isset($_SESSION['valid'])) { 
             header('Location: ./attendee/?id='.$_SESSION['id'].'');
@@ -642,7 +642,7 @@ function event_name() {
     LEFT JOIN brands ON quartz_event.brand = brands.id
     WHERE quartz_event.id = '$event'
     ");
-    while($res = mysqli_fetch_array($brand_res)) { echo $res['brand_name']; echo ' '; echo $res['event_title'];  echo ' '; echo $res['event_name'];}
+    while($res = mysqli_fetch_array($brand_res)) { echo $res['brand_name']; echo ' '; echo $res['event_title'];  echo ' '; return $res['event_name'];}
 }
 
 
@@ -1172,13 +1172,13 @@ function edit_exhibitor() {
 
             $admin_notice = $res_email['exhibitor_update_notice'];
             $to_email = $res_email['admin_email'];
-            $from_email = $res_email['admin_email'];
+            $from_email = "noreply@quartzevents.com";
             $to = $email;
             $subject = "Exhibitor  updated their profile";
             $notice = $admin_notice.": ".$name;
             $txt = $notice; 
             $headers = "From: ".$from_email . "\r\n" .
-            "CC: ".$from_email;
+            "BCC: ".$res_email['admin_email'];
             mail($to,$subject,$txt,$headers);
         }        
         
@@ -1591,7 +1591,7 @@ function duplicate_exhibitor() {
         
         // Email Exhibitor that they've been added to another event
         $to = $email;
-        $from_email = 'lyuba.nova@eatsleepwork.com';
+        $from_email = 'noreply@quartzevents.com';
         $subject = "You've been added to another event!";
         $login_creds = 
         "\r\n Username: ".$username.
@@ -2127,9 +2127,9 @@ function approve_attendees() {
                        <td><?php echo $res['email'];?></td>
                        <td>
                        <div class="btn-group float-right">
-                       <a href="" data-toggle="modal" class="btn btn-secondary btn-sm view-info" data-target="#attendeeInfo" data-attendee="<?php echo $res['id'];?>">Details</a>
+                       <a href="" data-toggle="modal" class="btn btn-secondary btn-sm btn-warning view-info" data-target="#attendeeInfo" data-attendee="<?php echo $res['id'];?>">Details</a>
                        <!--<input type="submit" class="btn btn-secondary btn-sm" name="approve_attendee" value="Approve">-->
-                       <a href="" data-toggle="modal" class="btn btn-secondary btn-sm approve-attendee" data-target="#attendeeApproval" data-attendee="<?php echo $res['id'];?>">Approve</a>
+                       <a href="" data-toggle="modal" class="btn btn-secondary btn-sm btn- approve-attendee" data-target="#attendeeApproval" data-attendee="<?php echo $res['id'];?>">Approve</a>
                        <input type="submit" class="btn btn-secondary btn-sm" name="deny_attendee" value="Deny">
                        <input type="submit" class="btn btn-secondary btn-sm" name="cancel_attendee" value="Cancel">
                        </div>
@@ -2963,7 +2963,7 @@ function event_info_form() {
             </div>
             <br><hr><br>
             <div class="form-group">
-                <h3>Message to Attendee upon approval</h3>
+                <h3>Message to Admin upon registration (comma separated for multiple emails)</h3>
                 <label>From Email (Admin Email)</label>
                 <input type="email" class="form-control" name="admin_email" placeholder="" value="<?php echo $res['admin_email'];?>" />
             </div> 
@@ -3248,7 +3248,8 @@ while($res = mysqli_fetch_array($result_2)) {?>
     <li id="<?php echo $res['order_no'];?>">
 
         <div class="form-group">
-            <label><?php echo $res['title'];?> <span><?php if($res['form_type'] !=='6') { echo $res['description']; } ?></span></label>
+            <label><?php echo $res['description'];?> <span><?php if($res['form_type'] !=='6') {// echo $res['description'];
+} ?></span></label>
 
             <!-- Checkbox -->
             <?php if($res['form_type']=='1'):?>
@@ -3304,7 +3305,7 @@ while($res = mysqli_fetch_array($result_2)) {?>
             <?php endif;?>             
             
             <!-- Message -->
-            <?php if($res['form_type']=='6') { echo '<p>'. $res['description'] .'</p>'; } ?>
+            <?php  //if($res['form_type']=='6') { echo '<p>'. $res['description'] .'</p>'; } ?>
             
         </div>
     </li>
@@ -3324,7 +3325,7 @@ while($res = mysqli_fetch_array($result)) { ?>
     <?php if($res['active'] == 1):?>
     <li id="<?php echo $res['order_no'];?>">
         <div class="form-group <?php if($res['required']==1) { echo 'required'; } ?>">
-            <label class="title"><?php echo $res['title'];?> <?php if($res['required']==1) { echo '*'; } ?> <span><?php echo $res['description'];?></span></label>
+            <label class="title"><?php echo $res['description'];?> <?php if($res['required']==1) { echo '*'; } ?> <span><?php // echo $res['description'];?></span></label>
             <!-- Checkbox -->
             <?php if($res['type'] == 1): ?>
                 <div class="form-check">
@@ -3344,8 +3345,8 @@ while($res = mysqli_fetch_array($result)) { ?>
             <!-- Select -->
             <?php if($res['type'] == 2): ?>
                 <div class="select-wrap">
-               <select class="form-control has-other has-other-field" id="field_<?php echo $res['slug'];?>" <?php if($res['required']==1) { echo 'required="" required';  } ?> name="<?php echo $res['slug'];?>" data-id="<?php echo $res['slug'];?>">
-                   <option value="-">-</option>
+               <select class="form-control has-other has-other-field" id="field_<?php echo $res['slug'];?>" <?php if($res['required']==1) { echo 'required=""';  } ?> name="<?php echo $res['slug'];?>" data-id="<?php echo $res['slug'];?>">
+                   <option value=" ">Select One</option>
                    <?php 
                    $text = trim($res['options']); 
                    $textAr = explode("\n", $text);
@@ -3366,14 +3367,14 @@ while($res = mysqli_fetch_array($result)) { ?>
 
             <!-- Textarea -->
             <?php if($res['type'] == 4): ?>
-                <textarea class="form-control" <?php if($res['required']==1) { echo 'required=""';  } ?> name="<?php echo $res['slug'];?>"></textarea>
+                <textarea class="form-control" data-req="<?php if(($res['required']==1) && ($res["conditional_child"] > 0)) { echo 'required';  } ?>" <?php if(($res['required']==1) && ($res["conditional_child"] == 0)) { echo 'required=""';  } ?> name="<?php echo $res['slug'];?>"></textarea>
             <?php endif;?>
             
             <!-- yes / no -->
             <?php if($res['type'] == 5): ?>
                 <div class="form-check">
                    <label class="form-check-label <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
-                   <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="yes"> Yes</label>
+                   <input class="form-check-input " type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="yes"> Yes</label>
                    <label class="form-check-label  <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo $slug;?>">
                    <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="No"> No</label>
                 </div> 
@@ -3399,7 +3400,7 @@ $result_1 = mysqli_query($mysqli, "SELECT * FROM attendees WHERE id='$attendee'"
         while($res = mysqli_fetch_array($result)) { ?>    
             <?php if($res['active'] == 1):?>
                 <div class="form-group <?php if($res['required']==1) { echo 'required'; } ?>">
-                    <label class="title"><?php echo $res['title'];?> <?php if($res['required']==1) { echo '*'; } ?> <span><?php echo $res['description'];?></span></label>
+                    <label class="title"><?php echo $res['description'];?> <?php if($res['required']==1) { echo '*'; } ?> <span><?php //echo $res['description'];?></span></label>
                     
                     <p class="att_answer"><?php echo $res_1[$slug];?></p>
                     
@@ -4105,8 +4106,8 @@ function thank_you() {
     $attendee = $_GET['id'];
 
     $result = mysqli_query($mysqli, "
-    SELECT forms.from_email AS from_email, forms.thank_you_message AS thank_you_message, forms.subject_admin AS subject_admin, forms.message_admin AS message_admin, forms.message_registrant AS message_registrant, forms.subject_registrant AS subject_registrant, forms.message_registrant AS message_registrant, forms.event,
-    
+    SELECT forms.from_email AS from_email, forms.thank_you_message AS thank_you_message, forms.subject_admin AS subject_admin, forms.message_admin AS message_admin, forms.message_registrant AS message_registrant, forms.subject_registrant AS subject_registrant, forms.message_registrant AS message_registrant, forms.event, forms.t_c AS formtc, forms.rules, forms.meetings,
+    quartz_event.admin_email,
     attendees.*, 
     attendees.name AS name, 
     attendees.company AS company,
@@ -4114,10 +4115,29 @@ function thank_you() {
     
     FROM forms
     LEFT JOIN attendees ON forms.Event = attendees.Event
+    LEFT JOIN quartz_event ON forms.Event = quartz_event.id
     WHERE attendees.id='$attendee' AND forms.event='$event'");    
  
+    $fields = mysqli_query($mysqli, "SELECT * FROM fields WHERE event = $event ORDER BY page, order_no ASC");
+    $custom_fields = mysqli_query($mysqli, "SELECT * FROM custom_fields WHERE event = $event ORDER BY page, order_no ASC");
+
+    
+    $count=0;
+    while($field = mysqli_fetch_array($fields)){
+        //var_dump($field);
+        $data[$count++][$field["page"]][$field["order_no"]] = $field;
+    }
+    
+    while($field = mysqli_fetch_array($custom_fields)){
+        //var_dump($field);
+        $data[$count++][$field["page"]][$field["order_no"]] = $field;
+    }
+    
     while($res = mysqli_fetch_array($result)) { ?>
-            <h1>Thank you, your registration for <?php event_name();?> is complete.</h1>
+            <figure class="brand-logo">
+                    <img src="<?php echo brand_logo($slug='event', $slug_2 = 'id');?>" class="" />
+            </figure>  
+            <h1>Thank you, your registration for <?php echo event_name();?>.</h1>
             <hr>
             <p class="lead"><?php echo $res['thank_you_message']; ?></p>
             
@@ -4127,14 +4147,14 @@ function thank_you() {
             $message_registrant = $res['message_registrant'];     
                                                                             
             $to = $res['att_email'];
-            $from = $res['from_email'];
+            $from = "Quartz Events <noreply@quartzevents.com>";//$res['from_email'];
             $subject = $subject_registrant; 
             $message = $message_registrant;
                   
             // Email to Admin
-            $to_admin = $res['from_email'];                            
-            $from_admin = $res['from_email'];
-            $subject_admin = $res['subject_admin'];
+            $to_admin = $res['admin_email'];                            
+            $from_admin = "Quartz Events <noreply@quartzevents.com>";
+            $subject_admin = $res['subject_admin'] . " (ADMIN)";
             $message_admin = $res['message_admin'];
                                                
             // Registrant Information                                
@@ -4154,6 +4174,22 @@ function thank_you() {
             $cell_phone  = $res['cell_phone'];
             $fax  = $res['fax'];
             $website  = $res['website'];
+            
+            $results_email = "<p><strong>Name:</strong> ".$name. "</p><p><strong>Email:</strong> ".$email. "</p><p><strong>Company:</strong> ".$company. "</p><p><strong>Job Title:</strong> ".$job_title. "</p><p><strong>Address:</strong> ".$address. "</p><p><strong>City:</strong> ".$city."</p><p><strong>State:</strong> ".$state."</p><p><strong>Zip:</strong> ".$zip."</p><p><strong>Country:</strong> ".$country."</p>". "<hr /><p>" . $res["formtc"] . "</p>"."<hr /><p>" . $res["rules"] . "</p>" . "<hr /><p>" . $res["meetings"] . "</p>";
+                                   
+            echo $results_email;
+
+            foreach($data as $key => $value){
+                foreach($value as $k => $v ){
+                    foreach($v as $l){
+                        $results_email .= "<p><strong>" . $l["title"] .":</strong> " . $res[$l["slug"]] .  "</p>";
+                        echo "<p><strong>" . $l["title"] .":</strong> " . $res[$l["slug"]] .  "</p>";
+
+                    }
+                }
+            }
+                                               
+            /*                                   
             $revenue  = $res['revenue'];
             $company_size  = $res['company_size'];
             $track = $res['track'];
@@ -4188,43 +4224,69 @@ function thank_you() {
             $procurement_projects  = $res['procurement_projects']; 
             $procurement_interest  = $res['procurement_interest'];
                                                
-            $att_info = " Name: ".$name. "\r\n Email: ".$email. "\r\n Company: ".$company. "\r\n Job Title: ".$job_title. "\r\n Address: ".$address. "\r\n City: ".$city."\r\n State: ".$state."\r\n Zip: ".$zip."\r\n Country: ".$country.
-            "\r\n Revenue: ".$revenue.
-            "\r\n Company Size: ".$company_size.
-            "\r\n Industry: ".$industry.
-            "\r\n ERP: ".$erp.
-            "\r\n GEO Location: ".$geo.
-            "\r\n Warehouse Responsibility: ".$warehouse.
-            "\r\n Number of Facilities: ".$number_facilities.
-            "\r\n Facility Responsibilities: ".$facility_responsibilities.
-            "\r\n Facilities Size: ".$facilities_size.
-            "\r\n Facilities Equipment INterest: ".$facilities_equipment_interest.
-            "\r\n Facilities Software Interest: ".$facilities_software_interest.
-            "\r\n Facilities Projects: ".$facilities_projects.
-            "\r\n Transportation Respobility: ".$transportation_responsibility.
-            "\r\n FTL: ".$ftl.
-            "\r\n LTL: ".$ltl.
-            "\r\n Intermodel: ".intermodel. 
-            "\r\n Modes of Transporation: ".$modes_transporation.
-            "\r\n Transporation Interest: ".$tansportation_interest.
-            "\r\n Transporation Projects: ".$transportation_projects.
-            "\r\n 3PLs: ".$threepls.
-            "\r\n Footprint: ".$footprint.
-            "\r\n 3PL Interest: ".$threepl_interest.
-            "\r\n Supply Chain Responsibility: ".$supply_responsibility.
-            "\r\n Supply Chain Services: ".$supply_services.
-            "\r\n Procurement Inolvement: ".$procurement.
-            "\r\n Procurement Projects: ".$procurement_projects.
-            "\r\n Procurement Interest: ".$procurement_interest;  
-                                               
-            $txt = $message_registrant. "\r\n \r\n" .$att_info;                           
-            $txt_admin = $message_admin. "\r\n \r\n" .$att_info; 
-                                               
-            $headers = "From: " .$from. "\r\n" .
-            "BCC: lyuba.nova@eatsleepwork.com";
+            $att_info = "<p>Name: ".$name. "</p><p> Email: ".$email. "</p><p> Company: ".$company. "</p><p> Job Title: ".$job_title. "</p><p> Address: ".$address. "</p><p> City: ".$city."</p><p> State: ".$state."</p><p> Zip: ".$zip."</p><p> Country: ".$country.
+            "</p><p> Revenue: ".$revenue.
+            "</p><p> Company Size: ".$company_size.
+            "</p><p> Industry: ".$industry.
+            "</p><p> ERP: ".$erp.
+            "</p><p> GEO Location: ".$geo.
+            "</p><p> Warehouse Responsibility: ".$warehouse.
+            "</p><p> Number of Facilities: ".$number_facilities.
+            "</p><p> Facility Responsibilities: ".$facility_responsibilities.
+            "</p><p> Facilities Size: ".$facilities_size.
+            "</p><p> Facilities Equipment INterest: ".$facilities_equipment_interest.
+            "</p><p> Facilities Software Interest: ".$facilities_software_interest.
+            "</p><p> Facilities Projects: ".$facilities_projects.
+            "</p><p> Transportation Respobility: ".$transportation_responsibility.
+            "</p><p> FTL: ".$ftl.
+            "</p><p> LTL: ".$ltl.
+            "</p><p> Intermodel: ".intermodel. 
+            "</p><p> Modes of Transporation: ".$modes_transporation.
+            "</p><p> Transporation Interest: ".$tansportation_interest.
+            "</p><p> Transporation Projects: ".$transportation_projects.
+            "</p><p> 3PLs: ".$threepls.
+            "</p><p> Footprint: ".$footprint.
+            "</p><p> 3PL Interest: ".$threepl_interest.
+            "</p><p> Supply Chain Responsibility: ".$supply_responsibility.
+            "</p><p> Supply Chain Services: ".$supply_services.
+            "</p><p> Procurement Inolvement: ".$procurement.
+            "</p><p> Procurement Projects: ".$procurement_projects.
+            "</p><p> Procurement Interest: ".$procurement_interest . "</p>";
+            
+            */
+            $logo =  brand_logo($slug='event', $slug_2 = 'id');
+            $event_name = event_name();
+            $txt = "<html><head><title>Quartz Events</title></head><body>";
+            $txt .= "<table bgcolor='#dee1e3'><tr><td align='center'>";
+            $txt .= "<div style='background-color:#fff; width:600px; color:#333; margin:40px; padding:40px;'>";
+            $txt .= "<figure><img src=\"" . $logo ."\" style=\"width:450px;\" /></figure>";
+            $txt .= "<h1>Thank you, your registration for " . $event_name . "</h1><p>";
+            $txt .= "<div style=\"text-align:left;\">";
 
-            $headers_admin = "From: " .$from_admin. "\r\n" .
-            "BCC: lyuba.nova@eatsleepwork.com";
+            $txt_admin = $txt;
+            $txt_admin .= $message_admin. "\r\n \r\n" .$results_email; 
+            $txt_admin .= "</p></div></div></td></tr></table></body></html>";
+
+                                               
+            $txt .= $message_registrant. "\r\n \r\n" .$results_email;
+
+                                               
+                                               
+            $txt .= "</p></div></div></td></tr></table></body></html>";
+
+                                               
+                                               
+                                               
+            $headers = "From: " .$from. "\r\n";
+
+            $headers .= "MIME-Version: 1.0" . "\r\n";
+	        $headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
+
+                                               
+            $headers_admin = "From: " .$from_admin. "\r\n"; 
+            $headers_admin .= "MIME-Version: 1.0" . "\r\n";
+	        $headers_admin .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
+                                                                                              
                                                
             // Email to Registrant
             mail($to,$subject,$txt,$headers);
@@ -4405,13 +4467,12 @@ function brand_logo($slug, $slug_2) {
     LEFT JOIN brands ON brands.id = uploads.brand
     LEFT JOIN quartz_event ON uploads.brand = quartz_event.brand
     WHERE quartz_event.$slug_2 = $field
-    ");  ?>                      
-    <figure class="brand-logo">
-        <?php while($brand = mysqli_fetch_array($brand_result)) {?>
-            <img src="<?php echo $uri;?>/uploads/<?php echo $brand['file'];?>" class="" />
-        <?php } ?>
-    </figure>  
-<?php }
+    "); 
+    while($brand = mysqli_fetch_array($brand_result)) {
+        $url = $uri . "/uploads/". $brand['file'];
+    }
+    return $url;
+}
 
 
 function brand_logo_img() {
@@ -4561,7 +4622,7 @@ function exhibitors_invite_form() {
     global $uri;
     $event = $_GET['event'];
     $result = mysqli_query($mysqli, "
-    SELECT * FROM exhibitors WHERE event='$event' ORDER BY company ASC
+    SELECT * FROM exhibitors WHERE event='$event' ORDER BY name ASC
     
     ");
     // SELECT * FROM exhibitors WHERE event='$event' ORDER BY company ASC

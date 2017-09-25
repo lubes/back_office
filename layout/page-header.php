@@ -2,7 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-sm-9">
-                <?php if($body_class=='edit-brand') { brand_logo($slug='brand', $slug_2 = 'brand'); } ?>
+                <?php if($body_class=='edit-brand') { ?> 
+                <figure class="brand-logo">
+                    <img src="<?php echo brand_logo($slug='event', $slug_2 = 'id');?>" class="" />
+            </figure>  
+                <?php } ?>
                     <?php if($page_vars !== 0):?>
                     <h1><?php echo $page_vars;?></h1>
                 <?php endif;?>

@@ -1,5 +1,5 @@
 // var site_url = 'http://localhost:8888/a_quartz/';
-var site_url = 'http://qa.esw.me/';
+var site_url = 'https://quartzevents.com/dashboard/';
 
 
 $(document).ready(function () {
@@ -20,6 +20,8 @@ $("#page_2 li").sort(function (a, b) {
     elem.remove();
     $(elem).appendTo("#page_2");
 });
+    
+
 /*
 $("#page_3 li").sort(function (a, b) {
     return parseInt(a.id) - parseInt(b.id);
@@ -437,9 +439,12 @@ function update_output() {
         var this_id = $(this).data('id');
         if(other.val() == 'other' || other.val() == 'yes') {
             $('#'+this_id+'.other-input').addClass('visible');
+            //console.log($('#'+this_id+'.other-input').find('*[data-req="required"]'));
+            $('#'+this_id+'.other-input').find('*[data-req="required"]').attr('required', 'required');
         }
         else {
             $('#'+this_id+'.other-input').removeClass('visible');
+            $('#'+this_id+'.other-input').find('*[data-req="required"]').removeAttr('required');
         }
     });
     

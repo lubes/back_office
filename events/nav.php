@@ -3,7 +3,9 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-8">
-                <div class="events-header"><?php brand_logo($slug='event', $slug_2 = 'id');?></div>
+                <div class="events-header"><figure class="brand-logo">
+                    <img src="<?php echo brand_logo($slug='event', $slug_2 = 'id');?>" class="" />
+            </figure> </div>
                 <h4><?php season_name();?></h4>
                 <div class="event-meta">
                     <a class="btn btn-secondary btn-sm btn-instructions" href="" data-toggle="modal" data-target="#instructions">View Instructions on Ranking</a>

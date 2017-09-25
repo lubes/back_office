@@ -16,8 +16,9 @@ $mysqli = new mysqli('localhost', 'root', 'root', 'a_quartz');
     $uri = 'http://localhost:8888/a_quartz';
 
 } else {
-$mysqli = new mysqli('localhost', 'qa_user', 'Acc3557916!', 'qa_test_db');
-    $uri = 'http://qa.esw.me';
+$mysqli = new mysqli('683aa0db9a05d4e8950d0af751acc5344e9df3c3.rackspaceclouddb.com', 'esw_admin', 'Acc3557916!', 'backoffice');
+    $uri = 'https://quartzevents.com/dashboard';
+
 }
 
 if(($mysqli->connect_errno > 0)){

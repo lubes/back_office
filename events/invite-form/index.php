@@ -9,7 +9,9 @@ $event = $_GET['event'];
 <div class="container">
     <div class="invite-wrap">
        <div class="invite-header">
-            <?php brand_logo($slug='event', $slug_2 = 'id');?>
+           <figure class="brand-logo">
+                    <img src="<?php echo brand_logo($slug='event', $slug_2 = 'id');?>" class="" />
+            </figure> 
         </div>        
         <div class="form-progress">
             <ul class="progress_bar list-unstyled">
@@ -17,10 +19,6 @@ $event = $_GET['event'];
                 <li class="progress_li sec_2"><span>2</span></li>
                 <li class="progress_li sec_3"><span>3</span></li>
                 <li class="progress_li sec_4"><span>4</span></li>
-                <li class="progress_li sec_5"><span>5</span></li>
-                <li class="progress_li sec_6"><span>6</span></li>
-                <li class="progress_li sec_7"><span>7</span></li>
-                <li class="progress_li sec_8"><span>8</span></li>
             </ul> 
         </div>
         
@@ -38,7 +36,6 @@ $event = $_GET['event'];
             <ul id="page_1" class="list-unstyled">
             <?php show_custom_fields($page='1'); ?>
             <li id="0">
-                <h2 class="form-sec-title">Contact Information</h2> 
 
                 <div class="row">
  
@@ -99,32 +96,32 @@ $event = $_GET['event'];
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>Website</label>
-                            <input type="text" class="form-control"  name="website" />
+                            <label>Website*</label>
+                            <input type="text" class="form-control" required="" name="website" />
                         </div> 
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>Mailing Street*</label>
-                            <input type="text" class="form-control" required="" name="address" />
+                            <label>Mailing Street</label>
+                            <input type="text" class="form-control"  name="address" />
                         </div> 
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>City*</label>
-                            <input type="text" class="form-control" required=""  name="city" />
+                            <label>City</label>
+                            <input type="text" class="form-control"   name="city" />
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>State*</label>
-                            <input type="text" class="form-control" required=""  name="state" />
+                            <label>State</label>
+                            <input type="text" class="form-control"  name="state" />
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>Zip*</label> 
-                            <input type="text" class="form-control" required="" name="zip" />
+                            <label>Zip</label> 
+                            <input type="text" class="form-control" name="zip" />
                         </div> 
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
@@ -135,13 +132,13 @@ $event = $_GET['event'];
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Rules of Engagement</label>
+                    <label>Before completing Registration please take a minute to read the following:</label>
                     <div class="form-msg">
                         <?php form_message($slug='rules');?> 
                     </div>
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="radio" required="" name="exampleRadios" id="exampleRadios1" value="option1"> Agree to Rules of Engagment *
+                        <input class="form-check-input" type="hidden" name="exampleRadios" id="exampleRadios1" value="option1">
                       </label>
                     </div>
                 </div>
@@ -160,7 +157,7 @@ $event = $_GET['event'];
             <!-- First Next Button to Capture Fields and Data -->
             <button type="button" class="next submit-attendee btn btn-black btn-lg float-right">Continue <i class="material-icons">arrow_forward</i></button>
             <!-- Other Next Button to Capture Fields and Data -->
-            <button type="button" class="next update-attendee btn btn-black btn-lg float-right">Continue<i class="material-icons">arrow_forward</i></button>
+            <button type="button" class="next update-attendee btn btn-black btn-lg float-right">Continue <i class="material-icons">arrow_forward</i></button>
             
             <input type="submit" value="Submit" name="submit_form" data-attendee="<?php echo $random;?>" class="submit-form btn btn-success float-right btn-lg">
             <div class="clearfix"></div>
