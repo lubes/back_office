@@ -47,32 +47,37 @@ $event = $_GET['event'];
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>Name *</label>
-                            <input type="text" class="form-control required required-input" required=""  name="name" />
+                            <label>Name*</label>
+                            <div id="name-errors"></div>
+                            <input type="text" class="form-control required required-input" required=""  name="name" data-parsley-errors-container="#name-errors"/>
                         </div>
                     </div>  
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>Company *</label>
-                            <input type="text" class="form-control" required=""  name="company" />
+                            <label>Company*</label>
+                            <div id="company-errors"></div>
+                            <input type="text" class="form-control" required=""  name="company" data-parsley-errors-container="#company-errors"/>
                         </div>                
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>Job Title *</label>
-                            <input type="text" class="form-control required required-input" required="" name="job_title" />
+                            <label>Job Title*</label>
+                            <div id="title-errors"></div>
+                            <input type="text" class="form-control required required-input" required="" name="job_title" data-parsley-errors-container="#title-errors"/>
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>Business Email *</label>
-                            <input type="email" class="form-control email_input" required="" required="" name="email" id="email_1" />
+                            <label>Business Email*</label>
+                            <div id="email-errors"></div>
+                            <input type="email" class="form-control email_input" required="" required="" name="email" id="email_1" data-parsley-errors-container="#email-errors"/>
                         </div> 
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>Confirm Email *</label>
-                            <input type="text" class="form-control email_input" required="" name="" id="email_2"  />
+                            <label>Confirm Email*</label>
+                            <div id="confirm-errors"></div>
+                            <input type="text" class="form-control email_input" required="" name="" id="email_2"  data-parsley-errors-container="#confirm-errors"/>
                             <p class="error-text"></p>
                         </div> 
                     </div>
@@ -85,19 +90,21 @@ $event = $_GET['event'];
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
                             <label>Direct Phone*</label>
-                            <input type="text" class="form-control" required=""  name="direct_phone" />
+                            <div id="phone-errors"></div>
+                            <input type="text" class="form-control" required=""  name="direct_phone" data-parsley-errors-container="#phone-errors" placeholder="(000) 000-0000"/>
                         </div> 
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label>Cell Phone</label>
-                            <input type="text" class="form-control" name="cell_phone" />
+                            <label>Cell Phone </label>
+                            <input type="text" class="form-control" name="cell_phone" placeholder="(000) 000-0000" />
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
                             <label>Website*</label>
-                            <input type="text" class="form-control" required="" name="website" />
+                            <div id="checkbox-errors"></div>
+                            <input type="text" class="form-control" required="" name="website" data-parsley-errors-container="#website-errors"	/>
                         </div> 
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
@@ -115,7 +122,8 @@ $event = $_GET['event'];
                     <div class="col-12 col-sm-6 col-md-4">
                         <div class="form-group">
                             <label>State*</label>
-                            <input type="text" class="form-control" required name="state" />
+                            <div id="state-errors"></div>
+                            <input type="text" class="form-control" required name="state" data-parsley-errors-container="#state-errors"/>
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 col-md-4">
@@ -216,7 +224,8 @@ $('.submit-attendee').click(function(event) {
           data: serializedData,
           success: function(data) {
               $(".attendee_id").val(data.trim());
-                 //console.log(data);
+
+              //console.log(data);
                 setTimeout(function(){ 
                     console.log('inserted attendee');
                 }, 200);
@@ -245,6 +254,7 @@ $('.update-attendee').click(function(event) {
               
           }
         });
+    
     return true; // return false to cancel form action
 });
    
@@ -257,8 +267,8 @@ $('.submit-form').click(function(event) {
 $('#registeruserform').submit(function() {
     serializedData =$("#registeruserform").serialize();
     var att_id = $(".attendee_id").val();
-    console.log(serializedData);
-    console.log("id: " + att_id);
+    //console.log(serializedData);
+    //console.log("id: " + att_id);
     $.ajax({
           async: false,
           url: '../../_includes/update-attendee.php',
@@ -266,6 +276,7 @@ $('#registeruserform').submit(function() {
           data: serializedData,
           success: function(data) {
               console.log(data);
+
                 setTimeout(function(){
                 window.location = "../thanks/?id="+att_id+"&event=<?php echo $event;?>";
                 }, 200);

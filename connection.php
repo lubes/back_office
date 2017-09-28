@@ -984,14 +984,14 @@ function exhibitor_profile() {
 function exhibitor_profile_sm() {
     global $mysqli; 
     $exhibitor = $_GET['id'];
-    $result = mysqli_query($mysqli, "SELECT * FROM exhibitors WHERE id='$exhibitor'");
+    $result = mysqli_query($mysqli, "SELECT * FROM exhibitors WHERE id='$exhibitor' AND active=1");
     while($res = mysqli_fetch_array($result)) { ?>
 
         <div class="attendee-card">
             <h1><?php echo $res['name'];?></h1>
         </div>
         <?php if($res['website']){?>
-        <h3><a href="<?php echo $res['website'];?>" target="_blank"><?php echo $res['website'];?></a></h3>
+        <h3><a href="<?php echo $res['website'];?>" target="_blank"><?php if($res['url_title']) { echo $res['url_title']; } else { echo $res['website']; }?></a></h3>
         <?php } 
         if($res['address']){
         ?>        
@@ -1103,6 +1103,7 @@ function edit_exhibitor() {
         $active = $_POST['active'];
         $fax = $_POST['fax'];
         $website = $_POST['website'];
+        $url_title = $_POST['url_title'];
         $description = $_POST['description'];
         $products_services = $_POST['products_services'];
         $industries_served = $_POST['industries_served'];
@@ -1146,6 +1147,7 @@ function edit_exhibitor() {
         active = '$active',
         fax='$fax',
         website='$website',
+        url_title='$url_title',
         description='$description',
         products_services='$products_services',
         industries_served='$industries_served',
@@ -1186,7 +1188,7 @@ function edit_exhibitor() {
 
             $admin_notice = $res_email['exhibitor_update_notice'];
             $to_email = $res_email['admin_email'];
-            $from_email = "noreply@quartzevents.com";
+            $from_email = "registration@quartzevents.com";
             $to = $email;
             $subject = "Exhibitor  updated their profile";
             $notice = $admin_notice.": ".$name;
@@ -1233,22 +1235,28 @@ function edit_exhibitor() {
                         <input class="form-control" name="email" value="<?php echo $res['email'];?>">
                     </div>
                 </div>
-                <div class="col-12 col-sm-4">
+                <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Phone</label>
                         <input class="form-control" name="phone" value="<?php echo $res['phone'];?>">
                     </div>
                 </div>
-                <div class="col-12 col-sm-4">
+                <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Fax</label>
                         <input class="form-control" name="fax" value="<?php echo $res['fax'];?>">
                     </div>
                 </div>
-                  <div class="col-12 col-sm-4">
+                  <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label>Website (No HTTP://)</label>
+                        <label>Website</label>
                         <input class="form-control" name="website" value="<?php echo $res['website'];?>">
+                    </div>
+                </div>
+                          <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Website Title (No HTTP://)</label>
+                        <input class="form-control" name="url_title" value="<?php echo $res['url_title'];?>">
                     </div>
                 </div>
                 <div class="col-12 col-sm-6">
@@ -1605,7 +1613,7 @@ function duplicate_exhibitor() {
         
         // Email Exhibitor that they've been added to another event
         $to = $email;
-        $from_email = 'noreply@quartzevents.com';
+        $from_email = 'registration@quartzevents.com';
         $subject = "You've been added to another event!";
         $login_creds = 
         "\r\n Username: ".$username.
@@ -1697,7 +1705,7 @@ function all_attendees($finished) {
                <td><?php echo $res['job_title'];?></td>
                <td><?php echo $res['registration_date'];?></td>
                <td><?php echo $res['invitation_number'];?></td>
-               <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></td>
+                <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></a></td>
                <td>
                    
                    <?php                                     
@@ -2117,7 +2125,7 @@ function approve_attendees() {
     global $mysqli; 
     global $uri;
     $event = $_GET['event'];
-    $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE approved=0 AND attendees.event = $event");  
+    $result = mysqli_query($mysqli, "SELECT * FROM attendees WHERE approved=0 AND attendees.event = $event AND finished=1");  
     if(isset($_POST['deny_attendee'])) {
         $id = $_POST['id'];
         $result = mysqli_query($mysqli, "UPDATE attendees SET approved=2 WHERE id='$id'");
@@ -2198,13 +2206,13 @@ function approve_attendee() {
     }   
 }
 
-// LIz's Dumb Function 
+// LIz's Function 
 function basic_event_attendees() {
     global $mysqli; 
     global $uri;
     $event = $_GET['event'];
     $result = mysqli_query($mysqli, "
-    SELECT attendees.id, attendees.name, attendees.company, attendees.job_title, attendees.registration_date, attendees.invitation_number, attendees.email, attendees.password, attendees.approved, attendees.id AS att_id, attendees.event FROM attendees WHERE attendees.event = $event
+    SELECT attendees.id, attendees.name, attendees.company, attendees.job_title, attendees.registration_date, attendees.invitation_number, attendees.email, attendees.password, attendees.approved, attendees.id AS att_id, attendees.event FROM attendees WHERE attendees.event = $event AND attendees.finished = 1 ORDER BY attendees.registration_date DESC
     ");
     while($res = mysqli_fetch_array($result)) { ?>
         <table class="table table-responsive filter-table" id="all_attendees_admin">
@@ -2213,7 +2221,7 @@ function basic_event_attendees() {
                 <th>Company</th>
                 <th>Job Title</th>
                 <th>Reg. Date</th>
-                <th>Invitation No.</th>
+                <th>Invite</th>
                 <th>Email</th>
                 <th>Password</th> 
                 <th>Status</th>
@@ -2221,13 +2229,13 @@ function basic_event_attendees() {
             </thead>
             <tbody>
             <?php while($res = mysqli_fetch_array($result)) { ?>
-                <tr>
+                <tr data-id="<?php echo $res['id'];?>">
                 <td><?php echo $res['name'];?></td>
                 <td><?php echo $res['company'];?></td>
                 <td><?php echo $res['job_title'];?></td>
                 <td><?php echo $res['registration_date'];?></td> 
                 <td><?php echo $res['invitation_number'];?></td>
-                <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></td>
+                    <td><a href="mailto:<?php echo $res['email'];?>"><?php echo $res['email'];?></a></td>
                 <td><?php echo $res['password'];?></td>
                 <td>
                    <?php
@@ -2734,7 +2742,7 @@ function form_fields() {
                                             <span class="custom-control-indicator"></span>
                                             <span class="custom-control-description">Yes</span>
                                             </label>
-                                </div>
+                                        </div>
                                     </div>
                                     <!--<div class="col-12 col-sm-6">
                                         <div class="form-group">
@@ -2983,7 +2991,11 @@ function view_custom_fields() {
         $slug = seoUrl($title );
         $type = $_POST['form_type'];
         $options = $_POST['field_options'];
-        $has_options = 0;
+        if($_POST['has_options']){
+            $has_options = $_POST['has_options'];
+        } else {
+            $has_options = 0;
+        }
         $conditional_child =0;
         $parent_id = 0;
         
@@ -3059,6 +3071,16 @@ function view_custom_fields() {
                    </select>
                    </div>
                 </div>
+                 <div class="col-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Conditional?</label>
+                                            <label class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" value="1" name="has_options" <?php if($res['has_options']==1) { echo 'checked'; }?>>
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description">Yes</span>
+                                            </label>
+                                        </div>
+                                    </div>
             </div>
             <div class="col-12 col-sm-7">
                 <div class="form-group">
@@ -4077,8 +4099,131 @@ while($res = mysqli_fetch_array($result)) {
 }
 
 function att_response() {
-global $mysqli; 
-$att_id = $_GET['id'];
+global $mysqli;
+    
+    $attendee = $_GET['id'];
+
+    $result = mysqli_query($mysqli, "
+    SELECT forms.from_email AS from_email, forms.thank_you_message AS thank_you_message, forms.subject_admin AS subject_admin, forms.message_admin AS message_admin, forms.message_registrant AS message_registrant, forms.subject_registrant AS subject_registrant, forms.message_registrant AS message_registrant, forms.event, forms.t_c AS formtc, forms.rules, forms.meetings,
+    quartz_event.admin_email,
+    attendees.*, 
+    attendees.name AS name, 
+    attendees.company AS company,
+    attendees.email AS att_email
+    
+    FROM forms
+    LEFT JOIN attendees ON forms.Event = attendees.Event
+    LEFT JOIN quartz_event ON forms.Event = quartz_event.id
+    WHERE attendees.id='$attendee'");    
+ 
+    
+    while($res = mysqli_fetch_array($result)) { 
+        $metas = mysqli_query($mysqli, "SELECT * FROM attendee_meta WHERE attendee_id =$res[id]");
+            while($meta = mysqli_fetch_array($metas)){
+                $attendee_answers[$meta["field_id"]] = $meta;
+            }
+            $event = $res["event"];
+        
+             $fields = mysqli_query($mysqli, "SELECT * FROM fields WHERE event = $event ORDER BY page, order_no ASC");
+    
+
+    
+            $count=0;
+            while($field = mysqli_fetch_array($fields)){
+                //var_dump($field);
+                $data[$count++][$field["page"]][$field["order_no"]] = $field;
+            }
+
+            while($field = mysqli_fetch_array($custom_fields)){
+                //var_dump($field);
+                $data[$count++][$field["page"]][$field["order_no"]] = $field;
+            }
+    
+        // Start Output to Page
+        $name = $res['name'];
+        $company = $res['company'];
+        $email = $res['email'];
+        $altemail = $res['alt_email'];
+        $direct_phone = $res['direct_phone'];
+        $cell_phone = $res['cell_phone'];
+        $job_title= $res['job_title'];
+        $address= $res['address'];
+        $city= $res['city'];
+        $state= $res['state'];
+        $zip= $res['zip'];
+        $country= $res['country'];
+        $alt_email  = $res['alt_email'];
+        $direct_phone  = $res['direct_phone'];
+        $cell_phone  = $res['cell_phone'];
+        $fax  = $res['fax'];
+        $website  = $res['website'];
+        $results_email = "<hr />";
+        $results_email .= "<p><strong>Name:</strong> ".$name. "</p>
+        <p><strong>Company:</strong> ".$company. "</p>
+        <p><strong>Job Title:</strong> ".$job_title. "</p>
+        <p><strong>Business Email:</strong> ".$email. "</p>
+        <p><strong>Alternate Email:</strong> ".$altemail. "</p>
+        <p><strong>Direct Phone :</strong> ". $direct_phone	. "</p>
+        <p><strong>Cell Phone :</strong> ". $cell_phone	. "</p>
+        <p><strong>Website:</strong> ".$website . "</p>
+        <p><strong>Mailing Street:</strong> ".$address. "</p>
+        <p><strong>City:</strong> ".$city."</p>
+        <p><strong>State:</strong> ".$state."</p>
+        <p><strong>Zip:</strong> ".$zip."</p>
+        <p><strong>Country:</strong> ".$country."</p>";
+        $results_email .= "<hr />";
+        echo $results_email;
+        
+        // Output Form Fields
+        
+            $parent_id = 0;
+            foreach($data as $key => $value){
+                foreach($value as $k => $v ){
+                    foreach($v as $l){
+                        $answer = "";
+                         switch ( $attendee_answers[$l["id"]]["type"]) {
+                            case 1:
+                                 $listed = explode('/,/',$attendee_answers[$l["id"]]["text_value"]);
+                                 foreach($listed as $list){
+                                     if($list){
+                                        $answer .= "<li>" . $list . "</li>";
+                                     }
+                                 }
+                                break;
+                            case 2:
+                                 $answer = $attendee_answers[$l["id"]]["string_value"];
+                                break;
+                            case 3:
+                                 $answer = $attendee_answers[$l["id"]]["string_value"];
+                                break;
+                            case 4:
+                                 $answer = $attendee_answers[$l["id"]]["text_value"];
+                                break;
+                            case 5:
+                                 $answer = $attendee_answers[$l["id"]]["int_value"];
+                                 if($answer == 1){
+                                     $answer = "Yes";
+                                 } else {
+                                     $answer = "No";
+                                 }
+                                break;
+                        }
+                             
+                        if($l["has_options"] == 1){
+                            $results_email .= "<hr />";
+                            echo "<hr />";
+                        }     
+                             
+                        $results_email .= "<p><strong>" . $l["description"] ."</strong></p><p>" . $answer .  "</p>";
+                        echo "<p><strong>" . $l["description"] ."</strong></p><p>" . $answer  . "</p>";
+
+                    }
+                }
+            }
+    
+    }
+    
+    /*$att_id = $_GET['id'];
     $result_2 = mysqli_query($mysqli, "
     SELECT attendees.*, attendees.Event AS attendee_event, attendees.id AS user_id, fields.* FROM attendees, fields
     WHERE attendees.id = '$att_id' AND fields.event = attendees.event
@@ -4087,7 +4232,7 @@ $att_id = $_GET['id'];
     SELECT attendees.*, attendees.Event AS attendee_event, attendees.id AS user_id, fields.* FROM attendees, fields
     WHERE attendees.id = '$att_id' AND fields.Event = attendees.Event AND fields.brand = attendees.brand 
     */
-    echo '<div class="row">';
+    /*echo '<div class="row">';
     while($res = mysqli_fetch_array($result_2)) {    
     $field = $res['slug'];
     $title = $res['title'];
@@ -4104,7 +4249,7 @@ $att_id = $_GET['id'];
             }
         }
     }    
-    echo '</div>';
+    echo '</div>';*/
 }
 
 // Thank You Message to Registrant
@@ -4144,9 +4289,9 @@ function thank_you() {
     
     while($res = mysqli_fetch_array($result)) { 
         $metas = mysqli_query($mysqli, "SELECT * FROM attendee_meta WHERE attendee_id =$res[id]");
-        while($meta = mysqli_fetch_array($metas)){
-            $attendee_answers[$meta["field_id"]] = $meta;
-        }
+            while($meta = mysqli_fetch_array($metas)){
+                $attendee_answers[$meta["field_id"]] = $meta;
+            }
 ?>
                     
                 
@@ -4163,13 +4308,13 @@ function thank_you() {
             $message_registrant = $res['message_registrant'];     
                                                                             
             $to = $res['att_email'];
-            $from = "Quartz Events <noreply@quartzevents.com>";//$res['from_email'];
+            $from = "Quartz Events <registration@quartzevents.com>";//$res['from_email'];
             $subject = $subject_registrant; 
             $message = $message_registrant;
                   
             // Email to Admin
             $to_admin = $res['admin_email'];                            
-            $from_admin = "Quartz Events <noreply@quartzevents.com>";
+            $from_admin = "Quartz Events <registration@quartzevents.com>";
             $subject_admin = $res['subject_admin'] . " (ADMIN)";
             $message_admin = $res['message_admin'];
                                                
@@ -4178,7 +4323,7 @@ function thank_you() {
             $company = $res['company'];   
         
             // Not yet added Fields
-            $email = $res['att_email'];
+            $email = $res['email'];
             $altemail = $res['alt_email'];
             $direct_phone = $res['direct_phone'];
             $cell_phone = $res['cell_phone'];
@@ -4750,30 +4895,36 @@ function fields_for_page() {
                 $class = "other-input additional-fields conditional-fields";
             }
             if($res['active'] == 1) { 
+                 if($res['has_options'] == 1){ $parent_class="parent_header";} else { $parent_class = "";}
         ?>
              <div id="<?php echo "parent_" . $parent_id;?>" data-id="<?php echo $res["id"]; ?>" data-order="<?php echo $res['order_no']; ?>" class="<?php echo $class; ?>">
             <div class="form-group <?php if($res['required']==1) { echo 'required'; } ?>">
-                <label class="title"><?php echo $res['description'];?> <?php if($res['required']==1) { echo '*'; } ?> <span><?php // echo $res['description'];?></span></label>
+                <label class="title <?php echo $parent_class; ?>"><?php echo $res['description']; ?> 
+            <?php if($res['required']==1) { echo '*'; } ?> <span><?php // echo $res['description'];?></span></label>
+                  <div id="<?php echo $res['slug'];?>-errors"></div>
+
                 <!-- Checkbox -->
                 <?php if($res['type'] == 1): ?>
-                    <div class="form-check">
+                    <div class="row">
                     <?php
                     $text = trim($res['options']); 
                     $textAr = explode("\n", $text);
                     $textAr = array_filter($textAr, 'trim'); 
                     foreach ($textAr as $line) { ?>
-                       <label class="form-check-label">
-                           <input class="form-check-input has-other-field" <?php if($res['required']==1) { echo 'required="" required'; } ?> type="checkbox" name="<?php echo $res['slug'];?>[]" value="<?php echo $line;?>" data-id="<?php echo $res['slug'];?>"> <?php echo $line;?>
+                       <div class="col-xs-12 col-sm-6">
+                        <label class="form-check-label">
+                           <input class="form-check-input has-other-field" <?php if($res['required']==1) { echo 'required="" required'; } ?> type="checkbox" name="<?php echo $res['slug'];?>[]" value="<?php echo $line;?>" data-id="<?php echo $res['slug'];?>" data-parsley-errors-container="#<?php echo $res['slug'];?>-errors"> <?php echo $line;?>
                        </label>
+                           </div>
                     <?php } ?> 
-                        <input class="form-control other-input hidden_input" id="<?php echo $res['slug'];?>" type="text" placeholder="Other" />
+                        <input class="form-control other-input hidden_input" id="<?php echo $res['slug'];?>" type="text" placeholder="Other" data-parsley-errors-container="#<?php echo $res['slug'];?>-errors"/>
                     </div>
                 <?php endif;?>
 
                 <!-- Select -->
                 <?php if($res['type'] == 2): ?>
                     <div class="select-wrap">
-                   <select class="form-control has-other has-other-field" id="field_<?php echo $res['slug'];?>" <?php if($res['required']==1) { echo 'required=""';  } ?> name="<?php echo $res['slug'];?>" data-id="<?php echo $res['slug'];?>">
+                   <select class="form-control has-other has-other-field" id="field_<?php echo $res['slug'];?>" <?php if($res['required']==1) { echo 'required=""';  } ?> name="<?php echo $res['slug'];?>" data-id="<?php echo $res['slug'];?>" data-parsley-errors-container="#<?php echo $res['slug'];?>-errors">
                        <option value=" ">Select One</option>
                        <?php 
                        $text = trim($res['options']); 
@@ -4785,24 +4936,24 @@ function fields_for_page() {
                        ?> 
                    </select>
                     </div>
-                    <input class="form-control other-input hidden_input" id="<?php echo $res['slug'];?>" type="text" placeholder="Other" />
+                    <input class="form-control other-input hidden_input" id="<?php echo $res['slug'];?>" type="text" placeholder="Other" data-parsley-errors-container="#<?php echo $res['slug'];?>-errors"/>
                 <?php endif;?>
 
                 <!-- Input -->
                 <?php if($res['type'] == 3): ?>
-                    <input type="text" class="form-control" <?php if($res['required']==1) { echo 'required=""'; } ?> name="<?php echo $res['slug'];?>">
+                    <input type="text" class="form-control" <?php if($res['required']==1) { echo 'required=""'; } ?> name="<?php echo $res['slug'];?>" data-parsley-errors-container="#<?php echo $res['slug'];?>-errors">
                 <?php endif;?>
 
                 <!-- Textarea -->
                 <?php if($res['type'] == 4): ?>
-                    <textarea class="form-control" data-req="<?php if(($res['required']==1) && ($res["conditional_child"] > 0)) { echo 'required';  } ?>" <?php if(($res['required']==1) && ($res["conditional_child"] == 0)) { echo 'required=""';  } ?> name="<?php echo $res['slug'];?>"></textarea>
+                    <textarea class="form-control" data-req="<?php if(($res['required']==1) && ($res["conditional_child"] > 0)) { echo 'required';  } ?>" <?php if(($res['required']==1) && ($res["conditional_child"] == 0)) { echo 'required=""';  } ?> name="<?php echo $res['slug'];?>" data-parsley-errors-container="#<?php echo $res['slug'];?>-errors"></textarea>
                 <?php endif;?>
 
                 <!-- yes / no -->
                 <?php if($res['type'] == 5): ?>
                     <div class="form-check">
                        <label class="form-check-label <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo "parent_" . $res["id"];?>">
-                       <input class="form-check-input " type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="yes"> Yes</label>
+                       <input class="form-check-input " type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="yes" data-parsley-errors-container="#<?php echo $res['slug'];?>-errors"> Yes</label>
                        <label class="form-check-label  <?php if($res['has_options']==1) { echo 'has-other'; } ?>" data-id="<?php echo "parent_" . $res["id"];?>">
                        <input class="form-check-input" type="radio" name="<?php echo $res['slug'];?>" id="exampleRadios1" name="<?php echo $slug;?>" value="No"> No</label>
                     </div> 

@@ -586,26 +586,7 @@ function update_output() {
    
     
  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+ 
     
 // Match Emails
 $(".email_input").last().on("blur", function () {
@@ -757,32 +738,33 @@ $(function () {
   navigateTo(0); // Start at the beginning
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 });
 
     
     
     
     
-    
+$(".export-selected").click(function(e){
+    var attendees = [];
+    $( ".selected" ).each(function( index ) {
+      if($( this ).data("id") > 0){
+          attendees.push($( this ).data("id"));
+      } 
+
+    });
+    temp = $(".export-selected").attr("href")
+    temp = temp + "&view=set&ids=" + attendees;
+    $(".export-selected").attr("href", temp)
+
+    console.log(temp);
+})    
     
   
     
     
     
 });
-// End Doc Ready
-
 
 
 

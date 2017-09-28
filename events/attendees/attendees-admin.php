@@ -18,6 +18,14 @@ include('../nav.php');?>
          <div class="widget-title">
             <h3>All Registrations</h3>
         </div>
+        <div class="widget-title">
+            <h3>Download Files</h3>
+        </div>
+        <div class="widget-content" style="margin-bottom:15px;">
+            <a class="btn btn-secondary" href="../../_includes/export.php?event=10" target="_blank">All Approved Registrations</a> <a href="../../_includes/export.php?event=10&view=unfinished" class="btn btn-secondary" target="_blank">Unfinished Registrations</a>
+             <a class="btn btn-secondary export-selected" href="../../_includes/export.php?event=10" target="_blank">Selected Approved Registrations</a>
+
+        </div>
         <div class="widget-content">
             <?php basic_event_attendees();?>
             <!--
@@ -38,14 +46,7 @@ include('../nav.php');?>
             -->
         </div>
     </div>
-    <div class="widget-wrap" id="approvals">
-        <div class="widget-title">
-            <h3>Attendees Pending Approval</h3>
-        </div>
-        <div class="widget-content">
-            <?php approve_attendees();?>
-        </div>
-    </div>   
+   
 </div>
 
 <!-- Attendee Info Modal -->

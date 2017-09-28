@@ -2695,6 +2695,13 @@ textarea {
     right: 0;
     height: 500px; }
 
+.parsley-errors-list {
+  position: static; }
+
+.parent_header {
+  font-size: 18px;
+  font-weight: bold; }
+
 .progress_bar {
   text-align: center;
   margin: 40px auto;
@@ -2732,6 +2739,9 @@ textarea {
     .progress_bar li.active span {
       background: #3ac960;
       color: #fff; }
+
+.buttons-csv {
+  display: none; }
 
 .btn {
   border-radius: 1px; }

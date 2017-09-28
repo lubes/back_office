@@ -567,6 +567,16 @@ textarea {
     }
 }
 
+.parsley-errors-list {
+    position: static;
+}
+
+.parent_header {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
 // Form Progress 
 
 .progress_bar {
@@ -616,7 +626,9 @@ textarea {
 }
 
 // Btns
-
+.buttons-csv {
+    display: none;
+}
 .btn {
     border-radius: 1px;
     &.btn-primary {
@@ -1785,5 +1797,4 @@ https://github.com/silviomoreto/bootstrap-select/issues/1135
         margin: 0 auto;
     }
 }
-
 

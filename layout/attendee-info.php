@@ -14,7 +14,7 @@ while($res = mysqli_fetch_array($result)) {	?>
         </div>
         <div class="attendee-responses">
             <h6>Attendee Response:</h6>
-            <?php standard_att_response();?>
+            <?php //standard_att_response();?>
             <?php att_response();?>
         </div>
     <?php endif;?>

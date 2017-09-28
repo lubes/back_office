@@ -34,6 +34,7 @@ if(($mysqli->connect_errno > 0)){
 
     $event = $_POST["event"];
     $permission = 3;
+    $invitation_code = $_POST["invitation_code"];
     $name = $_POST['name'];
     $event = $_POST['event'];
     $email = $_POST['email'];
@@ -59,8 +60,8 @@ if(($mysqli->connect_errno > 0)){
     }
 
 
-    $insert = $mysqli->prepare("INSERT INTO attendees(permission, event, name, email, company, job_title, address, city, state, zip, country, alt_email, direct_phone, cell_phone, fax, website, exhibitors, t_c, logo_user, finished) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $insert->bind_param("iisssssssssssssssssi",$permission, $event, $name, $email, $company, $job_title, $address, $city, $state, $zip, $country, $alt_email, $direct_phone, $cell_phone, $fax, $website,  $exhibitors, $t_c, $logo_use, $finished);
+    $insert = $mysqli->prepare("INSERT INTO attendees(permission, event, invitation_number, name, email, company, job_title, address, city, state, zip, country, alt_email, direct_phone, cell_phone, fax, website, exhibitors, t_c, logo_user, finished) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $insert->bind_param("iissssssssssssssssssi",$permission, $event, $invitation_code, $name, $email, $company, $job_title, $address, $city, $state, $zip, $country, $alt_email, $direct_phone, $cell_phone, $fax, $website,  $exhibitors, $t_c, $logo_use, $finished);
     $insert->execute();
         //printf("Error: %s.\n", $insert->error);
     
